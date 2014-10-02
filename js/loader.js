@@ -30,6 +30,13 @@ app.KEYBOARD =
 	"KEY_SPACE": 32
 };
 
+app.mouse = 
+{
+	x:0,
+	y:0,
+	clicked:false,
+}
+
 //"hashtable" of our images
 app.IMAGES = 
 {
@@ -65,4 +72,10 @@ window.onload = function()
 	app.queue.loadManifest([
 		{id: "teamLogo", src:"images/logo.png"}
 		]);
+		
+	window.addEventListener("mousemove", function(e){
+		var position = app.FriendlyFire.getMousePos(e);
+		app.mouse.x = position.x;
+		app.mouse.y = position.y;
+	});
 }//end of loader.js
