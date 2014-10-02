@@ -1,62 +1,94 @@
+/*
+	Friendly Fire
+	
+	Alex Fuerst, 
+	Mario Chuman,
+	David Erbelding,
+	Brian Nugent,
+	Ryan Farrell,
+
+	Game Design and Development 2
+	10/2/2014
+
+*/
+
+//Player.js is the "class" for our player object
+
 "use strict";
+
+//Create the global app object if needed
 var app = app || {};
 
-app.Player = function(){
+// This is the "IIFE"/Class for the Player
+app.Player = function()
+{
 
-	function Enemy(image,canvasWidth,canvasHeight) {
-		// ivars
-		this.canvasWidth = canvasWidth;
-		this.canvasHeight = canvasHeight;
-		this.active = true;
-		this.age = Math.floor(Math.random() * 128);
+	//Player constructor
+	function Player(image,x,y) 
+	{
+		// Instance variables of Player
+		this.x = x;
+		this.y = y;
+		this.width = 30;
+		this.height = 80;
+		this.speed = 120;
 		
-		this.color = "#A2B";
-		
-		this.x = this.canvasWidth / 4 + Math.random() * this.canvasWidth / 2;
-		this.y = 0;
-		this.xVelocity = 0
-		this.yVelocity = 200;
-		this.amplitude = app.utils.getRandom(1.5,7.0); // oops, app global
+		//set the image and default "backup" color
 		this.image = image;
-		this.width = 34;
-		this.height = 40;
-	};
+		this.color = "yellow";
 		
-
-	var p = Enemy.prototype;
-	
-	  p.draw = function(ctx) {
-			var halfW = this.width/2;
-			var halfH = this.height/2;
-			
-			if(!this.image){
-				ctx.fillStyle = this.color;
-				ctx.fillRect(this.x - halfW, this.y - halfH, this.width, this.height);
-				
-			} else{
-				ctx.drawImage(this.image,52,98,17,20,this.x - halfW, this.y - halfH, this.width, this.height);
-			}
-			
-	  };
-	
-	p.update = function(dt) {
-		this.xVelocity = this.amplitude * Math.sin(this.age * Math.PI * dt);
-		this.x += this.xVelocity;
-		this.y += this.yVelocity *dt;
-		this.age++;
-		this.active = this.active && inBounds(this);
+	};//constructor
 		
-	  };
+	// Prototype for making functions/methods available outside of the class
+	var p = Player.prototype;
+	
+	// ** p.app is set in loader.js **
+	
+	//Player Draw Method
+	p.draw = function(ctx) 
+	{
+		ctx.save();
+		
+		//drawing origin is top left corner
+		//use this to center image on (x,y)
+		var halfW = this.width/2;
+		var halfH = this.height/2;
+		
+		//test to see if there is an image and draw accordingly
+		if(!this.image){
+			ctx.fillStyle = this.color;
+			ctx.fillRect(this.x - halfW, this.y - halfH, this.width, this.height);
+			
+		} else{
+			ctx.drawImage(this.image,this.x - halfW, this.y - halfH, this.width, this.height);
+		}//if image
+		
+		ctx.restore();
+	};//draw
+	
+	//Player update function, takes delta time(time since last frame) as a param
+	p.update = function(dt) 
+	{
+		//Handle keyboard input
+		if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])
+		{
+			this.x -= this.speed * dt;
+		}//if left
+		
+		if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT])
+		{
+			this.x += this.speed * dt;
+		}//if right
+		
+		
+	};//update
 	  
-	 p.explode  = function() {
-		this.active = false;
-	  };
 	  
-	  // private
-	  function inBounds(obj) {
+	// private
+	function inBounds(obj) {
 		return obj.y <= obj.canvasHeight + obj.height * 0.5;
-	  };
+	};//in bounds
 	
-	return Enemy;
+	return Player;
 	
-}();
+}();//end of Player.js
