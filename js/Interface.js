@@ -22,8 +22,10 @@ var app = app || {};
 // This is the object for our interface
 app.Interface =
 {
+	//Constants
 	WIDTH: 0,
 	HEIGHT: 0,
+	
 	images: [],
 	buttons: undefined,
 	
@@ -34,10 +36,12 @@ app.Interface =
 		this.HEIGHT = canvasHeight;
 		this.images = images;
 		this.color = "yellow";
+		
+		//Create hash table of buttons
 		this.buttons =
 		{
 			"menuButton" : new app.Button(undefined,this.WIDTH/2,800,100,50)
-		}
+		};
 	},
 	
 	//--------------------Interface Draw Methods--------------------------
@@ -47,6 +51,7 @@ app.Interface =
 	{
 		ctx.save();
 	
+		//team logo splash screen
 		var image = new Image();
 		image.src = this.images['teamLogo'];
 		
@@ -67,14 +72,21 @@ app.Interface =
 		//this is still bare.  Needs to be replaced with various things
 		ctx.save();
 		
+		//Place holder screen text
 		ctx.fillStyle = this.color;
 		ctx.font = "70px Verdana";
 		ctx.fillText("This Will Be The Main Menu", 100, 200);
-		ctx.fillText("Hit Enter To Play", 100, 300);
+		ctx.fillText("Hit Enter To Play Or Click The Red Button", 100, 300);
 		
+		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
-		console.log(this);
+		
 		ctx.restore();
 	},//draw main menu
 	
+	//Test to see if a certain button is clicked or not
+	buttonClicked : function(buttonTitle)
+	{
+		return this.buttons[buttonTitle].isClicked();
+	}//button clicked
 };//end of Interface.js

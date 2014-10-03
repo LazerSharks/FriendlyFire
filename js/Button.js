@@ -19,14 +19,14 @@
 //Create the global app object if needed
 var app = app || {};
 
-// This is the "IIFE"/Class for the Player
+// This is the "IIFE"/Class for the Button
 app.Button = function()
 {
 
-	//Player constructor
+	//Button constructor
 	function Button(image,x,y,width,height) 
 	{
-		// Instance variables of Player
+		// Instance variables of Button
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -42,8 +42,6 @@ app.Button = function()
 		
 	// Prototype for making functions/methods available outside of the class
 	var p = Button.prototype;
-	
-	// ** p.app is set in loader.js **
 	
 	//Button Draw Method
 	p.draw = function(ctx,mouse) 
@@ -61,36 +59,49 @@ app.Button = function()
 			ctx.fillRect(this.x - halfW, this.y - halfH, this.width * this.scale, this.height * this.scale);
 			
 		} else{
-			ctx.drawImage(this.image,this.x - halfW, this.y - halfH, this.width, this.height);
+			ctx.drawImage(this.image,this.x - halfW, this.y - halfH, this.width * this.scale, this.height * this.scale);
 		}//if image
 		
 		ctx.restore();
+		
+		//handle any input
 		update(mouse,this);
 	};//draw
 	
+	//accessor/get for clicked state
 	p.isClicked = function() {return this.clicked;};
 	
-	// private
-	function containsMouse(mouse,that) {
+	// private functions/methods
+	
+	// This checks to see that the mouse is within the button
+	// takes mouse and this as params
+	function containsMouse(mouse,that) 
+	{
+		//was originally having object access issues, this can be cleaned up later
 		var mx = mouse.x;
 		var my = mouse.y;
+		
+		//if the mouse coords are within the button return true
 		if(mx > that.x - that.width/2 && mx < that.x + that.width/2
 			&& my > that.y - that.height/2 && my < that.y + that.height/2)
 			return true;
 		else
 			return false;
 			
-	};//in bounds
+	};//contains mouse
 	
 	//Button update function
 	function update(mouse,that) 
 	{
+		//handle mouse input
 		handleMouse(containsMouse(mouse,that),that,mouse);
 	};//update
 	  
-	  
+	//This handles all input to be gathered from the mouse
+	//Event handler is in loader.js.  Coordinates are determined in FriendlyFire.js
 	function handleMouse(hovering,that,mouse)
 	{
+		//if hovering enlarge button and set click state to the mouse's click state
 		if(hovering)
 		{
 			that.scale = 2;
@@ -106,4 +117,4 @@ app.Button = function()
 	
 	return Button;
 	
-}();//end of Player.js
+}();//end of Button.js

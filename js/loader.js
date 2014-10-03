@@ -30,12 +30,13 @@ app.KEYBOARD =
 	"KEY_SPACE": 32
 };
 
+//mouse object with coords and click state
 app.mouse = 
 {
 	x:0,
 	y:0,
 	clicked:false,
-}
+};
 
 //"hashtable" of our images
 app.IMAGES = 
@@ -73,9 +74,16 @@ window.onload = function()
 		{id: "teamLogo", src:"images/logo.png"}
 		]);
 		
+	//Handle the mouses position.  It calls a method in FriendlyFire because
+	//FriendlyFire knows about the canvas, therefore, we can get canvas coords, not screen coords
 	window.addEventListener("mousemove", function(e){
 		var position = app.FriendlyFire.getMousePos(e);
 		app.mouse.x = position.x;
 		app.mouse.y = position.y;
 	});
+	
+	//Set the mouse's click state
+	window.addEventListener("mousedown", function(e){app.mouse.clicked = true;});
+	window.addEventListener("mouseup", function(e){app.mouse.clicked = false;});
+	
 }//end of loader.js

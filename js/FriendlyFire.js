@@ -69,6 +69,8 @@ app.FriendlyFire =
 		
 	},//init
 	
+	//--------------------------Main Update Loop-------------------------------------
+	
 	//This is the main game loop
 	update : function()
 	{
@@ -94,6 +96,14 @@ app.FriendlyFire =
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
+			// Check to see if the menuButton was clicked and advance accordingly
+			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
+			// around.  Cons, the programmer must know what they are named in the interface
+			if(this.userInterface.buttonClicked("menuButton"))
+			{
+				this.currentState = this.gameState.play;
+			}
+				
 			// Draw Call
 			this.draw();
 		}
@@ -113,6 +123,8 @@ app.FriendlyFire =
 		requestAnimationFrame(this.update.bind(this));
 	
 	},//update game
+	
+	//-----------------------------Draw Loop-------------------------------------------
 	
 	//This is the draw loop 
 	draw : function()
@@ -141,6 +153,8 @@ app.FriendlyFire =
 
 	},//draw game
 	
+	//---------------------------------Helper Functions----------------------------------
+	
 	//This handles the input for the game
 	//Some input is handled by the individual objects
 	handleKeyboard : function()
@@ -157,10 +171,15 @@ app.FriendlyFire =
 		}
 	},//input
 	
+	
+	// This function takes a mouse move event and returns the mouse
+	// coordinates relative to the canvas.  Event handler is in loader.js
+	// Code origin: Html5 Canvas Tutorials http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
 	getMousePos : function(e)
 	{
 		var rect = this.canvas.getBoundingClientRect();
-		return { x: e.clientX - rect.left,
+		return { 
+				 x: e.clientX - rect.left,
 				 y: e.clientY - rect.top
 			   };
 	}
