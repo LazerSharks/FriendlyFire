@@ -27,8 +27,7 @@ app.Weapon = function()
 	function Weapon(image,x,y,weaponType) 
 	{
 		// Instance variables of Weapon
-		this.x = x;
-		this.y = y;
+		this.vector = new app.Vector(x, y);
 		this.width = 10;
 		this.height = 30;
 		this.speed = 240;
@@ -54,12 +53,11 @@ app.Weapon = function()
 		var halfH = this.height/2;
 		
 		//test to see if there is an image and draw accordingly
-		if(!this.image){
-			ctx.fillStyle = this.color;
-			ctx.fillRect(this.x - halfW, this.y - halfH, this.width, this.height);
+		if(!this.image){			
+			app.DrawLib.drawRect(ctx,this.color,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
 			
 		} else{
-			ctx.drawImage(this.image,this.x - halfW, this.y - halfH, this.width, this.height);
+			app.DrawLib.drawImage(this.img,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
 		}//if image
 		
 		ctx.restore();
@@ -70,7 +68,7 @@ app.Weapon = function()
 	{
 		if(this.side == "left")
 		{
-			this.x += this.speed * dt;
+			this.vector.x += this.speed * dt;
 		}
 		
 		if(this.Weapon);

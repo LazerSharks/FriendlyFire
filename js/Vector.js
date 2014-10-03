@@ -72,4 +72,6 @@ app.Vector = function()
 		
 		return output;
 	};
+	
+	return Vector;
 }();

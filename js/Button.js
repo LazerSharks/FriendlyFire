@@ -27,8 +27,9 @@ app.Button = function()
 	function Button(image,x,y,width,height) 
 	{
 		// Instance variables of Button
-		this.x = x;
-		this.y = y;
+		/*this.x = x;
+		this.y = y;*/
+		this.vector = new app.Vector(x, y);
 		this.width = width;
 		this.height = width;
 		this.scale = 1;
@@ -56,10 +57,10 @@ app.Button = function()
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
 			ctx.fillStyle = this.color;
-			ctx.fillRect(this.x - halfW, this.y - halfH, this.width * this.scale, this.height * this.scale);
+			ctx.fillRect(this.vector.x - halfW, this.vector.y - halfH, this.width * this.scale, this.height * this.scale);
 			
 		} else{
-			ctx.drawImage(this.image,this.x - halfW, this.y - halfH, this.width * this.scale, this.height * this.scale);
+			ctx.drawImage(this.image,this.vector.x - halfW, this.vector.y - halfH, this.width * this.scale, this.height * this.scale);
 		}//if image
 		
 		ctx.restore();
@@ -82,8 +83,8 @@ app.Button = function()
 		var my = mouse.y;
 		
 		//if the mouse coords are within the button return true
-		if(mx > that.x - that.width/2 && mx < that.x + that.width/2
-			&& my > that.y - that.height/2 && my < that.y + that.height/2)
+		if(mx > that.vector.x - that.width/2 && mx < that.vector.x + that.width/2
+			&& my > that.vector.y - that.height/2 && my < that.vector.y + that.height/2)
 			return true;
 		else
 			return false;

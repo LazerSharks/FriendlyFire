@@ -27,8 +27,7 @@ app.Player = function()
 	function Player(image,x,y) 
 	{
 		// Instance variables of Player
-		this.x = x;
-		this.y = y;
+		this.vector = new app.Vector(x, y);
 		this.width = 30;
 		this.height = 80;
 		this.speed = 240;
@@ -56,10 +55,10 @@ app.Player = function()
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
-			app.DrawLib.drawRect(ctx,this.color,this.x,this.y,this.width,this.height,0);
+			app.DrawLib.drawRect(ctx,this.color,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
 			
 		} else{
-			app.DrawLib.drawImage(this.img,this.x,this.y,this.width,this.height,0);
+			app.DrawLib.drawImage(this.img,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
 		}//if image
 		
 		ctx.restore();
@@ -71,12 +70,12 @@ app.Player = function()
 		//Handle keyboard input
 		if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])
 		{
-			this.x -= this.speed * dt;
+			this.vector.x -= this.speed * dt;
 		}//if left
 		
 		if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT])
 		{
-			this.x += this.speed * dt;
+			this.vector.x += this.speed * dt;
 		}//if right
 		
 		
@@ -85,7 +84,7 @@ app.Player = function()
 	  
 	// private
 	function inBounds(obj) {
-		return obj.y <= obj.canvasHeight + obj.height * 0.5;
+		return obj.vector.y <= obj.canvasHeight + obj.height * 0.5;
 	};//in bounds
 	
 	return Player;
