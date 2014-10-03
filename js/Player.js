@@ -59,7 +59,7 @@ app.Player = function()
 			app.DrawLib.drawRect(ctx,this.color,this.x,this.y,this.width,this.height,0);
 			
 		} else{
-			ctx.drawImage(this.image,this.x - halfW, this.y - halfH, this.width, this.height);
+			app.DrawLib.drawImage(this.img,this.x,this.y,this.width,this.height,0);
 		}//if image
 		
 		ctx.restore();
