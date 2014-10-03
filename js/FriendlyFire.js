@@ -30,7 +30,6 @@ app.FriendlyFire =
     ctx: undefined,
 	app: undefined,
 	dt:1/60.0,
-	enemies:[],
 	gameState : undefined,
 	currentState : undefined,
 	player: undefined,
@@ -81,7 +80,6 @@ app.FriendlyFire =
 			
 			//keep track of how long intro has been playing
 			this.timePassed += this.dt;
-			console.log(this.timePassed);
 			
 			//change game state after intro
 			if(this.timePassed >= 2)
@@ -119,6 +117,9 @@ app.FriendlyFire =
 	//This is the draw loop 
 	draw : function()
 	{
+		// Need this to pass the object, breaks otherwise
+		var mouse = this.app.mouse;
+		
 		// Clear the screen
 		this.ctx.clearRect(0,0,this.WIDTH,this.HEIGHT);
 		
@@ -130,7 +131,7 @@ app.FriendlyFire =
 		else if(this.currentState == this.gameState.mainMenu)//this draws the main menu
 		{
 			// Throw all keyboard events to the objects
-			this.userInterface.drawMainMenu(this.ctx);
+			this.userInterface.drawMainMenu(this.ctx,mouse);
 		}
 		else if(this.currentState == this.gameState.play)//draw gameplay
 		{
@@ -154,7 +155,15 @@ app.FriendlyFire =
 				this.currentState = this.gameState.play;
 			}//if left
 		}
-	}//input
+	},//input
+	
+	getMousePos : function(e)
+	{
+		var rect = this.canvas.getBoundingClientRect();
+		return { x: e.clientX - rect.left,
+				 y: e.clientY - rect.top
+			   };
+	}
 	
 }//end of FriendlyFire.js
 

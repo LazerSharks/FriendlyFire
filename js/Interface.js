@@ -25,6 +25,7 @@ app.Interface =
 	WIDTH: 0,
 	HEIGHT: 0,
 	images: [],
+	buttons: undefined,
 	
 	//Interface constructor
 	init : function(images, canvasWidth, canvasHeight) 
@@ -33,7 +34,10 @@ app.Interface =
 		this.HEIGHT = canvasHeight;
 		this.images = images;
 		this.color = "yellow";
-		
+		this.buttons =
+		{
+			"menuButton" : new app.Button(undefined,this.WIDTH/2,800,100,50)
+		}
 	},
 	
 	//--------------------Interface Draw Methods--------------------------
@@ -58,7 +62,7 @@ app.Interface =
 	},//draw intro
 	
 	//Draw main menu UI
-	drawMainMenu : function(ctx)
+	drawMainMenu : function(ctx,mouse)
 	{
 		//this is still bare.  Needs to be replaced with various things
 		ctx.save();
@@ -68,6 +72,8 @@ app.Interface =
 		ctx.fillText("This Will Be The Main Menu", 100, 200);
 		ctx.fillText("Hit Enter To Play", 100, 300);
 		
+		this.buttons["menuButton"].draw(ctx,mouse);
+		console.log(this);
 		ctx.restore();
 	},//draw main menu
 	
