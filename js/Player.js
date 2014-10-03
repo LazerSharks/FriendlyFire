@@ -31,7 +31,7 @@ app.Player = function()
 		this.y = y;
 		this.width = 30;
 		this.height = 80;
-		this.speed = 120;
+		this.speed = 240;
 		
 		//set the image and default "backup" color
 		this.image = image;
@@ -56,8 +56,7 @@ app.Player = function()
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
-			ctx.fillStyle = this.color;
-			ctx.fillRect(this.x - halfW, this.y - halfH, this.width, this.height);
+			app.DrawLib.drawRect(ctx,this.color,this.x,this.y,this.width,this.height,0);
 			
 		} else{
 			ctx.drawImage(this.image,this.x - halfW, this.y - halfH, this.width, this.height);
