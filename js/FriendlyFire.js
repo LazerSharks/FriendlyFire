@@ -24,6 +24,7 @@ app.FriendlyFire =
 	//Constants
 	WIDTH : 1600,
 	HEIGHT : 900,
+	FRIENDLY_SOLDIER_PROBABILITY:.5,
 	
 	//Instance Variables
 	canvas: undefined,
@@ -35,6 +36,9 @@ app.FriendlyFire =
 	player: undefined,
 	userInterface: undefined,
 	timePassed:0,
+	friendlySoldiers:[],
+	lanes: undefined,
+	
 	
 	//This initializes all of the data needed for the game
 	//called by loader.js
@@ -53,6 +57,11 @@ app.FriendlyFire =
 			play:2,
 			paused:3,
 			over:4
+		};
+		
+		this.lanes = {
+			1:{x:0,y:100},
+			2:{x:0,y:200}
 		};
 		
 		//set the current game state
@@ -91,7 +100,7 @@ app.FriendlyFire =
 			}
 			
 		}
-		else if(this.currentState == this.gameState.mainMenu)//this updates the gameplay
+		else if(this.currentState == this.gameState.mainMenu)//this updates the main menu
 		{
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
@@ -107,13 +116,26 @@ app.FriendlyFire =
 			// Draw Call
 			this.draw();
 		}
-		else if(this.currentState == this.gameState.play)//this updates the main menu
+		else if(this.currentState == this.gameState.play)//this updates the gameplay
 		{
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 		
 			// Update all the items in the game
 			this.player.update(this.dt);
+			
+			for(var i = 0; i < this.friendlySoldiers.length; i++)
+			{
+				this.friendlySoldiers[i].update(this.dt);
+			}
+			
+			if(Math.random() < (this.FRIENDLY_SOLDIER_PROBABILITY/60))
+			{
+				var lane = Math.floor((Math.random() * 2) + 1);
+				var x = this.lanes[lane].x;
+				var y = this.lanes[lane].y;
+				this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y,"left","sword"));
+			}
 			
 			// Draw Call
 			this.draw();
@@ -150,6 +172,11 @@ app.FriendlyFire =
 			// Draw all of the sprites
 			this.player.draw(this.ctx)
 		}//game state if
+		
+		for(var i = 0; i < this.friendlySoldiers.length; i++)
+		{
+			this.friendlySoldiers[i].draw(this.ctx);
+		}
 
 	},//draw game
 	
