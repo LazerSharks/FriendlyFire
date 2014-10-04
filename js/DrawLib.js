@@ -23,22 +23,22 @@ var app = app || {};
 app.DrawLib = {
 
 	//draw a rectangle
-	drawRect: function(ctx, color, x, y, w, h, r){
+	drawRect: function(ctx, color, position, size, r){
 		ctx.save();
-		ctx.translate(x,y);
+		ctx.translate(position.x,position.y);
 		ctx.rotate(r);
 		ctx.fillStyle = color;
-		ctx.fillRect(-w/2,-h/2,w,h);
+		ctx.fillRect(-size.x/2,-size.y/2,size.x, size.y);
 		ctx.restore();
 	},
 	
 	//draw an image
 	
-	drawImage: function(ctx, img, x, y, w, h, r){
+	drawImage: function(ctx, img, position, size, r){
 		ctx.save();
-		ctx.translate(x,y);
+		ctx.translate(position.x,position.y);
 		ctx.rotate(r);
-		ctx.drawImage(img, 0, 0, w, h);
+		ctx.drawImage(img, 0, 0, size.x, size.y);
 		ctx.restore();
 	},
 

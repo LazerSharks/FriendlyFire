@@ -27,9 +27,8 @@ app.Player = function()
 	function Player(image,x,y) 
 	{
 		// Instance variables of Player
-		this.vector = new app.Vector(x, y);
-		this.width = 30;
-		this.height = 80;
+		this.position = new app.Vector(x, y);
+		this.size = new app.Vector(30,80);
 		this.speed = 240;
 		
 		//set the image and default "backup" color
@@ -50,15 +49,14 @@ app.Player = function()
 		
 		//drawing origin is top left corner
 		//use this to center image on (x,y)
-		var halfW = this.width/2;
-		var halfH = this.height/2;
+		var center = new app.Vector(this.size.x/2,this.size.y/2);
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
-			app.DrawLib.drawRect(ctx,this.color,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawRect(ctx,this.color,this.position.difference(center),center,0);
 			
 		} else{
-			app.DrawLib.drawImage(this.img,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawImage(this.img,this.position.x - halfW,this.position.y - halfH,this.width,this.height,0);
 		}//if image
 		
 		ctx.restore();
@@ -70,12 +68,12 @@ app.Player = function()
 		//Handle keyboard input
 		if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])
 		{
-			this.vector.x -= this.speed * dt;
+			this.position.x -= this.speed * dt;
 		}//if left
 		
 		if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT])
 		{
-			this.vector.x += this.speed * dt;
+			this.position.x += this.speed * dt;
 		}//if right
 		
 		
@@ -84,7 +82,7 @@ app.Player = function()
 	  
 	// private
 	function inBounds(obj) {
-		return obj.vector.y <= obj.canvasHeight + obj.height * 0.5;
+		return obj.position.y <= obj.canvasHeight + obj.size.y * 0.5;
 	};//in bounds
 	
 	return Player;

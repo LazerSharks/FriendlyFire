@@ -65,11 +65,7 @@ app.Vector = function()
 	//returns the resulting vector
 	p.difference = function(vec)
 	{
-		var output;
-		
-		output.x = this.x - vec.x;
-		output.y = this.y - vec.y;
-		
+		var output = new app.Vector(this.x - vec.x, this.y - vec.y);
 		return output;
 	};
 	
