@@ -65,15 +65,16 @@ app.FriendlyFire =
 		};
 		
 		this.lanes = {
-			1:{x:0,y:100},
-			2:{x:0,y:200}
+			1:{x:0,y:250},
+			2:{x:0,y:400},
+			3:{x:0,y:550}
 		};
 		
 		//set the current game state
 		this.currentState = this.gameState.play;
 		
 		//initialize our player
-		this.player = new app.Player(undefined,this.WIDTH/2, this.HEIGHT/2);
+		this.player = new app.Player(undefined,this.WIDTH/2, this.HEIGHT-100);
 		
 		//initialize our interface
 		this.userInterface.init(app.IMAGES,this.WIDTH,this.HEIGHT);
@@ -150,9 +151,13 @@ app.FriendlyFire =
 			
 			if(this.soldierTimer > 1 && Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY)
 			{
+<<<<<<< HEAD
 				this.soldierTimer = 0;
 				console.log("new Soldier");
 				var lane = Math.floor((Math.random() * 2) + 1);
+=======
+				var lane = Math.floor((Math.random() * 3) + 1);
+>>>>>>> ff85fee757c58415d1560523c3c637c65c9cf081
 				var x = this.lanes[lane].x;
 				var y = this.lanes[lane].y;
 				this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y,"left","sword"));
@@ -176,6 +181,8 @@ app.FriendlyFire =
 		
 		// Clear the screen
 		this.ctx.clearRect(0,0,this.WIDTH,this.HEIGHT);
+		this.ctx.fillStyle = "#55DD55";
+		this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
 		
 		//Draw according to the game state
 		if(this.currentState == this.gameState.intro)//draw intro

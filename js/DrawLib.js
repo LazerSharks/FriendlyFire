@@ -37,6 +37,7 @@ app.DrawLib = {
 		ctx.restore();
 	},
 	
+<<<<<<< HEAD
 	//draw an image
 	
 	drawImage: function(ctx, img, position, size, r){
@@ -44,12 +45,18 @@ app.DrawLib = {
 		var halfW = size.x/2;
 		var halfH = size.y/2;
 	
+=======
+	//draw a given image using the context
+	drawImage: function(ctx, img, sourceX, sourceY, sourceW, sourceH, position, size, r){
+		//setup the context
+>>>>>>> ff85fee757c58415d1560523c3c637c65c9cf081
 		ctx.save();
 		ctx.translate(position.x - halfW,position.y - halfH);
 		ctx.rotate(r);
-		ctx.drawImage(img, 0, 0, size.x, size.y);
+		//display image
+		ctx.drawImage(img, sourceX, sourceY, sourceW, sourceH, 0, 0, size.x, size.y);
 		ctx.restore();
-	},
+	}
 
 
 };//end of drawlib
