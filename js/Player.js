@@ -28,11 +28,12 @@ app.Player = function()
 	{
 		// Instance variables of Player
 		this.position = new app.Vector(x, y);
-		this.size = new app.Vector(30,80);
-		this.speed = 240;
+		this.size = new app.Vector(120,160);
+		this.speed = 320;
 		
 		//set the image and default "backup" color
 		this.image = image;
+		this.currentWeaponIndex = 0;
 		this.color = "yellow";
 		
 	};//constructor
@@ -56,7 +57,7 @@ app.Player = function()
 			app.DrawLib.drawRect(ctx,this.color,this.position.difference(center),center,0);
 			
 		} else{
-			app.DrawLib.drawImage(this.img,this.position.x - halfW,this.position.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}//if image
 		
 		ctx.restore();
@@ -66,6 +67,7 @@ app.Player = function()
 	p.update = function(dt) 
 	{
 		//Handle keyboard input
+		//move left and right
 		if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])
 		{
 			this.position.x -= this.speed * dt;
@@ -77,13 +79,32 @@ app.Player = function()
 		}//if right
 		
 		
+		//switch weapons
+		window.addEventListener("keydown", function(e){
+			if(e.keyCode == this.app.KEYBOARD.KEY_UP){
+				this.currentWeaponIndex++;
+				switchWeapons(this);
+			}
+			if(e.keyCode == this.app.KEYBOARD.KEY_DOWN){
+				this.currentWeaponIndex--;
+				switchWeapons(this);
+			}
+		});
+		
 	};//update
-	  
-	  
+	
 	// private
 	function inBounds(obj) {
 		return obj.position.y <= obj.canvasHeight + obj.size.y * 0.5;
 	};//in bounds
+	
+	function switchWeapons(obj){
+		if(obj.currentWeaponIndex == -1){obj.currentWeaponIndex = 2;}
+		else if(obj.currentWeaponIndex == 3){obj.currentWeaponIndex = 0;}
+		else if(obj.currentWeaponIndex == 0){obj.color = "red";}
+		else if(obj.currentWeaponIndex == 1){obj.color = "green";}
+		else if(obj.currentWeaponIndex == 2){obj.color = "blue";}
+	};
 	
 	return Player;
 	

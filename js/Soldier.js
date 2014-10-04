@@ -29,9 +29,8 @@ app.Soldier = function()
 		// Instance variables of Soldier
 		/*this.x = x;
 		this.y = y;*/
-		this.vector = new app.Vector(x, y);
-		this.width = 30;
-		this.height = 80;
+		this.position = new app.Vector(x, y);
+		this.size = new app.Vector(120,160);
 		this.speed = 120;
 		this.side = side;
 		this.weaponType = weaponType;
@@ -39,7 +38,7 @@ app.Soldier = function()
 		
 		//set the image and default "backup" color
 		this.image = image;
-		this.color = "green";
+		this.color = "red";
 		
 	};//constructor
 		
@@ -61,15 +60,14 @@ app.Soldier = function()
 		
 		//drawing origin is top left corner
 		//use this to center image on (x,y)
-		var halfW = this.width/2;
-		var halfH = this.height/2;
+		var center = new app.Vector(this.size.x/2,this.size.y/2);
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
-			app.DrawLib.drawRect(ctx,this.color,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawRect(ctx,this.color,this.position.difference(center),center,0);
 			
 		} else{
-			app.DrawLib.drawImage(this.img,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}//if image
 		
 		ctx.restore();
@@ -80,7 +78,7 @@ app.Soldier = function()
 	{
 		if(this.side == "left")
 		{
-			this.vector.x += this.speed * dt;
+			this.position.x += this.speed * dt;
 		}
 		
 		if(this.Weapon);
