@@ -24,20 +24,25 @@ app.FriendlyFire =
 	//Constants
 	WIDTH : 1600,
 	HEIGHT : 900,
-	FRIENDLY_SOLDIER_PROBABILITY:,
+	FRIENDLY_SOLDIER_PROBABILITY:0.5,
 	
 	//Instance Variables
 	canvas: undefined,
     ctx: undefined,
 	app: undefined,
 	dt:1/60.0,
+	lastFrame: 0,
+	currentFrame:0,
 	gameState : undefined,
 	currentState : undefined,
 	player: undefined,
 	userInterface: undefined,
 	timePassed:0,
+	soldierTimer:0,
 	friendlySoldiers:[],
 	lanes: undefined,
+	
+	
 	
 	
 	//This initializes all of the data needed for the game
@@ -65,13 +70,16 @@ app.FriendlyFire =
 		};
 		
 		//set the current game state
-		this.currentState = this.gameState.intro;
+		this.currentState = this.gameState.play;
 		
 		//initialize our player
 		this.player = new app.Player(undefined,this.WIDTH/2, this.HEIGHT/2);
 		
 		//initialize our interface
 		this.userInterface.init(app.IMAGES,this.WIDTH,this.HEIGHT);
+		
+		this.lastFrame = Date.now();
+		
 		
 		//begin the game loop
 		this.update();
@@ -83,6 +91,13 @@ app.FriendlyFire =
 	//This is the main game loop
 	update : function()
 	{
+		// Loop this function every frame
+		requestAnimationFrame(this.update.bind(this));
+		
+		this.currentFrame = Date.now();
+		this.dt = (this.currentFrame - this.lastFrame)/ 1000;
+		this.lastFrame = this.currentFrame;
+		
 		//Update according to the game state
 		if(this.currentState == this.gameState.intro)//this updates the intro scene
 		{
@@ -118,6 +133,8 @@ app.FriendlyFire =
 		}
 		else if(this.currentState == this.gameState.play)//this updates the gameplay
 		{
+			this.soldierTimer += this.dt;
+		
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 		
@@ -129,8 +146,12 @@ app.FriendlyFire =
 				this.friendlySoldiers[i].update(this.dt);
 			}
 			
-			if(Math.random() < (this.FRIENDLY_SOLDIER_PROBABILITY/60))
+			this.friendlySoldiers = this.friendlySoldiers.filter(function(soldier){return soldier.active;});
+			
+			if(this.soldierTimer > 1 && Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY)
 			{
+				this.soldierTimer = 0;
+				console.log("new Soldier");
 				var lane = Math.floor((Math.random() * 2) + 1);
 				var x = this.lanes[lane].x;
 				var y = this.lanes[lane].y;
@@ -141,8 +162,7 @@ app.FriendlyFire =
 			this.draw();
 		}//game state if
 		
-		// Loop this function every frame
-		requestAnimationFrame(this.update.bind(this));
+
 	
 	},//update game
 	

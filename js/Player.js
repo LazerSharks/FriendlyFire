@@ -45,16 +45,10 @@ app.Player = function()
 	//Player Draw Method
 	p.draw = function(ctx) 
 	{
-		ctx.save();
-		
-		//drawing origin is top left corner
-		//use this to center image on (x,y)
-		var center = new app.Vector(this.size.x/2,this.size.y/2);
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
-			app.DrawLib.drawRect(ctx,this.color,this.position.difference(center),center,0);
-			
+			app.DrawLib.drawRect(ctx,this.color,this.position,this.size,0);
 		} else{
 			app.DrawLib.drawImage(this.img,this.position.x - halfW,this.position.y - halfH,this.width,this.height,0);
 		}//if image

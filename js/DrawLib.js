@@ -24,19 +24,28 @@ app.DrawLib = {
 
 	//draw a rectangle
 	drawRect: function(ctx, color, position, size, r){
+		
+		//determine the center of the image
+		var halfW = size.x/2;
+		var halfH = size.y/2;
+		
 		ctx.save();
-		ctx.translate(position.x,position.y);
+		ctx.translate(position.x - halfW,position.y - halfH);
 		ctx.rotate(r);
 		ctx.fillStyle = color;
-		ctx.fillRect(-size.x/2,-size.y/2,size.x, size.y);
+		ctx.fillRect(0,0,size.x, size.y);
 		ctx.restore();
 	},
 	
 	//draw an image
 	
 	drawImage: function(ctx, img, position, size, r){
+	
+		var halfW = size.x/2;
+		var halfH = size.y/2;
+	
 		ctx.save();
-		ctx.translate(position.x,position.y);
+		ctx.translate(position.x - halfW,position.y - halfH);
 		ctx.rotate(r);
 		ctx.drawImage(img, 0, 0, size.x, size.y);
 		ctx.restore();
