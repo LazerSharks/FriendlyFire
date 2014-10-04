@@ -51,14 +51,10 @@ app.keydown = [];
 window.onload = function()
 {
 	//When a key is pressed set its place in the array to true
-	window.addEventListener("keydown", function(e){
-		app.keydown[e.keyCode] = true;
-	});
+	window.addEventListener("keydown", function(e){app.keydown[e.keyCode] = true;});
 	
 	//when a key is released set its place in the array to false
-	window.addEventListener("keyup", function(e){
-		app.keydown[e.keyCode] = false;
-	});
+	window.addEventListener("keyup", function(e){app.keydown[e.keyCode] = false;});
 	
 	// hook the interface up to the controller
 	app.FriendlyFire.userInterface = app.Interface;
