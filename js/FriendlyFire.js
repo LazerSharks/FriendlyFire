@@ -24,7 +24,7 @@ app.FriendlyFire =
 	//Constants
 	WIDTH : 1600,
 	HEIGHT : 900,
-	FRIENDLY_SOLDIER_PROBABILITY:,
+	FRIENDLY_SOLDIER_PROBABILITY:0.0,
 	
 	//Instance Variables
 	canvas: undefined,
@@ -38,6 +38,7 @@ app.FriendlyFire =
 	timePassed:0,
 	friendlySoldiers:[],
 	lanes: undefined,
+	weaponSwitched: false,
 	
 	
 	//This initializes all of the data needed for the game
@@ -123,7 +124,7 @@ app.FriendlyFire =
 			this.handleKeyboard();
 		
 			// Update all the items in the game
-			this.player.update(this.dt);
+			//this.player.update(this.dt);
 			
 			for(var i = 0; i < this.friendlySoldiers.length; i++)
 			{
@@ -198,6 +199,42 @@ app.FriendlyFire =
 			{
 				this.currentState = this.gameState.play;
 			}//if left
+		}
+		if(this.currentState == this.gameState.play)//handle gameplay input
+		{
+			//move the player
+			if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])//left move
+			{
+				this.player.move("left", this.dt);
+			}
+			if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT])//right move
+			{
+				this.player.move("right", this.dt);
+			}
+			
+			//switch weapon and prevent the player from holding down the switch buttons
+			if(this.app.keydown[this.app.KEYBOARD.KEY_DOWN] && !this.weaponSwitched) //down switch
+			{
+				this.player.switchWeapons("down");
+				this.weaponSwitched = true;
+			}
+			if(this.app.keydown[this.app.KEYBOARD.KEY_UP] && !this.weaponSwitched) //up switch
+			{
+				this.player.switchWeapons("up");
+				this.weaponSwitched = true;
+			}
+			if(!this.app.keydown[this.app.KEYBOARD.KEY_DOWN] && !this.app.keydown[this.app.KEYBOARD.KEY_UP] && this.weaponSwitched) // reset weaponSwitched value
+			{
+				this.weaponSwitched = false;
+			}
+			
+			//throw weapon
+			/*
+				if(this.app.keydown[this.app.KEYBOARD.SPACE]) //throw
+				{
+					this.player.throwWeapon();
+				}
+			*/
 		}
 	},//input
 	

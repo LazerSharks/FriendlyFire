@@ -66,45 +66,79 @@ app.Player = function()
 	//Player update function, takes delta time(time since last frame) as a param
 	p.update = function(dt) 
 	{
-		//Handle keyboard input
-		//move left and right
-		if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])
+
+	};//update
+	
+	//input methods
+	//move player - takes a string representing the key input for direction and delta time
+	p.move = function(direction, dt)
+	{
+		if(direction == "left")
 		{
 			this.position.x -= this.speed * dt;
-		}//if left
-		
-		if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT])
+		}
+		else if (direction == "right")
 		{
 			this.position.x += this.speed * dt;
-		}//if right
-		
-		
-		//switch weapons
-		window.addEventListener("keydown", function(e){
-			if(e.keyCode == this.app.KEYBOARD.KEY_UP){
-				this.currentWeaponIndex++;
-				switchWeapons(this);
+		}
+	}
+	
+	//switch weapons - takes a string representing the key input
+	p.switchWeapons = function(input)
+	{
+		if(input == "up")
+		{
+			this.currentWeaponIndex++;
+			
+			//loop the index if it's greater than 3
+			if(this.currentWeaponIndex > 3)
+			{
+				this.currentWeaponIndex = 0;
 			}
-			if(e.keyCode == this.app.KEYBOARD.KEY_DOWN){
-				this.currentWeaponIndex--;
-				switchWeapons(this);
+		}
+		else if (input =="down")
+		{
+			this.currentWeaponIndex--;
+			
+			//loop the index if it's less than 0
+			if(this.currentWeaponIndex < 0)
+			{
+				this.currentWeaponIndex = 3;
 			}
-		});
+		}
 		
-	};//update
+		//log the weapon index to the console
+		console.log("Weapon Index: " + this.currentWeaponIndex);
+		
+		//sets the color based on the weapon index
+		switch(this.currentWeaponIndex)
+		{
+			case 0:
+				this.color = "yellow";
+				break;
+			case 1:
+				this.color = "green";
+				break;
+			case 2:
+				this.color = "blue";
+				break;
+			case 3:
+				this.color = "red";
+				break;
+		}
+	}
+	
+	/*
+		p.throwWeapon()
+		{
+		
+		}
+	*/
 	
 	// private
 	function inBounds(obj) {
 		return obj.position.y <= obj.canvasHeight + obj.size.y * 0.5;
 	};//in bounds
-	
-	function switchWeapons(obj){
-		if(obj.currentWeaponIndex == -1){obj.currentWeaponIndex = 2;}
-		else if(obj.currentWeaponIndex == 3){obj.currentWeaponIndex = 0;}
-		else if(obj.currentWeaponIndex == 0){obj.color = "red";}
-		else if(obj.currentWeaponIndex == 1){obj.color = "green";}
-		else if(obj.currentWeaponIndex == 2){obj.color = "blue";}
-	};
 	
 	return Player;
 	
