@@ -24,7 +24,7 @@ app.FriendlyFire =
 	//Constants
 	WIDTH : 1600,
 	HEIGHT : 900,
-	FRIENDLY_SOLDIER_PROBABILITY:,
+	FRIENDLY_SOLDIER_PROBABILITY:.5,
 	
 	//Instance Variables
 	canvas: undefined,
