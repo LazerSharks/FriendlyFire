@@ -28,11 +28,12 @@ app.Player = function()
 	{
 		// Instance variables of Player
 		this.position = new app.Vector(x, y);
-		this.size = new app.Vector(30,80);
-		this.speed = 240;
+		this.size = new app.Vector(120,160);
+		this.speed = 320;
 		
 		//set the image and default "backup" color
 		this.image = image;
+		this.currentWeaponIndex = 0;
 		this.color = "yellow";
 		
 	};//constructor
@@ -56,7 +57,7 @@ app.Player = function()
 			app.DrawLib.drawRect(ctx,this.color,this.position.difference(center),center,0);
 			
 		} else{
-			app.DrawLib.drawImage(this.img,this.position.x - halfW,this.position.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}//if image
 		
 		ctx.restore();
@@ -65,21 +66,75 @@ app.Player = function()
 	//Player update function, takes delta time(time since last frame) as a param
 	p.update = function(dt) 
 	{
-		//Handle keyboard input
-		if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])
+
+	};//update
+	
+	//input methods
+	//move player - takes a string representing the key input for direction and delta time
+	p.move = function(direction, dt)
+	{
+		if(direction == "left")
 		{
 			this.position.x -= this.speed * dt;
-		}//if left
-		
-		if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT])
+		}
+		else if (direction == "right")
 		{
 			this.position.x += this.speed * dt;
-		}//if right
+		}
+	}
+	
+	//switch weapons - takes a string representing the key input
+	p.switchWeapons = function(input)
+	{
+		if(input == "up")
+		{
+			this.currentWeaponIndex++;
+			
+			//loop the index if it's greater than 3
+			if(this.currentWeaponIndex > 3)
+			{
+				this.currentWeaponIndex = 0;
+			}
+		}
+		else if (input =="down")
+		{
+			this.currentWeaponIndex--;
+			
+			//loop the index if it's less than 0
+			if(this.currentWeaponIndex < 0)
+			{
+				this.currentWeaponIndex = 3;
+			}
+		}
 		
+		//log the weapon index to the console
+		console.log("Weapon Index: " + this.currentWeaponIndex);
 		
-	};//update
-	  
-	  
+		//sets the color based on the weapon index
+		switch(this.currentWeaponIndex)
+		{
+			case 0:
+				this.color = "yellow";
+				break;
+			case 1:
+				this.color = "green";
+				break;
+			case 2:
+				this.color = "blue";
+				break;
+			case 3:
+				this.color = "red";
+				break;
+		}
+	}
+	
+	/*
+		p.throwWeapon()
+		{
+		
+		}
+	*/
+	
 	// private
 	function inBounds(obj) {
 		return obj.position.y <= obj.canvasHeight + obj.size.y * 0.5;
