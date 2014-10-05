@@ -24,7 +24,9 @@ app.FriendlyFire =
 	//Constants
 	WIDTH : 1600,
 	HEIGHT : 900,
-	FRIENDLY_SOLDIER_PROBABILITY:.5,
+	FRIENDLY_SOLDIER_PROBABILITY:0.5,
+	SOLDIER_WIDTH: 120, //Change to affect how wide the player and the soldiers are
+	SOLDIER_HEIGHT: 160, //Change to affect how tall the player and the soldiers are
 	
 	//Instance Variables
 	canvas: undefined,
@@ -61,15 +63,16 @@ app.FriendlyFire =
 		};
 		
 		this.lanes = {
-			1:{x:0,y:100},
-			2:{x:0,y:200}
+			1:{x:0,y:120},
+			2:{x:0,y:300},
+			3:{x:0,y:480}
 		};
 		
 		//set the current game state
-		this.currentState = this.gameState.intro;
+		this.currentState = this.gameState.play;
 		
 		//initialize our player
-		this.player = new app.Player(undefined,this.WIDTH/2, this.HEIGHT/2);
+		this.player = new app.Player(undefined,this.WIDTH/2, this.HEIGHT-100, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT});
 		
 		//initialize our interface
 		this.userInterface.init(app.IMAGES,this.WIDTH,this.HEIGHT);
@@ -132,10 +135,10 @@ app.FriendlyFire =
 			
 			if(Math.random() < (this.FRIENDLY_SOLDIER_PROBABILITY/60))
 			{
-				var lane = Math.floor((Math.random() * 2) + 1);
+				var lane = Math.floor((Math.random() * 3) + 1);
 				var x = this.lanes[lane].x;
 				var y = this.lanes[lane].y;
-				this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y,"left","sword"));
+				this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","sword"));
 			}
 			
 			// Draw Call
@@ -157,6 +160,8 @@ app.FriendlyFire =
 		
 		// Clear the screen
 		this.ctx.clearRect(0,0,this.WIDTH,this.HEIGHT);
+		this.ctx.fillStyle = "#55DD55";
+		this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
 		
 		//Draw according to the game state
 		if(this.currentState == this.gameState.intro)//draw intro
@@ -170,6 +175,15 @@ app.FriendlyFire =
 		}
 		else if(this.currentState == this.gameState.play)//draw gameplay
 		{
+			for(var i = 1; i < 4; i++)
+			{
+				this.ctx.save();
+				this.ctx.strokeStyle = "black";
+				this.ctx.lineWidth = 5;
+				this.ctx.strokeRect(0, this.lanes[i].y - this.SOLDIER_HEIGHT/2, this.WIDTH, this.SOLDIER_HEIGHT);
+				this.ctx.restore();
+			}
+			
 			// Draw all of the sprites
 			this.player.draw(this.ctx)
 		}//game state if

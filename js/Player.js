@@ -24,11 +24,11 @@ app.Player = function()
 {
 
 	//Player constructor
-	function Player(image,x,y) 
+	function Player(image, x, y, size) 
 	{
 		// Instance variables of Player
 		this.position = new app.Vector(x, y);
-		this.size = new app.Vector(120,160);
+		this.size = size;
 		this.speed = 320;
 		
 		//set the image and default "backup" color
@@ -54,7 +54,8 @@ app.Player = function()
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
-			app.DrawLib.drawRect(ctx,this.color,this.position.difference(center),center,0);
+			app.DrawLib.drawRect(ctx,this.color,this.position,this.size,0);
+			app.DrawLib.debugRect(ctx, this);
 			
 		} else{
 			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);

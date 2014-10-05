@@ -35,7 +35,7 @@ app.Interface =
 		this.WIDTH = canvasWidth;
 		this.HEIGHT = canvasHeight;
 		this.images = images;
-		this.color = "yellow";
+		this.color = "#665500";
 		
 		//Create hash table of buttons
 		this.buttons =
