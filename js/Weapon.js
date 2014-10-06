@@ -59,7 +59,6 @@ app.Weapon = function()
 	//Weapon Draw Method
 	p.draw = function(ctx) 
 	{
-	console.log("Drawn weapon");
 		ctx.save();
 		
 		//drawing origin is top left corner
@@ -69,7 +68,7 @@ app.Weapon = function()
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){			
-			app.DrawLib.drawRect(ctx,this.color,this.position.x - halfW,this.position.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawRect(ctx,this.color, this.position,this.size,0);
 			app.DrawLib.debugRect(ctx, this);
 		} 
 		else{

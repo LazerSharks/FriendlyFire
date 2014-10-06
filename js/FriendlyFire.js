@@ -41,6 +41,7 @@ app.FriendlyFire =
 	friendlySoldiers:[],
 	lanes: undefined,
 	weaponSwitched: false,
+	weaponThrown: false,
 	
 	
 	//This initializes all of the data needed for the game
@@ -185,13 +186,12 @@ app.FriendlyFire =
 			}
 			
 			// Draw all of the sprites
+			for(var i = 0; i < this.friendlySoldiers.length; i++)
+			{
+				this.friendlySoldiers[i].draw(this.ctx);
+			}
 			this.player.draw(this.ctx)
 		}//game state if
-		
-		for(var i = 0; i < this.friendlySoldiers.length; i++)
-		{
-			this.friendlySoldiers[i].draw(this.ctx);
-		}
 
 	},//draw game
 	
@@ -240,10 +240,14 @@ app.FriendlyFire =
 			}
 			
 			//throw weapon
-			if(this.app.keydown[this.app.KEYBOARD.KEY_SPACE]) //throw
+			if(this.app.keydown[this.app.KEYBOARD.KEY_SPACE] && !this.weaponThrown) //throw and set the thrownWeapon boolean to true to force the player to release the space bar
 			{
-				console.log("Space pressed");
+				this.weaponThrown = true;
 				this.player.throwWeapon();
+			}
+			else if(!this.app.keydown[this.app.KEYBOARD.KEY_SPACE] && this.weaponThrown) //reset the boolean
+			{
+				this.weaponThrown = false;
 			}
 		}
 	},//input

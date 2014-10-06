@@ -117,9 +117,6 @@ app.Player = function()
 			}
 		}
 		
-		//log the weapon index to the console
-		console.log("Weapon Index: " + this.currentWeaponIndex);
-		
 		//sets the color based on the weapon index
 		switch(this.currentWeaponIndex)
 		{
@@ -145,7 +142,6 @@ app.Player = function()
 	//create a new weapon to the active weapons array
 	p.throwWeapon = function()
 	{
-		console.log("Weapon thrown");
 		this.activeWeapons.push(new this.app.Weapon(this.position.x, this.position.y, this.weaponType, {x: 50, y: 50}));
 	}
 	
