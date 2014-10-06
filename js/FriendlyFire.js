@@ -139,7 +139,23 @@ app.FriendlyFire =
 				var lane = Math.floor((Math.random() * 3) + 1);
 				var x = this.lanes[lane].x;
 				var y = this.lanes[lane].y;
-				this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","sword"));
+				
+				var weaponIndex = Math.floor((Math.random() * 4) + 1);
+				switch(weaponIndex)
+				{
+					case 1:
+						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","spear"));
+						break;
+					case 2:
+						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","mace"));
+						break;
+					case 3:
+						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","axe"));
+						break;
+					case 4:
+						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","sword"));
+						break;
+				}
 			}
 			
 			// Draw Call

@@ -36,7 +36,23 @@ app.Soldier = function()
 		
 		//set the image and default "backup" color
 		this.image = image;
-		this.color = "red";
+		
+		switch(weaponType)
+		{
+			case "spear":
+				this.color = "yellow";
+				break;
+			case "mace":
+				this.color = "green";
+				break;
+			case "axe":
+				this.color = "blue";
+				break;
+			case "sword":
+				this.color = "red";
+				break;
+		}
+		
 		
 	};//constructor
 		

@@ -29,7 +29,7 @@ app.Weapon = function()
 		// Instance variables of Weapon
 		this.position = new app.Vector(x, y);
 		this.size = new app.Vector(size.x, size.y);
-		this.speed = 240;
+		this.speed = 480;
 		this.weaponType = weaponType;
 		
 		//set the image and default "backup" color
