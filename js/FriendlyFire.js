@@ -214,27 +214,27 @@ app.FriendlyFire =
 		if(this.currentState == this.gameState.play)//handle gameplay input
 		{
 			//move the player
-			if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT])//left move
+			if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT] || this.app.keydown[this.app.KEYBOARD.KEY_A])//left move
 			{
 				this.player.move("left", this.dt);
 			}
-			if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT])//right move
+			if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT] || this.app.keydown[this.app.KEYBOARD.KEY_D])//right move
 			{
 				this.player.move("right", this.dt);
 			}
 			
 			//switch weapon and prevent the player from holding down the switch buttons
-			if(this.app.keydown[this.app.KEYBOARD.KEY_DOWN] && !this.weaponSwitched) //down switch
+			if((this.app.keydown[this.app.KEYBOARD.KEY_DOWN] || this.app.keydown[this.app.KEYBOARD.KEY_S]) && !this.weaponSwitched) //down switch
 			{
 				this.player.switchWeapons("down");
 				this.weaponSwitched = true;
 			}
-			if(this.app.keydown[this.app.KEYBOARD.KEY_UP] && !this.weaponSwitched) //up switch
+			if((this.app.keydown[this.app.KEYBOARD.KEY_UP] || this.app.keydown[this.app.KEYBOARD.KEY_W]) && !this.weaponSwitched) //up switch
 			{
 				this.player.switchWeapons("up");
 				this.weaponSwitched = true;
 			}
-			if(!this.app.keydown[this.app.KEYBOARD.KEY_DOWN] && !this.app.keydown[this.app.KEYBOARD.KEY_UP] && this.weaponSwitched) // reset weaponSwitched value
+			if(!this.app.keydown[this.app.KEYBOARD.KEY_DOWN] && !this.app.keydown[this.app.KEYBOARD.KEY_UP] && !this.app.keydown[this.app.KEYBOARD.KEY_S] && !this.app.keydown[this.app.KEYBOARD.KEY_W] && this.weaponSwitched) // reset weaponSwitched value
 			{
 				this.weaponSwitched = false;
 			}
