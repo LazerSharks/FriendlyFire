@@ -25,8 +25,8 @@ app.FriendlyFire =
 	WIDTH : 1600,
 	HEIGHT : 900,
 	FRIENDLY_SOLDIER_PROBABILITY:0.5,
-	SOLDIER_WIDTH: 120, //Change to affect how wide the player and the soldiers are
-	SOLDIER_HEIGHT: 160, //Change to affect how tall the player and the soldiers are
+	SOLDIER_WIDTH: 60, //Change to affect how wide the player and the soldiers are
+	SOLDIER_HEIGHT: 80, //Change to affect how tall the player and the soldiers are
 	
 	//Instance Variables
 	canvas: undefined,
@@ -63,9 +63,9 @@ app.FriendlyFire =
 		};
 		
 		this.lanes = {
-			1:{x:0,y:120},
-			2:{x:0,y:300},
-			3:{x:0,y:480}
+			1:{x:0,y:200},
+			2:{x:0,y:380},
+			3:{x:0,y:560}
 		};
 		
 		//set the current game state
@@ -126,7 +126,7 @@ app.FriendlyFire =
 			this.handleKeyboard();
 		
 			// Update all the items in the game
-			//this.player.update(this.dt);
+			this.player.update(this.dt);
 			
 			for(var i = 0; i < this.friendlySoldiers.length; i++)
 			{
@@ -240,12 +240,11 @@ app.FriendlyFire =
 			}
 			
 			//throw weapon
-			/*
-				if(this.app.keydown[this.app.KEYBOARD.SPACE]) //throw
-				{
-					this.player.throwWeapon();
-				}
-			*/
+			if(this.app.keydown[this.app.KEYBOARD.KEY_SPACE]) //throw
+			{
+				console.log("Space pressed");
+				this.player.throwWeapon();
+			}
 		}
 	},//input
 	

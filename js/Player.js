@@ -22,7 +22,6 @@ var app = app || {};
 // This is the "IIFE"/Class for the Player
 app.Player = function()
 {
-
 	//Player constructor
 	function Player(image, x, y, size) 
 	{
@@ -30,10 +29,12 @@ app.Player = function()
 		this.position = new app.Vector(x, y);
 		this.size = size;
 		this.speed = 320;
+		this.activeWeapons =[];
 		
 		//set the image and default "backup" color
 		this.image = image;
 		this.currentWeaponIndex = 0;
+		this.weaponType = "spear";
 		this.color = "yellow";
 		
 	};//constructor
@@ -62,12 +63,20 @@ app.Player = function()
 		}//if image
 		
 		ctx.restore();
+		
+		for(var i = 0; i < this.activeWeapons.length; i++)
+		{
+			this.activeWeapons[i].draw(ctx);
+		}
 	};//draw
 	
 	//Player update function, takes delta time(time since last frame) as a param
 	p.update = function(dt) 
 	{
-
+		for(var i = 0; i < this.activeWeapons.length; i++)
+			{
+				this.activeWeapons[i].update(dt);
+			}
 	};//update
 	
 	//input methods
@@ -116,25 +125,29 @@ app.Player = function()
 		{
 			case 0:
 				this.color = "yellow";
+				this.weaponType = "spear";
 				break;
 			case 1:
 				this.color = "green";
+				this.weaponType = "mace";
 				break;
 			case 2:
 				this.color = "blue";
+				this.weaponType = "axe";
 				break;
 			case 3:
 				this.color = "red";
+				this.weaponType = "sword";
 				break;
 		}
 	}
 	
-	/*
-		p.throwWeapon()
-		{
-		
-		}
-	*/
+	//create a new weapon to the active weapons array
+	p.throwWeapon = function()
+	{
+		console.log("Weapon thrown");
+		this.activeWeapons.push(new this.app.Weapon(this.position.x, this.position.y, this.weaponType, {x: 50, y: 50}));
+	}
 	
 	// private
 	function inBounds(obj) {

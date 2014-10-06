@@ -24,18 +24,32 @@ app.Weapon = function()
 {
 
 	//Weapon constructor
-	function Weapon(image,x,y,weaponType) 
+	function Weapon(x,y,weaponType, size) 
 	{
 		// Instance variables of Weapon
-		this.vector = new app.Vector(x, y);
-		this.width = 10;
-		this.height = 30;
+		this.position = new app.Vector(x, y);
+		this.size = new app.Vector(size.x, size.y);
 		this.speed = 240;
 		this.weaponType = weaponType;
 		
 		//set the image and default "backup" color
-		this.image = image;
-		this.color = "green";
+		switch(weaponType)
+		{
+			case "sword":
+				this.color = "red";
+				break;
+			case "axe":
+				this.color = "blue";
+				break;
+			case "mace":
+				this.color = "green";
+				break;
+			case "spear":
+				this.color = "yellow";
+				break;
+		}
+		
+		//this.image = image;
 		
 	};//constructor
 		
@@ -45,19 +59,21 @@ app.Weapon = function()
 	//Weapon Draw Method
 	p.draw = function(ctx) 
 	{
+	console.log("Drawn weapon");
 		ctx.save();
 		
 		//drawing origin is top left corner
 		//use this to center image on (x,y)
-		var halfW = this.width/2;
-		var halfH = this.height/2;
+		var halfW = this.size.x/2;
+		var halfH = this.size.y/2;
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){			
-			app.DrawLib.drawRect(ctx,this.color,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
-			
-		} else{
-			app.DrawLib.drawImage(this.img,this.vector.x - halfW,this.vector.y - halfH,this.width,this.height,0);
+			app.DrawLib.drawRect(ctx,this.color,this.position.x - halfW,this.position.y - halfH,this.width,this.height,0);
+			app.DrawLib.debugRect(ctx, this);
+		} 
+		else{
+			app.DrawLib.drawImage(this.img,this.position.x - halfW,this.position.y - halfH,this.width,this.height,0);
 		}//if image
 		
 		ctx.restore();
@@ -66,10 +82,7 @@ app.Weapon = function()
 	//Weapon update function, takes delta time(time since last frame) as a param
 	p.update = function(dt) 
 	{
-		if(this.side == "left")
-		{
-			this.vector.x += this.speed * dt;
-		}
+		this.position.y -= this.speed * dt;
 		
 		if(this.Weapon);
 		

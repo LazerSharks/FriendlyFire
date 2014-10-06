@@ -42,6 +42,12 @@ app.mouse =
 app.IMAGES = 
 {
 	teamLogo: "images/logo.png"
+	/*
+		sword: "images/sword.png"
+		axe: "images/axe.png"
+		spear: "images/spear.png"
+		mace: "images/mace.png"
+	*/
 };
 
 //array of booleans representing pressed keys
