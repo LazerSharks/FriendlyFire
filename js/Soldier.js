@@ -97,6 +97,7 @@ app.Soldier = function()
 			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}//if image
 		console.log("i'm here");
+		console.log("i am here");
 		ctx.restore();
 	};//draw
 	
