@@ -96,7 +96,7 @@ app.Soldier = function()
 		} else{
 			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}//if image
-		
+		console.log("here");
 		ctx.restore();
 	};//draw
 	
@@ -111,7 +111,7 @@ app.Soldier = function()
 	//Soldier update function, takes delta time(time since last frame) as a param
 	p.update = function(dt,ctx) 
 	{
-	
+		
 		if(!this.dead)
 		{
 			if(this.side == "left")
