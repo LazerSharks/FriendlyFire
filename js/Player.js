@@ -50,7 +50,7 @@ app.Player = function()
 	}	
 	
 	//Player Draw Method
-	p.draw = function(ctx) 
+	p.draw = function(dt,ctx) 
 	{
 		ctx.save();
 		
@@ -73,10 +73,12 @@ app.Player = function()
 		{
 			this.activeWeapons[i].draw(ctx);
 		}
+		
+		this.update(dt);
 	};//draw
 	
 	//Player update function, takes delta time(time since last frame) as a param
-	p.update = function(dt,ctx) 
+	p.update = function(dt) 
 	{
 		for(var i = 0; i < this.activeWeapons.length; i++)
 		{
@@ -85,7 +87,6 @@ app.Player = function()
 		
 		this.activeWeapons = this.activeWeapons.filter(function(weapon){return weapon.thrown;});
 		
-		this.draw(ctx);
 	};//update
 	
 	//input methods

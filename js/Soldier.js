@@ -79,7 +79,7 @@ app.Soldier = function()
 	//p.getPosition = 
 	
 	//Soldier Draw Method
-	p.draw = function(ctx) 
+	p.draw = function(dt,ctx) 
 	{
 		//console.log("Soldier Draw");
 		ctx.save();
@@ -96,7 +96,7 @@ app.Soldier = function()
 		} else{
 			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}//if image
-		console.log("i am here");
+		this.update(dt);
 		ctx.restore();
 	};//draw
 	
@@ -109,7 +109,7 @@ app.Soldier = function()
 	}
 	
 	//Soldier update function, takes delta time(time since last frame) as a param
-	p.update = function(dt,ctx) 
+	p.update = function(dt) 
 	{
 	
 		if(!this.dead)
@@ -129,7 +129,6 @@ app.Soldier = function()
 				console.log(this.weapon);
 			}
 			
-			this.draw(ctx);
 		}
 		
 	};//update

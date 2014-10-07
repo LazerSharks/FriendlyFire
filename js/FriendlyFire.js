@@ -144,12 +144,6 @@ app.FriendlyFire =
 			this.handleKeyboard();
 		
 			// Update all the items in the game
-			this.player.update(this.dt,this.ctx);
-			
-			for(var i = 0; i < this.friendlySoldiers.length; i++)
-			{
-				this.friendlySoldiers[i].update(this.dt,this.ctx);
-			}
 			
 			if(Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY && this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
 			{
@@ -256,7 +250,7 @@ app.FriendlyFire =
 			
 			for(var i = 0; i < this.deadSoldiers.length; i++)
 			{
-				this.deadSoldiers[i].draw(this.ctx);
+				this.deadSoldiers[i].draw(this.dt,this.ctx);
 			}
 			
 			// Draw all of the sprites
@@ -271,6 +265,13 @@ app.FriendlyFire =
 				this.totalTime = 0;
 				this.fps = 1/this.dt;					
 
+			}
+			
+			this.player.draw(this.dt,this.ctx);
+				
+			for(var i = 0; i < this.friendlySoldiers.length; i++)
+			{
+				this.friendlySoldiers[i].draw(this.dt,this.ctx);
 			}
 		}//game state if
 
