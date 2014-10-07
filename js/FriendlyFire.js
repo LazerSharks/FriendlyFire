@@ -36,6 +36,7 @@ app.FriendlyFire =
 	dt:1/60.0,
 	thisFrame:0,
 	lastFrame:0,
+	fps:0,
 	gameState : undefined,
 	currentState : undefined,
 	player: undefined,
@@ -43,6 +44,7 @@ app.FriendlyFire =
 	timePassed:0,
 	friendlySoldiers:[],
 	soldierTimer:0,
+	totalTime: 0,
 	lanes: undefined,
 	weaponSwitched: false,
 	weaponThrown: false,
@@ -97,6 +99,8 @@ app.FriendlyFire =
 		this.thisFrame = Date.now();
 		this.dt = (this.thisFrame - this.lastFrame)/1000;
 		this.lastFrame = Date.now();
+		
+		this.totalTime += this.dt;
 	
 		//Update according to the game state
 		if(this.currentState == this.gameState.intro)//this updates the intro scene
@@ -175,14 +179,43 @@ app.FriendlyFire =
 				this.soldierTimer = 0;
 			}
 			
+			this.friendlySoldiers = this.friendlySoldiers.filter(function(soldier){return soldier.active;});
+			
 			// Draw Call
 			this.draw();
 		}//game state if
+		
+		this.checkCollisions();
 		
 		// Loop this function every frame
 		requestAnimationFrame(this.update.bind(this));
 	
 	},//update game
+	
+	checkCollisions : function()
+	{
+		var thrownWeapons = this.player.getActiveWeapons();
+		
+		for(var i = 0; i < this.friendlySoldiers.length; i++)
+		{
+			var soldier = this.friendlySoldiers[i];
+			for(var j = 0; j < thrownWeapons.length; j++)
+			{
+				if(soldier.colliding(thrownWeapons[j]))
+				{
+					
+					if(soldier.getWeaponType() == thrownWeapons[j].getWeaponType())
+					{
+						soldier.setWeapon(thrownWeapons[j]);
+						thrownWeapons[j].wasCaught();
+					}else{
+						soldier.die();
+					}
+				}
+			}
+		}
+		
+	},
 	
 	//-----------------------------Draw Loop-------------------------------------------
 	
@@ -224,6 +257,18 @@ app.FriendlyFire =
 				this.friendlySoldiers[i].draw(this.ctx);
 			}
 			this.player.draw(this.ctx)
+				
+			this.ctx.save()    
+			this.ctx.font = "70px Verdana";
+			this.ctx.fillStyle = "red";
+			this.ctx.fillText(this.fps.toFixed(2) + "fps", 100, 100);
+			this.ctx.restore();
+			if(this.totalTime > 1)
+			{
+				this.totalTime = 0;
+				this.fps = 1/this.dt;					
+
+			}
 		}//game state if
 
 	},//draw game

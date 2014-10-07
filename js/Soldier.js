@@ -33,6 +33,8 @@ app.Soldier = function()
 		this.side = side;
 		this.weaponType = weaponType;
 		this.weapon = undefined;
+		this.active = true;
+		this.dead = false;
 		
 		//set the image and default "backup" color
 		this.image = image;
@@ -62,8 +64,16 @@ app.Soldier = function()
 	p.setWeapon = function(weapon)
 	{
 		this.weapon = weapon;
-		this.color = "red";
-	}
+		this.color = "purple";
+	};
+	
+	p.die = function()
+	{
+		this.dead = true;
+		this.color = "black";
+	};
+	
+	p.getWeaponType = function(){return this.weaponType;};
 	
 	//p.getPosition = 
 	
@@ -89,15 +99,35 @@ app.Soldier = function()
 		ctx.restore();
 	};//draw
 	
+	p.colliding = function(gameObject)
+	{
+		return(gameObject.position.x < this.position.x + this.size.x &&
+			gameObject.position.x + gameObject.size.x > this.position.x &&
+			gameObject.position.y < this.position.y + this.size.y &&
+			gameObject.position.y + gameObject.size.y > this.position.y)
+	}
+	
 	//Soldier update function, takes delta time(time since last frame) as a param
 	p.update = function(dt) 
 	{
-		if(this.side == "left")
+	
+		if(!this.dead)
 		{
-			this.position.x += this.speed * dt;
+			if(this.side == "left")
+			{
+				this.position.x += this.speed * dt;
+			}
+			
+			if(this.position.x > 1600 || this.position.x < 0)
+			{
+				this.active = false;
+			}
+			
+			if(this.weapon)
+			{
+				console.log(this.weapon);
+			}
 		}
-		
-		if(this.Weapon);
 		
 	};//update
 	  

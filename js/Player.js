@@ -44,6 +44,11 @@ app.Player = function()
 	
 	// ** p.app is set in loader.js **
 	
+	p.getActiveWeapons = function()
+	{
+		return this.activeWeapons;
+	}	
+	
 	//Player Draw Method
 	p.draw = function(ctx) 
 	{
@@ -74,9 +79,11 @@ app.Player = function()
 	p.update = function(dt) 
 	{
 		for(var i = 0; i < this.activeWeapons.length; i++)
-			{
-				this.activeWeapons[i].update(dt);
-			}
+		{
+			this.activeWeapons[i].update(dt);
+		}
+		
+		this.activeWeapons = this.activeWeapons.filter(function(weapon){return weapon.thrown;});
 	};//update
 	
 	//input methods

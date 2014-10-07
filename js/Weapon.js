@@ -29,8 +29,11 @@ app.Weapon = function()
 		// Instance variables of Weapon
 		this.position = new app.Vector(x, y);
 		this.size = new app.Vector(size.x, size.y);
+		this.soldier = undefined;
 		this.speed = 480;
 		this.weaponType = weaponType;
+		this.thrown = true;
+		this.held = false;
 		
 		//set the image and default "backup" color
 		switch(weaponType)
@@ -55,6 +58,14 @@ app.Weapon = function()
 		
 	// Prototype for making functions/methods available outside of the class
 	var p = Weapon.prototype;
+	
+	p.getWeaponType = function(){return this.weaponType;};
+	
+	p.wasCaught = function()
+	{
+		this.thrown = false; 
+		this.held = true;
+	}
 	
 	//Weapon Draw Method
 	p.draw = function(ctx) 
@@ -81,17 +92,14 @@ app.Weapon = function()
 	//Weapon update function, takes delta time(time since last frame) as a param
 	p.update = function(dt) 
 	{
-		this.position.y -= this.speed * dt;
+		if(this.thrown)
+			this.position.y -= this.speed * dt;
 		
-		if(this.Weapon);
+		if(this.position.y < 0 && this.thrown)
+			this.thrown = false;
+			
 		
 	};//update
-	  
-	  
-	// private
-	function inBounds(obj) {
-		return obj.y <= obj.canvasHeight + obj.height * 0.5;
-	};//in bounds
 	
 	return Weapon;
 	
