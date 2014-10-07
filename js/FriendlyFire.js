@@ -43,6 +43,7 @@ app.FriendlyFire =
 	userInterface: undefined,
 	timePassed:0,
 	friendlySoldiers:[],
+	deadSoldiers:[],
 	soldierTimer:0,
 	totalTime: 0,
 	lanes: undefined,
@@ -143,11 +144,11 @@ app.FriendlyFire =
 			this.handleKeyboard();
 		
 			// Update all the items in the game
-			this.player.update(this.dt);
+			this.player.update(this.dt,this.ctx);
 			
 			for(var i = 0; i < this.friendlySoldiers.length; i++)
 			{
-				this.friendlySoldiers[i].update(this.dt);
+				this.friendlySoldiers[i].update(this.dt,this.ctx);
 			}
 			
 			if(Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY && this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
@@ -209,11 +210,13 @@ app.FriendlyFire =
 						soldier.setWeapon(thrownWeapons[j]);
 						thrownWeapons[j].wasCaught();
 					}else{
+						this.deadSoldiers.push(soldier);
 						soldier.die();
-					}
-				}
-			}
-		}
+						
+					}//if right weapon
+				}//if colliding with weapon
+			}//weapon loop
+		}//soldier loop
 		
 	},
 	
@@ -251,12 +254,12 @@ app.FriendlyFire =
 				this.ctx.restore();
 			}
 			
-			// Draw all of the sprites
-			for(var i = 0; i < this.friendlySoldiers.length; i++)
+			for(var i = 0; i < this.deadSoldiers.length; i++)
 			{
-				this.friendlySoldiers[i].draw(this.ctx);
+				this.deadSoldiers[i].draw(this.ctx);
 			}
-			this.player.draw(this.ctx)
+			
+			// Draw all of the sprites
 				
 			this.ctx.save()    
 			this.ctx.font = "70px Verdana";

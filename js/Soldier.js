@@ -70,6 +70,7 @@ app.Soldier = function()
 	p.die = function()
 	{
 		this.dead = true;
+		this.active = false;
 		this.color = "black";
 	};
 	
@@ -108,7 +109,7 @@ app.Soldier = function()
 	}
 	
 	//Soldier update function, takes delta time(time since last frame) as a param
-	p.update = function(dt) 
+	p.update = function(dt,ctx) 
 	{
 	
 		if(!this.dead)
@@ -127,6 +128,8 @@ app.Soldier = function()
 			{
 				console.log(this.weapon);
 			}
+			
+			this.draw(ctx);
 		}
 		
 	};//update

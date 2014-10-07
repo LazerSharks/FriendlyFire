@@ -76,7 +76,7 @@ app.Player = function()
 	};//draw
 	
 	//Player update function, takes delta time(time since last frame) as a param
-	p.update = function(dt) 
+	p.update = function(dt,ctx) 
 	{
 		for(var i = 0; i < this.activeWeapons.length; i++)
 		{
@@ -84,6 +84,8 @@ app.Player = function()
 		}
 		
 		this.activeWeapons = this.activeWeapons.filter(function(weapon){return weapon.thrown;});
+		
+		this.draw(ctx);
 	};//update
 	
 	//input methods
@@ -98,6 +100,8 @@ app.Player = function()
 		{
 			this.position.x += this.speed * dt;
 		}
+		
+		this.position.x = clamp(this.position.x,10 + this.size.x ,800 - this.size.x);
 	}
 	
 	//switch weapons - takes a string representing the key input
