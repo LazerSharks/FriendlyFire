@@ -25,6 +25,7 @@ app.FriendlyFire =
 	WIDTH : 1600,
 	HEIGHT : 900,
 	FRIENDLY_SOLDIER_PROBABILITY:0.5,
+	FRIENDLY_SOLDIER_FREQUENCY: 1.5,
 	SOLDIER_WIDTH: 60, //Change to affect how wide the player and the soldiers are
 	SOLDIER_HEIGHT: 80, //Change to affect how tall the player and the soldiers are
 	
@@ -33,12 +34,15 @@ app.FriendlyFire =
     ctx: undefined,
 	app: undefined,
 	dt:1/60.0,
+	thisFrame:0,
+	lastFrame:0,
 	gameState : undefined,
 	currentState : undefined,
 	player: undefined,
 	userInterface: undefined,
 	timePassed:0,
 	friendlySoldiers:[],
+	soldierTimer:0,
 	lanes: undefined,
 	weaponSwitched: false,
 	weaponThrown: false,
@@ -78,6 +82,8 @@ app.FriendlyFire =
 		//initialize our interface
 		this.userInterface.init(app.IMAGES,this.WIDTH,this.HEIGHT);
 		
+		this.thisFrame = this.lastFrame = Date.now();
+		
 		//begin the game loop
 		this.update();
 		
@@ -88,6 +94,10 @@ app.FriendlyFire =
 	//This is the main game loop
 	update : function()
 	{
+		this.thisFrame = Date.now();
+		this.dt = (this.thisFrame - this.lastFrame)/1000;
+		this.lastFrame = Date.now();
+	
 		//Update according to the game state
 		if(this.currentState == this.gameState.intro)//this updates the intro scene
 		{
@@ -123,6 +133,8 @@ app.FriendlyFire =
 		}
 		else if(this.currentState == this.gameState.play)//this updates the gameplay
 		{
+			this.soldierTimer += this.dt;
+		
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 		
@@ -134,8 +146,9 @@ app.FriendlyFire =
 				this.friendlySoldiers[i].update(this.dt);
 			}
 			
-			if(Math.random() < (this.FRIENDLY_SOLDIER_PROBABILITY/60))
+			if(Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY && this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
 			{
+				this.soldierTimer = 0;
 				var lane = Math.floor((Math.random() * 3) + 1);
 				var x = this.lanes[lane].x;
 				var y = this.lanes[lane].y;
@@ -156,6 +169,10 @@ app.FriendlyFire =
 						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","sword"));
 						break;
 				}
+			}
+			else if(this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
+			{
+				this.soldierTimer = 0;
 			}
 			
 			// Draw Call
