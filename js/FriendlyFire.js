@@ -26,6 +26,8 @@ app.FriendlyFire =
 	HEIGHT : 900,
 	FRIENDLY_SOLDIER_PROBABILITY:0.5,
 	FRIENDLY_SOLDIER_FREQUENCY: 1.5,
+	ENEMY_SOLDIER_PROBABILITY: 0.5,
+	ENEMY_SOLDIER_FREQUENCY: 1.5,
 	SOLDIER_WIDTH: 60, //Change to affect how wide the player and the soldiers are
 	SOLDIER_HEIGHT: 80, //Change to affect how tall the player and the soldiers are
 	
@@ -43,13 +45,18 @@ app.FriendlyFire =
 	userInterface: undefined,
 	timePassed:0,
 	friendlySoldiers:[],
+	enemySoldiers:[],
 	deadSoldiers:[],
 	soldierTimer:0,
+	enemyTimer:0,
 	totalTime: 0,
 	lanes: undefined,
 	weaponSwitched: false,
 	weaponThrown: false,
-	
+	swordUpgrade: 0,
+	spearUpgrade: 0,
+	maceUpgrade: 0,
+	axeUpgrade: 0,
 	
 	//This initializes all of the data needed for the game
 	//called by loader.js
@@ -97,6 +104,9 @@ app.FriendlyFire =
 	//This is the main game loop
 	update : function()
 	{
+		// Loop this function every frame
+		requestAnimationFrame(this.update.bind(this));
+	
 		this.thisFrame = Date.now();
 		this.dt = (this.thisFrame - this.lastFrame)/1000;
 		this.lastFrame = Date.now();
@@ -139,11 +149,41 @@ app.FriendlyFire =
 		else if(this.currentState == this.gameState.play)//this updates the gameplay
 		{
 			this.soldierTimer += this.dt;
+			this.enemyTimer += this.dt;
 		
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 		
 			// Update all the items in the game
+			
+			if(Math.random() < this.ENEMY_SOLDIER_PROBABILITY && this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY)
+			{
+				this.enemyTimer = 0;
+				var lane = Math.floor((Math.random() * 3) + 1);
+				var x = this.lanes[lane].x + this.WIDTH;
+				var y = this.lanes[lane].y;
+				
+				var weaponIndex = Math.floor((Math.random() * 4) + 1);
+				switch(weaponIndex)
+				{
+					case 1:
+						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","spear"));
+						break;
+					case 2:
+						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","mace"));
+						break;
+					case 3:
+						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","axe"));
+						break;
+					case 4:
+						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","sword"));
+						break;
+				}
+			}
+			else if(this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY)
+			{
+				this.enemyTimer = 0;
+			}
 			
 			if(Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY && this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
 			{
@@ -174,16 +214,16 @@ app.FriendlyFire =
 				this.soldierTimer = 0;
 			}
 			
+			
+			this.checkCollisions();
+			this.deadSoldiers = this.deadSoldiers.concat(this.friendlySoldiers.filter(function(soldier){return soldier.dead;})); 
+			this.deadSoldiers = this.deadSoldiers.concat(this.enemySoldiers.filter(function(soldier){return soldier.dead;}));
 			this.friendlySoldiers = this.friendlySoldiers.filter(function(soldier){return soldier.active;});
+			this.enemySoldiers = this.enemySoldiers.filter(function(soldier){return soldier.active;});
 			
 			// Draw Call
 			this.draw();
 		}//game state if
-		
-		this.checkCollisions();
-		
-		// Loop this function every frame
-		requestAnimationFrame(this.update.bind(this));
 	
 	},//update game
 	
@@ -191,6 +231,8 @@ app.FriendlyFire =
 	{
 		var thrownWeapons = this.player.getActiveWeapons();
 		
+		
+		//----------Soldiers colliding with weapons------------
 		for(var i = 0; i < this.friendlySoldiers.length; i++)
 		{
 			var soldier = this.friendlySoldiers[i];
@@ -204,10 +246,33 @@ app.FriendlyFire =
 						soldier.setWeapon(thrownWeapons[j]);
 						thrownWeapons[j].wasCaught();
 					}else{
-						this.deadSoldiers.push(soldier);
 						soldier.die();
-						
 					}//if right weapon
+				}//if colliding with weapon
+			}//weapon loop
+		}//soldier loop
+		
+		//----------Soldiers colliding with Soldiers------------
+		var enemies = this.enemySoldiers;
+		for(var i = 0; i < this.friendlySoldiers.length; i++)
+		{
+			var friend = this.friendlySoldiers[i];
+			for(var j = 0; j < enemies.length; j++)
+			{
+				var enemy = enemies[j];
+				if(friend.colliding(enemy))
+				{
+					enemy.setFighting(true);
+					friend.setFighting(true);
+					
+					enemy.takeDamage(friend.attack());
+					friend.takeDamage(enemy.attack());
+					
+					if(enemy.isDead() || friend.isDead())
+					{
+						enemy.setFighting(false);
+						friend.setFighting(false);
+					}
 				}//if colliding with weapon
 			}//weapon loop
 		}//soldier loop
@@ -272,6 +337,11 @@ app.FriendlyFire =
 			for(var i = 0; i < this.friendlySoldiers.length; i++)
 			{
 				this.friendlySoldiers[i].draw(this.dt,this.ctx);
+			}
+			
+			for(var i = 0; i < this.enemySoldiers.length; i++)
+			{
+				this.enemySoldiers[i].draw(this.dt,this.ctx);
 			}
 		}//game state if
 

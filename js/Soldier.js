@@ -33,8 +33,11 @@ app.Soldier = function()
 		this.side = side;
 		this.weaponType = weaponType;
 		this.weapon = undefined;
+		this.fighting = false;
 		this.active = true;
 		this.dead = false;
+		this.health = 100;
+		this.strength = 5;
 		
 		//set the image and default "backup" color
 		this.image = image;
@@ -74,9 +77,36 @@ app.Soldier = function()
 		this.color = "black";
 	};
 	
+	p.isDead = function(){return this.dead;};
+	
+	p.setFighting = function(fight)
+	{
+		this.fighting = fight;
+	};
+	
+	p.getSide = function(){return this.side};
+	
 	p.getWeaponType = function(){return this.weaponType;};
 	
 	//p.getPosition = 
+	
+	p.attack = function()
+	{
+		if(this.weapon)
+		{
+			console.log(this.strength + this.weapon.getStrength());
+			return this.strength + this.weapon.getStrength();
+		}else{
+			return this.strength;
+		}
+	};
+	
+	p.takeDamage = function(damage)
+	{
+		this.health -= damage;
+		if(this.health <= 0)
+			this.die();
+	};
 	
 	//Soldier Draw Method
 	p.draw = function(dt,ctx) 
@@ -112,11 +142,16 @@ app.Soldier = function()
 	p.update = function(dt) 
 	{
 	
-		if(!this.dead)
+		if(!this.dead && !this.fighting)
 		{
 			if(this.side == "left")
 			{
 				this.position.x += this.speed * dt;
+			}
+			
+			if(this.side == "right")
+			{
+				this.position.x -= this.speed * dt;
 			}
 			
 			if(this.position.x > 1600 || this.position.x < 0)
@@ -126,7 +161,7 @@ app.Soldier = function()
 			
 			if(this.weapon)
 			{
-				console.log(this.weapon);
+				//console.log(this.weapon);
 			}
 			
 		}
