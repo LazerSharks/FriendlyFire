@@ -31,7 +31,8 @@ app.KEYBOARD =
 	"KEY_W": 87,
 	"KEY_A": 65,
 	"KEY_S": 83,
-	"KEY_D": 68
+	"KEY_D": 68,
+	"KEY_P": 80
 };
 
 //mouse object with coords and click state
@@ -68,6 +69,8 @@ window.onload = function()
 	//when a key is released set its place in the array to false
 	window.addEventListener("keyup", function(e){
 		app.keydown[e.keyCode] = false;
+		if(e.keyCode == app.KEYBOARD["KEY_P"])
+			app.FriendlyFire.pausedPressed = true;
 	});
 	
 	// hook the interface up to the controller

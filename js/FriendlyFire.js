@@ -53,6 +53,7 @@ app.FriendlyFire =
 	lanes: undefined,
 	weaponSwitched: false,
 	weaponThrown: false,
+	pausedPressed: false,
 	swordUpgrade: 0,
 	spearUpgrade: 0,
 	maceUpgrade: 0,
@@ -116,8 +117,6 @@ app.FriendlyFire =
 		//Update according to the game state
 		if(this.currentState == this.gameState.intro)//this updates the intro scene
 		{
-			//draw intro
-			this.draw();
 			
 			//keep track of how long intro has been playing
 			this.timePassed += this.dt;
@@ -143,8 +142,6 @@ app.FriendlyFire =
 				this.currentState = this.gameState.play;
 			}
 				
-			// Draw Call
-			this.draw();
 		}
 		else if(this.currentState == this.gameState.play)//this updates the gameplay
 		{
@@ -221,10 +218,17 @@ app.FriendlyFire =
 			this.friendlySoldiers = this.friendlySoldiers.filter(function(soldier){return soldier.active;});
 			this.enemySoldiers = this.enemySoldiers.filter(function(soldier){return soldier.active;});
 			
-			// Draw Call
-			this.draw();
+			if(this.deadSoldiers.length > 20)
+			{
+				this.deadSoldiers.splice(0,1);
+			}
+			
+		}
+		else if(this.currentState = this.gameState.paused)
+		{
+			this.handleKeyboard();
 		}//game state if
-	
+		this.draw();
 	},//update game
 	
 	checkCollisions : function()
@@ -355,6 +359,11 @@ app.FriendlyFire =
 			this.ctx.stroke();
 			this.ctx.restore();
 			
+			this.userInterface.drawGame(this.ctx,mouse);
+		}
+		else if(this.currentState = this.gameState.paused)
+		{
+			this.userInterface.drawPaused(this.ctx,mouse);
 		}//game state if
 
 	},//draw game
@@ -375,13 +384,14 @@ app.FriendlyFire =
 				this.currentState = this.gameState.play;
 			}//if left
 		}
-		if(this.currentState == this.gameState.play)//handle gameplay input
+		else if(this.currentState == this.gameState.play)//handle gameplay input
 		{
 			//move the player
 			if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT] || this.app.keydown[this.app.KEYBOARD.KEY_A])//left move
 			{
 				this.player.move("left", this.dt);
 			}
+			
 			if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT] || this.app.keydown[this.app.KEYBOARD.KEY_D])//right move
 			{
 				this.player.move("right", this.dt);
@@ -393,11 +403,13 @@ app.FriendlyFire =
 				this.player.switchWeapons("down");
 				this.weaponSwitched = true;
 			}
+			
 			if((this.app.keydown[this.app.KEYBOARD.KEY_UP] || this.app.keydown[this.app.KEYBOARD.KEY_W]) && !this.weaponSwitched) //up switch
 			{
 				this.player.switchWeapons("up");
 				this.weaponSwitched = true;
 			}
+			
 			if(!this.app.keydown[this.app.KEYBOARD.KEY_DOWN] && !this.app.keydown[this.app.KEYBOARD.KEY_UP] && !this.app.keydown[this.app.KEYBOARD.KEY_S] && !this.app.keydown[this.app.KEYBOARD.KEY_W] && this.weaponSwitched) // reset weaponSwitched value
 			{
 				this.weaponSwitched = false;
@@ -412,6 +424,20 @@ app.FriendlyFire =
 			else if(!this.app.keydown[this.app.KEYBOARD.KEY_SPACE] && this.weaponThrown) //reset the boolean
 			{
 				this.weaponThrown = false;
+			}
+			
+			if(this.pausedPressed)
+			{
+				this.currentState = this.gameState.paused;
+				this.pausedPressed = false;
+			}
+		}
+		else if(this.currentState == this.gameState.paused)
+		{
+			if(this.pausedPressed)
+			{
+				this.currentState = this.gameState.play;
+				this.pausedPressed = false;
 			}
 		}
 	},//input

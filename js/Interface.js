@@ -84,6 +84,16 @@ app.Interface =
 		ctx.restore();
 	},//draw main menu
 	
+	drawGame : function(ctx,mouse)
+	{
+		console.log("drawGame");
+	},
+	
+	drawPaused: function(ctx,mouse)
+	{
+		console.log("paused");
+	},
+	
 	//Test to see if a certain button is clicked or not
 	buttonClicked : function(buttonTitle)
 	{
