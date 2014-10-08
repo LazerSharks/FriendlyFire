@@ -36,6 +36,11 @@ app.Player = function()
 		this.currentWeaponIndex = 0;
 		this.weaponType = "spear";
 		this.color = "yellow";
+		this.currentWeaponUpgrade = 0;
+		this.swordUpgrade = 0;
+		this.spearUpgrade = 0;
+		this.maceUpgrade = 0;
+		this.axeUpgrade = 0;
 		
 	};//constructor
 		
@@ -47,10 +52,30 @@ app.Player = function()
 	p.getActiveWeapons = function()
 	{
 		return this.activeWeapons;
-	}	
+	};	
+	
+	p.setAxeUpgrade = function(upgrade)
+	{
+		this.axeUpgrade = upgrade;
+	};
+	
+	p.setSwordUpgrade = function(upgrade)
+	{
+		this.swordUpgrade = upgrade;
+	};
+	
+	p.setSpearUpgrade = function(upgrade)
+	{
+		this.spearUpgrade = upgrade;
+	};
+	
+	p.setMaceUpgrade = function(upgrade)
+	{
+		this.maceUpgrade = upgrade;
+	};
 	
 	//Player Draw Method
-	p.draw = function(ctx) 
+	p.draw = function(dt,ctx) 
 	{
 		ctx.save();
 		
@@ -73,10 +98,12 @@ app.Player = function()
 		{
 			this.activeWeapons[i].draw(ctx);
 		}
+		
+		this.update(dt);
 	};//draw
 	
 	//Player update function, takes delta time(time since last frame) as a param
-	p.update = function(dt,ctx) 
+	p.update = function(dt) 
 	{
 		for(var i = 0; i < this.activeWeapons.length; i++)
 		{
@@ -85,7 +112,6 @@ app.Player = function()
 		
 		this.activeWeapons = this.activeWeapons.filter(function(weapon){return weapon.thrown;});
 		
-		this.draw(ctx);
 	};//update
 	
 	//input methods
@@ -101,7 +127,8 @@ app.Player = function()
 			this.position.x += this.speed * dt;
 		}
 		
-		this.position.x = clamp(this.position.x,10 + this.size.x ,800 - this.size.x);
+		//this.position.x = clamp(this.position.x, 10 + this.size.x ,800 - this.size.x);
+		this.position.x = clamp(this.position.x, this.size.x /2 ,800 - this.size.x/2);
 	}
 	
 	//switch weapons - takes a string representing the key input
@@ -134,27 +161,31 @@ app.Player = function()
 			case 0:
 				this.color = "yellow";
 				this.weaponType = "spear";
+				this.currentWeaponUpgrade = this.spearUpgrade;
 				break;
 			case 1:
 				this.color = "green";
 				this.weaponType = "mace";
+				this.currentWeaponUpgrade = this.maceUpgrade;
 				break;
 			case 2:
 				this.color = "blue";
 				this.weaponType = "axe";
+				this.currentWeaponUpgrade = this.axeUpgrade;
 				break;
 			case 3:
 				this.color = "red";
 				this.weaponType = "sword";
+				this.currentWeaponUpgrade = this.swordUpgrade;
 				break;
 		}
-	}
+	};
 	
 	//create a new weapon to the active weapons array
 	p.throwWeapon = function()
 	{
-		this.activeWeapons.push(new this.app.Weapon(this.position.x, this.position.y, this.weaponType, {x: 50, y: 50}));
-	}
+		this.activeWeapons.push(new this.app.Weapon(this.position.x, this.position.y, this.weaponType, {x: 50, y: 50},this.currentWeaponUpgrade));
+	};
 	
 	// private
 	function inBounds(obj) {

@@ -24,7 +24,7 @@ app.Weapon = function()
 {
 
 	//Weapon constructor
-	function Weapon(x,y,weaponType, size) 
+	function Weapon(x,y,weaponType, size, upgrade) 
 	{
 		// Instance variables of Weapon
 		this.position = new app.Vector(x, y);
@@ -34,6 +34,8 @@ app.Weapon = function()
 		this.weaponType = weaponType;
 		this.thrown = true;
 		this.held = false;
+		this.strength = 10;
+		this.upgrade = upgrade || 0;
 		
 		//set the image and default "backup" color
 		switch(weaponType)
@@ -61,11 +63,13 @@ app.Weapon = function()
 	
 	p.getWeaponType = function(){return this.weaponType;};
 	
+	p.getStrength = function(){return this.strength + this.upgrade;};
+	
 	p.wasCaught = function()
 	{
 		this.thrown = false; 
 		this.held = true;
-	}
+	};
 	
 	//Weapon Draw Method
 	p.draw = function(ctx) 
