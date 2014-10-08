@@ -318,6 +318,12 @@ app.FriendlyFire =
 					//have the soldiers attack each other
 					enemy.takeDamage(friend.attack());
 					friend.takeDamage(enemy.attack());
+					
+					if(friend.isDead() || enemy.isDead())
+					{
+						friend.setFighting(false);
+						enemy.setFighting(false);
+					}
 				}//if colliding with weapon
 			}//weapon loop
 		}//soldier loop
