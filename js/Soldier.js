@@ -73,7 +73,6 @@ app.Soldier = function()
 	p.die = function()
 	{
 		this.dead = true;
-		this.active = false;
 		this.fighting = false;
 		this.color = "black";
 	};
