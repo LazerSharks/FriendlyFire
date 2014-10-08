@@ -127,7 +127,8 @@ app.Player = function()
 			this.position.x += this.speed * dt;
 		}
 		
-		this.position.x = clamp(this.position.x,10 + this.size.x ,800 - this.size.x);
+		//this.position.x = clamp(this.position.x, 10 + this.size.x ,800 - this.size.x);
+		this.position.x = clamp(this.position.x, this.size.x /2 ,800 - this.size.x);
 	}
 	
 	//switch weapons - takes a string representing the key input

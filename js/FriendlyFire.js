@@ -87,7 +87,7 @@ app.FriendlyFire =
 		this.currentState = this.gameState.play;
 		
 		//initialize our player
-		this.player = new app.Player(undefined,this.WIDTH/2, this.HEIGHT-100, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT});
+		this.player = new app.Player(undefined,this.WIDTH/4, this.HEIGHT-100, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT});
 		
 		//initialize our interface
 		this.userInterface.init(app.IMAGES,this.WIDTH,this.HEIGHT);
@@ -304,6 +304,7 @@ app.FriendlyFire =
 		}
 		else if(this.currentState == this.gameState.play)//draw gameplay
 		{
+			
 			for(var i = 1; i < 4; i++)
 			{
 				this.ctx.save();
@@ -343,6 +344,17 @@ app.FriendlyFire =
 			{
 				this.enemySoldiers[i].draw(this.dt,this.ctx);
 			}
+			
+			//draw middle line
+			this.ctx.save();
+			this.ctx.strokeStyle = "black";
+			this.ctx.lineWidth = 3;
+			this.ctx.beginPath();
+			this.ctx.moveTo(800 - (this.SOLDIER_WIDTH - (this.SOLDIER_WIDTH/2)), 0);
+			this.ctx.lineTo(800 - (this.SOLDIER_WIDTH - (this.SOLDIER_WIDTH/2)), this.HEIGHT);
+			this.ctx.stroke();
+			this.ctx.restore();
+			
 		}//game state if
 
 	},//draw game
