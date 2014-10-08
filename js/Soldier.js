@@ -74,7 +74,6 @@ app.Soldier = function()
 	{
 		this.dead = true;
 		this.active = false;
-		this.fighting = false;
 		this.color = "black";
 	};
 	
