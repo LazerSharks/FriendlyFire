@@ -78,6 +78,7 @@ app.FriendlyFire =
 			over:4
 		};
 		
+		//declare the lane positions
 		this.lanes = {
 			1:{x:0,y:200},
 			2:{x:0,y:380},
@@ -108,10 +109,13 @@ app.FriendlyFire =
 		// Loop this function every frame
 		requestAnimationFrame(this.update.bind(this));
 	
+		// Calculate delta time
 		this.thisFrame = Date.now();
 		this.dt = (this.thisFrame - this.lastFrame)/1000;
 		this.lastFrame = Date.now();
 		
+		//use this for FPS display.  Total time is a misleading currently.
+		//To be used later to actually track total time
 		this.totalTime += this.dt;
 	
 		//Update according to the game state
@@ -145,6 +149,7 @@ app.FriendlyFire =
 		}
 		else if(this.currentState == this.gameState.play)//this updates the gameplay
 		{
+			//update time since last soldier was created
 			this.soldierTimer += this.dt;
 			this.enemyTimer += this.dt;
 		
@@ -152,15 +157,23 @@ app.FriendlyFire =
 			this.handleKeyboard();
 		
 			// Update all the items in the game
-			
+			// Some Items call update after their own draw function. Lowers number of loops
+		
+			// Every so often generate an enemy Soldier
 			if(Math.random() < this.ENEMY_SOLDIER_PROBABILITY && this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY)
 			{
+				//reset the timer
 				this.enemyTimer = 0;
+				
+				//pick a random lane and set it
 				var lane = Math.floor((Math.random() * 3) + 1);
 				var x = this.lanes[lane].x + this.WIDTH;
 				var y = this.lanes[lane].y;
 				
+				//pick a random weapon
 				var weaponIndex = Math.floor((Math.random() * 4) + 1);
+				
+				//create the soldier with lane and weapon type
 				switch(weaponIndex)
 				{
 					case 1:
@@ -175,21 +188,30 @@ app.FriendlyFire =
 					case 4:
 						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","sword"));
 						break;
-				}
+				}//switch soldier
 			}
 			else if(this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY)
 			{
+				//reset timer if the time frame for generation has passed
+				//e.g. the soldier didn't generate this time
 				this.enemyTimer = 0;
-			}
+			}//if enemy creation
 			
+			//every so often generate a friendly soldier
 			if(Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY && this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
 			{
+				//reset the timer
 				this.soldierTimer = 0;
+				
+				//pick a lane
 				var lane = Math.floor((Math.random() * 3) + 1);
 				var x = this.lanes[lane].x;
 				var y = this.lanes[lane].y;
 				
+				//pick a weapon
 				var weaponIndex = Math.floor((Math.random() * 4) + 1);
+				
+				//create soldiers with weapon and lane
 				switch(weaponIndex)
 				{
 					case 1:
@@ -204,47 +226,62 @@ app.FriendlyFire =
 					case 4:
 						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","sword"));
 						break;
-				}
+				}//switch soldier
 			}
 			else if(this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
 			{
+				//Soldier didn't generate this time, reset timer
 				this.soldierTimer = 0;
-			}
+			}//if friendly creation
 			
-			
+			//check all the collisions
 			this.checkCollisions();
+			
+			//add any dead soldiers to the end of the dead soldiers array
 			this.deadSoldiers = this.deadSoldiers.concat(this.friendlySoldiers.filter(function(soldier){return soldier.dead;})); 
 			this.deadSoldiers = this.deadSoldiers.concat(this.enemySoldiers.filter(function(soldier){return soldier.dead;}));
+			
+			//filter out any inactive/dead soldiers
 			this.friendlySoldiers = this.friendlySoldiers.filter(function(soldier){return soldier.active;});
 			this.enemySoldiers = this.enemySoldiers.filter(function(soldier){return soldier.active;});
 			
+			//if the dead soldiers array gets too big dequeue/remove the first element
 			if(this.deadSoldiers.length > 20)
 			{
 				this.deadSoldiers.splice(0,1);
-			}
+			}//remove dead soldiers
 			
 		}
-		else if(this.currentState = this.gameState.paused)
+		else if(this.currentState = this.gameState.paused)//this updates the paused state
 		{
+			//handle keyboard events
 			this.handleKeyboard();
 		}//game state if
+		
+		//draw everything
 		this.draw();
 	},//update game
 	
+	//This loops through all the items in the game and check for collisions
 	checkCollisions : function()
 	{
+		//get the array of thrown weapons from the Player object
 		var thrownWeapons = this.player.getActiveWeapons();
-		
 		
 		//----------Soldiers colliding with weapons------------
 		for(var i = 0; i < this.friendlySoldiers.length; i++)
 		{
+			//set the current soldier
 			var soldier = this.friendlySoldiers[i];
+			
+			//loop through thrown weapons
 			for(var j = 0; j < thrownWeapons.length; j++)
 			{
+				//if the soldier and the weapon are colliding 
 				if(soldier.colliding(thrownWeapons[j]))
 				{
-					
+					//if the weapon is the right type catch it
+					//if not kill the soldier
 					if(soldier.getWeaponType() == thrownWeapons[j].getWeaponType())
 					{
 						soldier.setWeapon(thrownWeapons[j]);
@@ -257,31 +294,35 @@ app.FriendlyFire =
 		}//soldier loop
 		
 		//----------Soldiers colliding with Soldiers------------
+		
+		//array of the current enemies
 		var enemies = this.enemySoldiers;
 		for(var i = 0; i < this.friendlySoldiers.length; i++)
 		{
+			//save the current friendly soldier
 			var friend = this.friendlySoldiers[i];
+			
+			//loop through the enemies
 			for(var j = 0; j < enemies.length; j++)
 			{
+				//save the current enemy
 				var enemy = enemies[j];
+				
+				//if the two soldiers are colliding
 				if(friend.colliding(enemy))
 				{
+					//tell the soldiers that they are fighting
 					enemy.setFighting(true);
 					friend.setFighting(true);
 					
+					//have the soldiers attack each other
 					enemy.takeDamage(friend.attack());
 					friend.takeDamage(enemy.attack());
-					
-					if(enemy.isDead() || friend.isDead())
-					{
-						enemy.setFighting(false);
-						friend.setFighting(false);
-					}
 				}//if colliding with weapon
 			}//weapon loop
 		}//soldier loop
 		
-	},
+	},//check collisions
 	
 	//-----------------------------Draw Loop-------------------------------------------
 	
@@ -308,7 +349,7 @@ app.FriendlyFire =
 		}
 		else if(this.currentState == this.gameState.play)//draw gameplay
 		{
-			
+			//draw the lanes
 			for(var i = 1; i < 4; i++)
 			{
 				this.ctx.save();
@@ -318,13 +359,13 @@ app.FriendlyFire =
 				this.ctx.restore();
 			}
 			
+			//draw the dead soldiers
 			for(var i = 0; i < this.deadSoldiers.length; i++)
 			{
 				this.deadSoldiers[i].draw(this.dt,this.ctx);
 			}
-			
-			// Draw all of the sprites
-				
+
+			//draw the fps to the top of the screen every second
 			this.ctx.save()    
 			this.ctx.font = "70px Verdana";
 			this.ctx.fillStyle = "red";
@@ -333,36 +374,40 @@ app.FriendlyFire =
 			if(this.totalTime > 1)
 			{
 				this.totalTime = 0;
-				this.fps = 1/this.dt;					
-
-			}
+				this.fps = 1/this.dt;				
+			}//if total time
 			
+			//draw the player, pass it dt so it can call its own update
 			this.player.draw(this.dt,this.ctx);
 				
+			//draw all the friendly soldiers, pass them dt to call their own updates
 			for(var i = 0; i < this.friendlySoldiers.length; i++)
 			{
 				this.friendlySoldiers[i].draw(this.dt,this.ctx);
-			}
+			}//for friendly
 			
+			//draw all the enemy soldiers, pass them dt to call their own updates
 			for(var i = 0; i < this.enemySoldiers.length; i++)
 			{
 				this.enemySoldiers[i].draw(this.dt,this.ctx);
-			}
+			}//for enemy
 			
 			//draw middle line
 			this.ctx.save();
 			this.ctx.strokeStyle = "black";
 			this.ctx.lineWidth = 3;
 			this.ctx.beginPath();
-			this.ctx.moveTo(800 - (this.SOLDIER_WIDTH - (this.SOLDIER_WIDTH/2)), 0);
-			this.ctx.lineTo(800 - (this.SOLDIER_WIDTH - (this.SOLDIER_WIDTH/2)), this.HEIGHT);
+			this.ctx.moveTo(this.WIDTH/2, 0);
+			this.ctx.lineTo(this.WIDTH/2, this.HEIGHT);
 			this.ctx.stroke();
 			this.ctx.restore();
 			
+			//draw the user interface
 			this.userInterface.drawGame(this.ctx,mouse);
 		}
-		else if(this.currentState = this.gameState.paused)
+		else if(this.currentState = this.gameState.paused)//this draw the paused state
 		{
+			//draw the paused interface
 			this.userInterface.drawPaused(this.ctx,mouse);
 		}//game state if
 
@@ -426,20 +471,22 @@ app.FriendlyFire =
 				this.weaponThrown = false;
 			}
 			
+			//pause the game
 			if(this.pausedPressed)
 			{
 				this.currentState = this.gameState.paused;
 				this.pausedPressed = false;
 			}
 		}
-		else if(this.currentState == this.gameState.paused)
+		else if(this.currentState == this.gameState.paused)//handle paused keystates
 		{
+			//unpause the game
 			if(this.pausedPressed)
 			{
 				this.currentState = this.gameState.play;
 				this.pausedPressed = false;
 			}
-		}
+		}//if state
 	},//input
 	
 	
