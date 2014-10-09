@@ -68,7 +68,7 @@ app.Castle = function () {
 	};
 	
 	//Soldier Draw Method
-	p.draw = function (dt, ctx) {
+	p.draw = function () {
 		
 		//drawing origin is top left corner
 		//use this to center image on (x,y)
@@ -82,10 +82,16 @@ app.Castle = function () {
 		} else {
 			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}
-        
-		this.update(dt);
-        
+		if (this.health > 0) {
+			this.drawHealthBar();
+		}
 	};//draw
+	
+	p.drawHealthBar = function () {
+		var barPos = new app.Vector(this.position.x, this.position.y);
+		app.DrawLib.drawRect("red", barPos, new app.Vector(5, this.size.x * this.health / 1200), 0);
+
+	}
 	
 	p.colliding = function (gameObject) {
 		return (gameObject.position.x < this.position.x + this.size.x &&
