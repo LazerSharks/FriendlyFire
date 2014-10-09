@@ -19,80 +19,60 @@
 //create the global application object if it doesn't exist
 var app = app || {};
 
-app.FriendlyFire = 
-{
-	//Constants
+app.FriendlyFire = {
+	
+    //Constants
 	WIDTH : 1600,
 	HEIGHT : 900,
-	FRIENDLY_SOLDIER_PROBABILITY:0.5,
-	FRIENDLY_SOLDIER_FREQUENCY: 1.5,
-	ENEMY_SOLDIER_PROBABILITY: 0.5,
-	ENEMY_SOLDIER_FREQUENCY: 1.5,
-	SOLDIER_WIDTH: 60, //Change to affect how wide the player and the soldiers are
-	SOLDIER_HEIGHT: 80, //Change to affect how tall the player and the soldiers are
 	
 	//Instance Variables
 	canvas: undefined,
     ctx: undefined,
-	app: undefined,
-	dt:1/60.0,
-	thisFrame:0,
-	lastFrame:0,
-	fps:0,
-	gameState : undefined,
-	currentState : undefined,
-	player: undefined,
+    
+	dt: 0,
+	thisFrame: 0,
+	lastFrame: 0,
+	fps: 0,
+    totalTime: 0,
+    
+	gameState: undefined,
+	currentState: undefined,
 	userInterface: undefined,
-	timePassed:0,
-	friendlySoldiers:[],
-	enemySoldiers:[],
-	deadSoldiers:[],
-	soldierTimer:0,
-	enemyTimer:0,
-	totalTime: 0,
-	lanes: undefined,
-	weaponSwitched: false,
-	weaponThrown: false,
-	pausedPressed: false,
-	swordUpgrade: 0,
-	spearUpgrade: 0,
-	maceUpgrade: 0,
-	axeUpgrade: 0,
+    
+    playField: new app.PlayField(),
+	
 	
 	//This initializes all of the data needed for the game
 	//called by loader.js
-	init : function()
-	{
+	init : function () {
 		//find and set the canvas
 		this.canvas = document.querySelector('canvas');
+		this.ctx = this.canvas.getContext('2d');
+        
 		this.canvas.width = this.WIDTH;
 		this.canvas.height = this.HEIGHT;
-		this.ctx = this.canvas.getContext('2d');
 		
+        
 		//declare the game states
 		this.gameState = {
-			intro:0,
-			mainMenu:1,
-			play:2,
-			paused:3,
-			over:4
+			intro: 0,
+			mainMenu: 1,
+			play: 2,
+			paused: 3,
+			over: 4
 		};
-		
-		this.lanes = {
-			1:{x:0,y:200},
-			2:{x:0,y:380},
-			3:{x:0,y:560}
-		};
-		
 		//set the current game state
 		this.currentState = this.gameState.play;
 		
-		//initialize our player
-		this.player = new app.Player(undefined,this.WIDTH/4, this.HEIGHT-100, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT});
-		
+        
+        
+        
 		//initialize our interface
-		this.userInterface.init(app.IMAGES,this.WIDTH,this.HEIGHT);
+		this.userInterface.init(app.IMAGES, this.WIDTH, this.HEIGHT);
 		
+        
+        
+        
 		this.thisFrame = this.lastFrame = Date.now();
 		
 		//begin the game loop
@@ -103,359 +83,143 @@ app.FriendlyFire =
 	//--------------------------Main Update Loop-------------------------------------
 	
 	//This is the main game loop
-	update : function()
-	{
+	update : function () {
 		// Loop this function every frame
 		requestAnimationFrame(this.update.bind(this));
 	
 		this.thisFrame = Date.now();
-		this.dt = (this.thisFrame - this.lastFrame)/1000;
+		this.dt = (this.thisFrame - this.lastFrame) / 1000;
 		this.lastFrame = Date.now();
 		
 		this.totalTime += this.dt;
 	
 		//Update according to the game state
-		if(this.currentState == this.gameState.intro)//this updates the intro scene
-		{
+		if (this.currentState == this.gameState.intro) {
 			
 			//keep track of how long intro has been playing
 			this.timePassed += this.dt;
 			
 			//change game state after intro
-			if(this.timePassed >= 2)
-			{
+			if (this.timePassed >= 2) {
 				this.currentState = this.gameState.mainMenu;
 				this.timePassed = 0;
 			}
-			
-		}
-		else if(this.currentState == this.gameState.mainMenu)//this updates the main menu
-		{
+            
+		} else if (this.currentState == this.gameState.mainMenu) {
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
-			if(this.userInterface.buttonClicked("menuButton"))
-			{
+			if (this.userInterface.buttonClicked("menuButton")) {
 				this.currentState = this.gameState.play;
 			}
-				
-		}
-		else if(this.currentState == this.gameState.play)//this updates the gameplay
-		{
-			this.soldierTimer += this.dt;
-			this.enemyTimer += this.dt;
+		} else if (this.currentState == this.gameState.play) {
+            this.playField.update(this.dt);
+            
+			//this.soldierTimer += this.dt;
+			//this.enemyTimer += this.dt;
 		
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 		
-			// Update all the items in the game
-			
-			if(Math.random() < this.ENEMY_SOLDIER_PROBABILITY && this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY)
-			{
-				this.enemyTimer = 0;
-				var lane = Math.floor((Math.random() * 3) + 1);
-				var x = this.lanes[lane].x + this.WIDTH;
-				var y = this.lanes[lane].y;
-				
-				var weaponIndex = Math.floor((Math.random() * 4) + 1);
-				switch(weaponIndex)
-				{
-					case 1:
-						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","spear"));
-						break;
-					case 2:
-						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","mace"));
-						break;
-					case 3:
-						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","axe"));
-						break;
-					case 4:
-						this.enemySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "right","sword"));
-						break;
-				}
-			}
-			else if(this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY)
-			{
-				this.enemyTimer = 0;
-			}
-			
-			if(Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY && this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
-			{
-				this.soldierTimer = 0;
-				var lane = Math.floor((Math.random() * 3) + 1);
-				var x = this.lanes[lane].x;
-				var y = this.lanes[lane].y;
-				
-				var weaponIndex = Math.floor((Math.random() * 4) + 1);
-				switch(weaponIndex)
-				{
-					case 1:
-						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","spear"));
-						break;
-					case 2:
-						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","mace"));
-						break;
-					case 3:
-						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","axe"));
-						break;
-					case 4:
-						this.friendlySoldiers.push(new this.app.Soldier(undefined,x,y, {x:this.SOLDIER_WIDTH, y:this.SOLDIER_HEIGHT}, "left","sword"));
-						break;
-				}
-			}
-			else if(this.soldierTimer > this.FRIENDLY_SOLDIER_FREQUENCY)
-			{
-				this.soldierTimer = 0;
-			}
 			
 			
-			this.checkCollisions();
-			this.deadSoldiers = this.deadSoldiers.concat(this.friendlySoldiers.filter(function(soldier){return soldier.dead;})); 
-			this.deadSoldiers = this.deadSoldiers.concat(this.enemySoldiers.filter(function(soldier){return soldier.dead;}));
-			this.friendlySoldiers = this.friendlySoldiers.filter(function(soldier){return soldier.active;});
-			this.enemySoldiers = this.enemySoldiers.filter(function(soldier){return soldier.active;});
 			
-			if(this.deadSoldiers.length > 20)
-			{
-				this.deadSoldiers.splice(0,1);
-			}
-			
-		}
-		else if(this.currentState = this.gameState.paused)
-		{
+			//this.checkCollisions();
+            
+		} else if (this.currentState == this.gameState.paused) {
 			this.handleKeyboard();
 		}//game state if
 		this.draw();
+        
+        
+        //reset new key presses
+        app.keyPress = [];
 	},//update game
 	
-	checkCollisions : function()
-	{
-		var thrownWeapons = this.player.getActiveWeapons();
-		
-		
-		//----------Soldiers colliding with weapons------------
-		for(var i = 0; i < this.friendlySoldiers.length; i++)
-		{
-			var soldier = this.friendlySoldiers[i];
-			for(var j = 0; j < thrownWeapons.length; j++)
-			{
-				if(soldier.colliding(thrownWeapons[j]))
-				{
-					
-					if(soldier.getWeaponType() == thrownWeapons[j].getWeaponType())
-					{
-						soldier.setWeapon(thrownWeapons[j]);
-						thrownWeapons[j].wasCaught();
-					}else{
-						soldier.die();
-					}//if right weapon
-				}//if colliding with weapon
-			}//weapon loop
-		}//soldier loop
-		
-		//----------Soldiers colliding with Soldiers------------
-		var enemies = this.enemySoldiers;
-		for(var i = 0; i < this.friendlySoldiers.length; i++)
-		{
-			var friend = this.friendlySoldiers[i];
-			for(var j = 0; j < enemies.length; j++)
-			{
-				var enemy = enemies[j];
-				if(friend.colliding(enemy))
-				{
-					enemy.setFighting(true);
-					friend.setFighting(true);
-					
-					enemy.takeDamage(friend.attack());
-					friend.takeDamage(enemy.attack());
-					
-					if(enemy.isDead() || friend.isDead())
-					{
-						enemy.setFighting(false);
-						friend.setFighting(false);
-					}
-				}//if colliding with weapon
-			}//weapon loop
-		}//soldier loop
-		
-	},
-	
+    
+    
 	//-----------------------------Draw Loop-------------------------------------------
 	
 	//This is the draw loop 
-	draw : function()
-	{
+	draw : function () {
 		// Need this to pass the object, breaks otherwise
 		var mouse = this.app.mouse;
 		
 		// Clear the screen
-		this.ctx.clearRect(0,0,this.WIDTH,this.HEIGHT);
-		this.ctx.fillStyle = "#55DD55";
-		this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
+		this.ctx.fillStyle = "#000000";
+		this.ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+		
 		
 		//Draw according to the game state
-		if(this.currentState == this.gameState.intro)//draw intro
-		{
+		if (this.currentState == this.gameState.intro) {
 			this.userInterface.drawIntro(this.ctx);
-		}
-		else if(this.currentState == this.gameState.mainMenu)//this draws the main menu
-		{
+            
+		} else if (this.currentState == this.gameState.mainMenu) {
 			// Throw all keyboard events to the objects
-			this.userInterface.drawMainMenu(this.ctx,mouse);
-		}
-		else if(this.currentState == this.gameState.play)//draw gameplay
-		{
-			
-			for(var i = 1; i < 4; i++)
-			{
-				this.ctx.save();
-				this.ctx.strokeStyle = "black";
-				this.ctx.lineWidth = 5;
-				this.ctx.strokeRect(0, this.lanes[i].y - this.SOLDIER_HEIGHT/2, this.WIDTH, this.SOLDIER_HEIGHT);
-				this.ctx.restore();
-			}
-			
-			for(var i = 0; i < this.deadSoldiers.length; i++)
-			{
-				this.deadSoldiers[i].draw(this.dt,this.ctx);
-			}
-			
-			// Draw all of the sprites
-				
-			this.ctx.save()    
-			this.ctx.font = "70px Verdana";
-			this.ctx.fillStyle = "red";
-			this.ctx.fillText(this.fps.toFixed(2) + "fps", 100, 100);
-			this.ctx.restore();
-			if(this.totalTime > 1)
-			{
-				this.totalTime = 0;
-				this.fps = 1/this.dt;					
-
-			}
-			
-			this.player.draw(this.dt,this.ctx);
-				
-			for(var i = 0; i < this.friendlySoldiers.length; i++)
-			{
-				this.friendlySoldiers[i].draw(this.dt,this.ctx);
-			}
-			
-			for(var i = 0; i < this.enemySoldiers.length; i++)
-			{
-				this.enemySoldiers[i].draw(this.dt,this.ctx);
-			}
-			
-			//draw middle line
-			this.ctx.save();
-			this.ctx.strokeStyle = "black";
-			this.ctx.lineWidth = 3;
-			this.ctx.beginPath();
-			this.ctx.moveTo(800 - (this.SOLDIER_WIDTH - (this.SOLDIER_WIDTH/2)), 0);
-			this.ctx.lineTo(800 - (this.SOLDIER_WIDTH - (this.SOLDIER_WIDTH/2)), this.HEIGHT);
-			this.ctx.stroke();
-			this.ctx.restore();
-			
-			this.userInterface.drawGame(this.ctx,mouse);
-		}
-		else if(this.currentState = this.gameState.paused)
-		{
-			this.userInterface.drawPaused(this.ctx,mouse);
+			this.userInterface.drawMainMenu(this.ctx, mouse);
+            
+		} else if (this.currentState == this.gameState.play) {
+            this.playField.draw();
+			this.userInterface.drawGame(this.ctx, mouse);
+            
+            
+		} else if (this.currentState == this.gameState.paused) {
+            this.playField.draw();
+			this.userInterface.drawPaused(this.ctx, mouse);
 		}//game state if
+        
+        
+		
+		//show the frame rate
+        this.displayFrameRate();
+        
 
 	},//draw game
 	
+    
+    
 	//---------------------------------Helper Functions----------------------------------
 	
 	//This handles the input for the game
 	//Some input is handled by the individual objects
-	handleKeyboard : function()
-	{
+	handleKeyboard : function () {
+        
 		//Handle input according to the game state
-		if(this.currentState == this.gameState.mainMenu)//handle main menu inputs
-		{
-			//Handle keyboard input
+		if (this.currentState == this.gameState.mainMenu) {
 			//if the user presses enter advance onto the play game state
-			if(this.app.keydown[this.app.KEYBOARD.KEY_ENTER])
-			{
+			if (this.app.keydown[this.app.KEYBOARD.KEY_ENTER]) {
 				this.currentState = this.gameState.play;
 			}//if left
-		}
-		else if(this.currentState == this.gameState.play)//handle gameplay input
-		{
-			//move the player
-			if(this.app.keydown[this.app.KEYBOARD.KEY_LEFT] || this.app.keydown[this.app.KEYBOARD.KEY_A])//left move
-			{
-				this.player.move("left", this.dt);
-			}
+            
+            
+		} else if (this.currentState == this.gameState.play) {
+            //pause the game
+            if(this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
+                this.currentState = this.gameState.paused; //pause the game
+    		}
 			
-			if(this.app.keydown[this.app.KEYBOARD.KEY_RIGHT] || this.app.keydown[this.app.KEYBOARD.KEY_D])//right move
-			{
-				this.player.move("right", this.dt);
-			}
-			
-			//switch weapon and prevent the player from holding down the switch buttons
-			if((this.app.keydown[this.app.KEYBOARD.KEY_DOWN] || this.app.keydown[this.app.KEYBOARD.KEY_S]) && !this.weaponSwitched) //down switch
-			{
-				this.player.switchWeapons("down");
-				this.weaponSwitched = true;
-			}
-			
-			if((this.app.keydown[this.app.KEYBOARD.KEY_UP] || this.app.keydown[this.app.KEYBOARD.KEY_W]) && !this.weaponSwitched) //up switch
-			{
-				this.player.switchWeapons("up");
-				this.weaponSwitched = true;
-			}
-			
-			if(!this.app.keydown[this.app.KEYBOARD.KEY_DOWN] && !this.app.keydown[this.app.KEYBOARD.KEY_UP] && !this.app.keydown[this.app.KEYBOARD.KEY_S] && !this.app.keydown[this.app.KEYBOARD.KEY_W] && this.weaponSwitched) // reset weaponSwitched value
-			{
-				this.weaponSwitched = false;
-			}
-			
-			//throw weapon
-			if(this.app.keydown[this.app.KEYBOARD.KEY_SPACE] && !this.weaponThrown) //throw and set the thrownWeapon boolean to true to force the player to release the space bar
-			{
-				this.weaponThrown = true;
-				this.player.throwWeapon();
-			}
-			else if(!this.app.keydown[this.app.KEYBOARD.KEY_SPACE] && this.weaponThrown) //reset the boolean
-			{
-				this.weaponThrown = false;
-			}
-			
-			if(this.pausedPressed)
-			{
-				this.currentState = this.gameState.paused;
-				this.pausedPressed = false;
-			}
-		}
-		else if(this.currentState == this.gameState.paused)
-		{
-			if(this.pausedPressed)
-			{
-				this.currentState = this.gameState.play;
-				this.pausedPressed = false;
-			}
+		} else if (this.currentState == this.gameState.paused) {
+			if(this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
+                this.currentState = this.gameState.play; //unpause the game
+    		}
 		}
 	},//input
-	
-	
-	// This function takes a mouse move event and returns the mouse
-	// coordinates relative to the canvas.  Event handler is in loader.js
-	// Code origin: Html5 Canvas Tutorials http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
-	getMousePos : function(e)
-	{
-		var rect = this.canvas.getBoundingClientRect();
-		return { 
-				 x: e.clientX - rect.left,
-				 y: e.clientY - rect.top
-			   };
-	}
-	
-}//end of FriendlyFire.js
+    
+    displayFrameRate : function () {
+        this.ctx.save();
+        this.ctx.font = "70px Verdana";
+        this.ctx.fillStyle = "red";
+        this.ctx.fillText(this.fps.toFixed(2) + "fps", 100, 100);
+        this.ctx.restore();
+        if (this.totalTime > 1) {
+            this.totalTime = 0;
+            this.fps = 1 / this.dt;
+        }
+    }
+};//end of FriendlyFire.js
 
 
 

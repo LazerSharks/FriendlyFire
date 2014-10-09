@@ -67,8 +67,7 @@ app.Interface =
 	},//draw intro
 	
 	//Draw main menu UI
-	drawMainMenu : function(ctx,mouse)
-	{
+	drawMainMenu : function(ctx, mouse) {
 		//this is still bare.  Needs to be replaced with various things
 		ctx.save();
 		
@@ -84,13 +83,11 @@ app.Interface =
 		ctx.restore();
 	},//draw main menu
 	
-	drawGame : function(ctx,mouse)
-	{
-		console.log("drawGame");
+	drawGame : function(ctx, mouse) {
+		//console.log("drawGame");
 	},
 	
-	drawPaused: function(ctx,mouse)
-	{
+	drawPaused: function(ctx, mouse) {
 		console.log("paused");
 	},
 	

@@ -57,20 +57,23 @@ app.IMAGES =
 
 //array of booleans representing pressed keys
 app.keydown = [];
+app.keyPress = [];
 
 //Run loader.js when the window loads
-window.onload = function()
-{
+window.onload = function() {
+    
 	//When a key is pressed set its place in the array to true
 	window.addEventListener("keydown", function(e){
 		app.keydown[e.keyCode] = true;
+        //newly pressed keys go into the keypress array
+        if (!app.keyPress[e.keyCode]) {
+            app.keyPress[e.keyCode] = true;
+        }
 	});
 	
 	//when a key is released set its place in the array to false
 	window.addEventListener("keyup", function(e){
 		app.keydown[e.keyCode] = false;
-		if(e.keyCode == app.KEYBOARD["KEY_P"])
-			app.FriendlyFire.pausedPressed = true;
 	});
 	
 	// hook the interface up to the controller
@@ -89,14 +92,13 @@ window.onload = function()
 	});
 	app.queue.loadManifest([
 		{id: "teamLogo", src:"images/logo.png"}
-		]);
+    ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because
 	//FriendlyFire knows about the canvas, therefore, we can get canvas coords, not screen coords
 	window.addEventListener("mousemove", function(e){
-		var position = app.FriendlyFire.getMousePos(e);
-		app.mouse.x = position.x;
-		app.mouse.y = position.y;
+        app.mouse.x = e.pageX - e.target.offsetLeft;
+        app.mouse.y = e.pageY - e.target.offsetTop;
 	});
 	
 	//Set the mouse's click state
