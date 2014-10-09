@@ -40,7 +40,7 @@ app.Interface =
 		//Create hash table of buttons
 		this.buttons =
 		{
-			"menuButton" : new app.Button(undefined,this.WIDTH/2,800,100,50)
+			"menuButton" : new app.Button(undefined,(this.WIDTH/2) +  20,675,50,50)
 		};
 	},
 	
@@ -71,11 +71,17 @@ app.Interface =
 		//this is still bare.  Needs to be replaced with various things
 		ctx.save();
 		
-		//Place holder screen text
-		ctx.fillStyle = this.color;
-		ctx.font = "70px Verdana";
-		ctx.fillText("This Will Be The Main Menu", 100, 200);
-		ctx.fillText("Hit Enter To Play Or Click The Red Button", 100, 300);
+		//team logo splash screen
+		var image = new Image();
+		image.src = this.images['controlMenu'];
+		
+		//test to see if there is an image and draw accordingly
+		if(!image){
+			ctx.fillStyle = this.color;
+			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
+		}else{
+			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
+		}//if image
 		
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);

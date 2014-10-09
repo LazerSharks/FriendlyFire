@@ -46,7 +46,8 @@ app.mouse =
 //"hashtable" of our images
 app.IMAGES = 
 {
-	teamLogo: "images/logo.png"
+	teamLogo: "images/logo.png",
+	controlMenu: "images/controlMenu.png"
 	/*
 		sword: "images/sword.png"
 		axe: "images/axe.png"
@@ -91,7 +92,8 @@ window.onload = function() {
 		app.FriendlyFire.init();
 	});
 	app.queue.loadManifest([
-		{id: "teamLogo", src:"images/logo.png"}
+		{id: "teamLogo", src:"images/logo.png"},
+		{id: "controlMenu", src:"images/controlMenu.png"}
     ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because

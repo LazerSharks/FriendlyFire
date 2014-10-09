@@ -34,6 +34,7 @@ app.FriendlyFire = {
 	lastFrame: 0,
 	fps: 0,
     totalTime: 0,
+	introTime:0,
     
 	gameState: undefined,
 	currentState: undefined,
@@ -62,7 +63,7 @@ app.FriendlyFire = {
 			over: 4
 		};
 		//set the current game state
-		this.currentState = this.gameState.play;
+		this.currentState = this.gameState.intro;
 		
         
         
@@ -97,12 +98,12 @@ app.FriendlyFire = {
 		if (this.currentState == this.gameState.intro) {
 			
 			//keep track of how long intro has been playing
-			this.timePassed += this.dt;
+			this.introTime += this.dt;
 			
 			//change game state after intro
-			if (this.timePassed >= 2) {
+			if (this.introTime >= 2) {
 				this.currentState = this.gameState.mainMenu;
-				this.timePassed = 0;
+				this.introTime = 0;
 			}
             
 		} else if (this.currentState == this.gameState.mainMenu) {

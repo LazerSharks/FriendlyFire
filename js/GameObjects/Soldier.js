@@ -64,6 +64,7 @@ app.Soldier = function () {
 	p.setWeapon = function (weapon) {
 		this.weapon = weapon;
 		this.color = "purple";
+		this.speed = 160;
 	};
 	
 	p.die = function () {
