@@ -54,6 +54,9 @@ app.Soldier = function () {
         case "sword":
             this.color = "red";
             break;
+		case "enemy":
+			this.color = "grey";
+			break;
 		}
 		
 	}//constructor

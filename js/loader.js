@@ -65,11 +65,11 @@ window.onload = function() {
     
 	//When a key is pressed set its place in the array to true
 	window.addEventListener("keydown", function(e){
-		app.keydown[e.keyCode] = true;
-        //newly pressed keys go into the keypress array
-        if (!app.keyPress[e.keyCode]) {
+		if (!app.keyPress[e.keyCode] && !app.keydown[e.keyCode]) {
             app.keyPress[e.keyCode] = true;
         }
+		app.keydown[e.keyCode] = true;
+        //newly pressed keys go into the keypress array
 	});
 	
 	//when a key is released set its place in the array to false

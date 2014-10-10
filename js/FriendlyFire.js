@@ -175,7 +175,7 @@ app.FriendlyFire = {
         
 		
 		//show the frame rate
-        this.displayFrameRate();
+        //this.displayFrameRate();
         
 
 	},//draw game

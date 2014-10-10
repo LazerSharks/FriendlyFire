@@ -76,7 +76,7 @@ app.Lane = function () {
             //reset timer
             this.enemyTimer = 0;
             //create soldier
-            var weapon = getRandomWeapon();
+            var weapon = "enemy";
             this.rightSoldiers.push(new app.Soldier(undefined, this.rightSpawn.copy(), "right", this, weapon));
         } else if (this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY) {
             this.enemyTimer = 0;
