@@ -29,6 +29,14 @@ app.Vector = function()
 		this.y = y;
 	};
 	
+	//constructor that takes an angle 
+	Vector.vectorFromAngle = function(angle)
+	{
+		var x = Math.cos(angle);
+		var y = Math.sin(angle);
+		return new app.Vector(x,y);
+	};
+	
 	var p = Vector.prototype;
 	
 	//Vector magnitude function, determines and returns the length of the vector
@@ -63,6 +71,27 @@ app.Vector = function()
 	{
 		var output = new app.Vector(this.x - vec.x, this.y - vec.y);
 		return output;
+	};
+	
+	//returns a vector with a magnitude of 1
+	p.normalized = function()
+	{
+		var length = this.magnitude();
+		return new app.Vector(this.x/length,this.y/length);
+	};
+	
+	//get the angle of a vector
+	p.getAngle = function()
+	{
+		return Math.atan2(this.y,this.x);
+	};
+	
+	//set the magnitude of a vector
+	p.setMag = function(mag)
+	{
+		var angle = this.getAngle();
+		this.x = mag * Math.cos(angle);
+		this.y = mag * Math.sin(angle);
 	};
 	
 	return Vector;
