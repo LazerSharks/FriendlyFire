@@ -94,5 +94,31 @@ app.Vector = function()
 		this.y = mag * Math.sin(angle);
 	};
 	
+	//limit the magnitude of the vector
+	p.limit = function(limit)
+	{
+		var mag = this.mag();
+		if(mag > limit)
+		{
+			this.setMag(limit);
+		}
+	};
+	
+	//rotate the vector by an angle
+	p.rotate = function(angle)
+	{
+		var mag - this.mag();
+		var newAngle = angle + this.getAngle();
+		this.x = mag * Math.cos(newAngle);
+		this.y = mag * Math.sin(newAngle);
+	};
+	
+	//multiply the vector by a scalar
+	p.mult = function(scalar)
+	{
+		this.x *= scalar;
+		this.y *= scalar;
+	};
+	
 	return Vector;
 }();
