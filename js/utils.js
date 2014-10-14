@@ -22,6 +22,7 @@ var app = app || {};
 
 
 
+// This is the "IIFE"/Class for the Vector
 app.Vector = function()
 {
 	//constructor for the vector class
@@ -29,6 +30,14 @@ app.Vector = function()
 	{
 		this.x = x;
 		this.y = y;
+	};
+	
+	//constructor that takes an angle 
+	Vector.vectorFromAngle = function(angle)
+	{
+		var x = Math.cos(angle);
+		var y = Math.sin(angle);
+		return new app.Vector(x,y);
 	};
 	
 	var p = Vector.prototype;
@@ -66,11 +75,53 @@ app.Vector = function()
 		var output = new app.Vector(this.x - vec.x, this.y - vec.y);
 		return output;
 	};
-    
-    //returns a new copy of the same vector
-    p.copy = function() {
-        return new app.Vector(this.x, this.y);
-    }
+	
+	//returns a vector with a magnitude of 1
+	p.normalized = function()
+	{
+		var length = this.magnitude();
+		return new app.Vector(this.x/length,this.y/length);
+	};
+	
+	//get the angle of a vector
+	p.getAngle = function()
+	{
+		return Math.atan2(this.y,this.x);
+	};
+	
+	//set the magnitude of a vector
+	p.setMag = function(mag)
+	{
+		var angle = this.getAngle();
+		this.x = mag * Math.cos(angle);
+		this.y = mag * Math.sin(angle);
+	};
+	
+	//limit the magnitude of the vector
+	p.limit = function(limit)
+	{
+		var mag = this.mag();
+		if(mag > limit)
+		{
+			this.setMag(limit);
+		}
+	};
+	
+	//rotate the vector by an angle
+	p.rotate = function(angle)
+	{
+		var mag = this.mag();
+		var newAngle = angle + this.getAngle();
+		this.x = mag * Math.cos(newAngle);
+		this.y = mag * Math.sin(newAngle);
+	};
+	
+	//multiply the vector by a scalar
+	p.mult = function(scalar)
+	{
+		this.x *= scalar;
+		this.y *= scalar;
+	};
 	
 	return Vector;
 }();
