@@ -46,7 +46,8 @@ app.mouse =
 //"hashtable" of our images
 app.IMAGES = 
 {
-	teamLogo: "images/logo.png"
+	teamLogo: "images/logo.png",
+	controlMenu: "images/controlMenu.png"
 	/*
 		sword: "images/sword.png"
 		axe: "images/axe.png"
@@ -57,20 +58,23 @@ app.IMAGES =
 
 //array of booleans representing pressed keys
 app.keydown = [];
+app.keyPress = [];
 
 //Run loader.js when the window loads
-window.onload = function()
-{
+window.onload = function() {
+    
 	//When a key is pressed set its place in the array to true
 	window.addEventListener("keydown", function(e){
+		if (!app.keyPress[e.keyCode] && !app.keydown[e.keyCode]) {
+            app.keyPress[e.keyCode] = true;
+        }
 		app.keydown[e.keyCode] = true;
+        //newly pressed keys go into the keypress array
 	});
 	
 	//when a key is released set its place in the array to false
 	window.addEventListener("keyup", function(e){
 		app.keydown[e.keyCode] = false;
-		if(e.keyCode == app.KEYBOARD["KEY_P"])
-			app.FriendlyFire.pausedPressed = true;
 	});
 	
 	// hook the interface up to the controller
@@ -88,15 +92,15 @@ window.onload = function()
 		app.FriendlyFire.init();
 	});
 	app.queue.loadManifest([
-		{id: "teamLogo", src:"images/logo.png"}
-		]);
+		{id: "teamLogo", src:"images/logo.png"},
+		{id: "controlMenu", src:"images/controlMenu.png"}
+    ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because
 	//FriendlyFire knows about the canvas, therefore, we can get canvas coords, not screen coords
 	window.addEventListener("mousemove", function(e){
-		var position = app.FriendlyFire.getMousePos(e);
-		app.mouse.x = position.x;
-		app.mouse.y = position.y;
+        app.mouse.x = e.pageX - e.target.offsetLeft;
+        app.mouse.y = e.pageY - e.target.offsetTop;
 	});
 	
 	//Set the mouse's click state
