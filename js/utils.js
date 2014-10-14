@@ -123,6 +123,12 @@ app.Vector = function()
 		this.y *= scalar;
 	};
 	
+	//return an identical copy to the old game
+	p.copy = function()
+	{
+		return new app.Vector(this.x, this.y);
+	}
+	
 	return Vector;
 }();
 
