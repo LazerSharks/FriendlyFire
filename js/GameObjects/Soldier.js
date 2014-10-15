@@ -23,7 +23,7 @@ var app = app || {};
 app.Soldier = function () {
 
 	//Soldier constructor
-	function Soldier(image, position, side, lane, weaponType) {
+	function Soldier(image, position, side, lane, weaponType, endlessMode) {
 		// Instance variables of Soldier
 		this.position = position;
 		this.size = new app.Vector(60, 80);
@@ -37,6 +37,7 @@ app.Soldier = function () {
 		this.dead = false;
 		this.health = 1000;
 		this.strength = 2;
+		this.endlessMode = endlessMode;
 		
 		//set the image and default "backup" color
 		this.image = image;
@@ -169,17 +170,35 @@ app.Soldier = function () {
 		
 		//---------------------Soldiers colliding with Castle----------------------//
 		
-		var castle;
-		if(this.side == "left") {
-			castle = this.lane.playField.rightCastle;
-		} else {
-			castle = this.lane.playField.leftCastle;
+		/* Endless Mode not active*/
+		if(!this.endlessMode)
+		{
+			var castle;
+			if(this.side == "left") {
+				castle = this.lane.playField.rightCastle;
+			} else {
+				castle = this.lane.playField.leftCastle;
+			}
+			
+			if (this.colliding(castle)) {
+				this.fighting = true;
+				castle.takeDamage(this.attack());
+				this.takeDamage(castle.attack());
+			}
 		}
-		
-		if (this.colliding(castle)) {
-			this.fighting = true;
-			castle.takeDamage(this.attack());
-			this.takeDamage(castle.attack());
+		else
+		{
+			var castle;
+			if(this.side == "right") {
+				castle = this.lane.playField.leftCastle;
+			
+			
+				if (this.colliding(castle)) {
+					this.fighting = true;
+					castle.takeDamage(this.attack());
+					this.takeDamage(castle.attack());
+				}
+			}
 		}
 	};
 	

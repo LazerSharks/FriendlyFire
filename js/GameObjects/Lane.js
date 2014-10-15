@@ -43,6 +43,8 @@ app.Lane = function () {
         this.FRIENDLY_SOLDIER_PROBABILITY = 0.2;
         this.FRIENDLY_SOLDIER_FREQUENCY = 1;
         this.friendlyTimer = 0;
+		
+		this.endlessMode = false;
 	}//constructor
     
     
@@ -77,7 +79,7 @@ app.Lane = function () {
             this.enemyTimer = 0;
             //create soldier
             var weapon = "enemy";
-            this.rightSoldiers.push(new app.Soldier(undefined, this.rightSpawn.copy(), "right", this, weapon));
+            this.rightSoldiers.push(new app.Soldier(undefined, this.rightSpawn.copy(), "right", this, weapon, this.endlessMode));
         } else if (this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY) {
             this.enemyTimer = 0;
         }
@@ -93,7 +95,7 @@ app.Lane = function () {
             this.friendlyTimer = 0;
             //create soldier
             var weapon = getRandomWeapon();
-            this.leftSoldiers.push(new app.Soldier(undefined, this.leftSpawn.copy(), "left", this, weapon));
+            this.leftSoldiers.push(new app.Soldier(undefined, this.leftSpawn.copy(), "left", this, weapon, this.endlessMode));
         } else if (this.friendlyTimer > this.FRIENDLY_SOLDIER_FREQUENCY) {
             this.friendlyTimer = 0;
         }

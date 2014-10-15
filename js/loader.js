@@ -47,7 +47,10 @@ app.mouse =
 app.IMAGES = 
 {
 	teamLogo: "images/logo.png",
-	controlMenu: "images/controlMenu.png"
+	controlMenu: "images/controlMenu.png",
+	instructionMenu: "images/instructionMenu.png",
+	twoPlayer: "images/twoPlayer.png",
+	difficultyMenu: "images/difficultyMenu.png"
 	/*
 		sword: "images/sword.png"
 		axe: "images/axe.png"
@@ -93,7 +96,10 @@ window.onload = function() {
 	});
 	app.queue.loadManifest([
 		{id: "teamLogo", src:"images/logo.png"},
-		{id: "controlMenu", src:"images/controlMenu.png"}
+		{id: "controlMenu", src:"images/controlMenu.png"},
+		{id: "instructionMenu", src:"images/instructionMenu.png"},
+		{id: "twoPlayer", src:"images/twoPlayer.png"},
+		{id: "difficultyMenu", src:"images/instructionMenu.png"}
     ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because

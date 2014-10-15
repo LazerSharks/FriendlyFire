@@ -34,6 +34,8 @@ app.PlayField = function () {
         };
         
         this.player = new app.Player(undefined, 400, 800);
+		
+		this.endlessMode = false;
 	}
     
     
@@ -48,7 +50,10 @@ app.PlayField = function () {
         this.lanes[2].update(dt);
         this.lanes[3].update(dt);
         this.leftCastle.update(dt);
-        this.rightCastle.update(dt);
+		if(!this.endlessMode)
+		{
+			this.rightCastle.update(dt);
+		}
         this.player.update(dt);
     };
     
@@ -69,10 +74,58 @@ app.PlayField = function () {
         this.lanes[2].draw();
         this.lanes[3].draw();
         this.leftCastle.draw();
-        this.rightCastle.draw();
+		if(!this.endlessMode)
+		{
+			this.rightCastle.draw();
+		}
         this.player.draw();
     };
     
+	//set the difficulty based off player choice
+	p.setDifficulty = function(choice)
+	{
+		switch(choice)
+		{
+			case "easy":
+				this.endlessMode = false;
+				for(var i = 1; i < 4; i++)
+				{
+					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.085;
+					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.1;
+					this.lanes[i].endlessMode = this.endlessMode;
+				}
+				break;
+			case "medium":
+			case "twoPlayer":
+				this.endlessMode = false;
+				for(var i = 1; i < 4; i++)
+				{
+					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
+					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
+					this.lanes[i].endlessMode = this.endlessMode;
+				}
+				break;
+			case "hard":
+				this.endlessMode = false;
+				for(var i = 1; i < 4; i++)
+				{
+					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.35;
+					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.3;
+					this.lanes[i].endlessMode = this.endlessMode;
+				}
+
+				break;
+			case "endless":
+				this.endlessMode = true;
+				for(var i = 1; i < 4; i++)
+				{
+					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
+					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
+					this.lanes[i].endlessMode = this.endlessMode;
+				}
+				break;
+		}
+	}
 	
 	
     return PlayField;

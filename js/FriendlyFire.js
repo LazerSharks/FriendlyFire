@@ -39,7 +39,8 @@ app.FriendlyFire = {
 	gameState: undefined,
 	currentState: undefined,
 	userInterface: undefined,
-    
+	
+	
     playField: new app.PlayField(),
 	
 	
@@ -57,15 +58,16 @@ app.FriendlyFire = {
 		//declare the game states
 		this.gameState = {
 			intro: 0,
-			mainMenu: 1,
-			play: 2,
-			paused: 3,
-			over: 4
+			controls: 1,
+			intstructions: 2,
+			play: 3,
+			paused: 4,
+			over: 5,
+			difficulty: 6,
+			twoPlayerTrollScreen: 7
 		};
 		//set the current game state
 		this.currentState = this.gameState.intro;
-		
-        
         
         
 		//initialize our interface
@@ -102,11 +104,11 @@ app.FriendlyFire = {
 			
 			//change game state after intro
 			if (this.introTime >= 2) {
-				this.currentState = this.gameState.mainMenu;
+				this.currentState = this.gameState.controls;
 				this.introTime = 0;
 			}
             
-		} else if (this.currentState == this.gameState.mainMenu) {
+		} else if (this.currentState == this.gameState.controls) {
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
@@ -114,7 +116,58 @@ app.FriendlyFire = {
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
 			if (this.userInterface.buttonClicked("menuButton")) {
+				console.log("Clicked");
+				this.currentState = this.gameState.instructions;
+			}
+		}else if (this.currentState == this.gameState.instructions) {
+			// Throw all keyboard events to the objects
+			this.handleKeyboard();
+			
+			// Check to see if the menuButton was clicked and advance accordingly
+			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
+			// around.  Cons, the programmer must know what they are named in the interface
+			if (this.userInterface.buttonClicked("menuButton")) {
+				console.log("Clicked");
+				this.currentState = this.gameState.difficulty;
+			}
+		}else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
+			// Throw all keyboard events to the objects
+			this.handleKeyboard();
+			
+			// Check to see if the menuButton was clicked and advance accordingly
+			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
+			// around.  Cons, the programmer must know what they are named in the interface
+			if (this.userInterface.buttonClicked("menuButton")) {
+				console.log("Clicked");
+				this.currentState = this.gameState.difficulty;
+			}
+		} else if (this.currentState == this.gameState.difficulty) {
+			// Throw all keyboard events to the objects
+			this.handleKeyboard();
+			
+			// Check to see if the menuButton was clicked and advance accordingly
+			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
+			// around.  Cons, the programmer must know what they are named in the interface
+			if (this.userInterface.buttonClicked("easyButton")) {
+				console.log("Easy button Clicked");
+				this.playField.setDifficulty("easy");
 				this.currentState = this.gameState.play;
+			}if (this.userInterface.buttonClicked("mediumButton")) {
+				console.log("medium button Clicked");
+				this.playField.setDifficulty("medium");
+				this.currentState = this.gameState.play;
+			}if (this.userInterface.buttonClicked("hardButton")) {
+				console.log("hard button Clicked");
+				//this.playField.setDifficulty("hard");
+				//this.currentState = this.gameState.play;
+			}if (this.userInterface.buttonClicked("endlessButton")) {
+				console.log("endless button Clicked");
+				this.playField.setDifficulty("endless");
+				this.currentState = this.gameState.play;
+			}if (this.userInterface.buttonClicked("twoPlayerButton")) {
+				console.log("twoPlayer button Clicked");
+				this.playField.setDifficulty("twoPlayer");
+				this.currentState = this.gameState.twoPlayerTrollScreen;
 			}
 		} else if (this.currentState == this.gameState.play) {
             this.playField.update(this.dt);
@@ -124,10 +177,7 @@ app.FriendlyFire = {
 		
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
-		
-			
-			
-			
+
 			//this.checkCollisions();
             
 		} else if (this.currentState == this.gameState.paused) {
@@ -158,9 +208,21 @@ app.FriendlyFire = {
 		if (this.currentState == this.gameState.intro) {
 			this.userInterface.drawIntro(this.ctx);
             
-		} else if (this.currentState == this.gameState.mainMenu) {
+		} else if (this.currentState == this.gameState.controls) {
 			// Throw all keyboard events to the objects
-			this.userInterface.drawMainMenu(this.ctx, mouse);
+			this.userInterface.drawControls(this.ctx, mouse);
+            
+		}else if (this.currentState == this.gameState.instructions) {
+			// Throw all keyboard events to the objects
+			this.userInterface.drawInstructions(this.ctx, mouse);
+            
+		}else if (this.currentState == this.gameState.difficulty) {
+			// Throw all keyboard events to the objects
+			this.userInterface.drawDifficulty(this.ctx, mouse);
+            
+		}else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
+			// Throw all keyboard events to the objects
+			this.userInterface.drawTwoPlayer(this.ctx, mouse);
             
 		} else if (this.currentState == this.gameState.play) {
             this.playField.draw();
@@ -189,10 +251,10 @@ app.FriendlyFire = {
 	handleKeyboard : function () {
         
 		//Handle input according to the game state
-		if (this.currentState == this.gameState.mainMenu) {
+		if (this.currentState == this.gameState.controls) {
 			//if the user presses enter advance onto the play game state
 			if (this.app.keydown[this.app.KEYBOARD.KEY_ENTER]) {
-				this.currentState = this.gameState.play;
+				this.currentState = this.gameState.instructions;
 			}//if left
             
             
