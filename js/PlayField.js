@@ -127,6 +127,41 @@ app.PlayField = function () {
 		}
 	}
 	
+	p.restoreField = function(obj)
+	{
+		obj.lanes[1].clearLane();
+        obj.lanes[2].clearLane();
+        obj.lanes[3].clearLane();
+		if(!obj.endlessMode)
+		{
+			obj.rightCastle.respawn();
+		}
+			obj.leftCastle.respawn();
+	}
+	
+	//check to see if a castle fell. If so, return true
+	p.gameOver = function()
+	{
+		if(this.endlessMode)
+		{
+			//if the left castle is dead, return true
+			if(this.leftCastle.health <=0)
+			{
+				return true;
+			}
+			return false;
+		}
+		else
+		{
+			//if the left castle is dead, return true
+			if(this.leftCastle.health <=0 || this.rightCastle.health <= 0)
+			{
+				return true;
+			}
+			return false;
+		}
+	}
+	
 	
     return PlayField;
     

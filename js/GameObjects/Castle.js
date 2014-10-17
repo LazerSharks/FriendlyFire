@@ -35,6 +35,8 @@ app.Castle = function () {
 		this.dead = false;
         
 		this.health = 10000;
+		this.maxHealth = this.health;
+		
 		this.strength = 20;
 		this.color = "grey";
         
@@ -100,6 +102,13 @@ app.Castle = function () {
                 gameObject.position.y + gameObject.size.y > this.position.y);
 	};
 	
+	//set the castle's health to max
+	p.respawn = function()
+	{
+		this.health = this.maxHealth;
+		this.dead = false;
+		this.color = "grey";
+	}
     
     
 	p.update = function (dt) {

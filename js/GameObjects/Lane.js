@@ -134,8 +134,15 @@ app.Lane = function () {
         if(this.deadSoldiers.length > 10) {
             this.deadSoldiers.splice(0,1);
         }
-    }
+    };
     
+	//empty the lanes of all soldiers
+	p.clearLane = function()
+	{
+		this.leftSoldiers = [];
+        this.rightSoldiers = [];
+        this.deadSoldiers = [];
+	};
     
     
     //private
@@ -158,7 +165,7 @@ app.Lane = function () {
             break;
         }
         return weapon;
-	}
+	};
     
     
     

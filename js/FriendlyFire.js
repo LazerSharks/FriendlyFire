@@ -126,16 +126,12 @@ app.FriendlyFire = {
 			
 			this.instructionTime += this.dt;
 			
-			
-
-			
-			
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
 			if (this.instructionTime >= 0.5) {
 				if (this.userInterface.buttonClicked("menuButton")) {
-					this.intructionTime = 0;
+					this.instructionTime = 0;
 					console.log("Clicked");
 					this.currentState = this.gameState.difficulty;
 				}
@@ -189,6 +185,11 @@ app.FriendlyFire = {
 			this.handleKeyboard();
 
 			//this.checkCollisions();
+			if(this.playField.gameOver() == true)
+			{
+				this.playField.restoreField(this.playField); //restore the state of the field
+				this.currentState = this.gameState.controls; //go to the controls screen
+			}
             
 		} else if (this.currentState == this.gameState.paused) {
 			this.handleKeyboard();
