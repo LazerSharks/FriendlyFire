@@ -35,6 +35,7 @@ app.FriendlyFire = {
 	fps: 0,
     totalTime: 0,
 	introTime:0,
+	instructionTime:0,
     
 	gameState: undefined,
 	currentState: undefined,
@@ -123,12 +124,21 @@ app.FriendlyFire = {
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
+			this.instructionTime += this.dt;
+			
+			
+
+			
+			
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
-			if (this.userInterface.buttonClicked("menuButton")) {
-				console.log("Clicked");
-				this.currentState = this.gameState.difficulty;
+			if (this.instructionTime >= 0.5) {
+				if (this.userInterface.buttonClicked("menuButton")) {
+					this.intructionTime = 0;
+					console.log("Clicked");
+					this.currentState = this.gameState.difficulty;
+				}
 			}
 		}else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
 			// Throw all keyboard events to the objects
@@ -158,8 +168,8 @@ app.FriendlyFire = {
 				this.currentState = this.gameState.play;
 			}if (this.userInterface.buttonClicked("hardButton")) {
 				console.log("hard button Clicked");
-				//this.playField.setDifficulty("hard");
-				//this.currentState = this.gameState.play;
+				this.playField.setDifficulty("hard");
+				this.currentState = this.gameState.play;
 			}if (this.userInterface.buttonClicked("endlessButton")) {
 				console.log("endless button Clicked");
 				this.playField.setDifficulty("endless");
