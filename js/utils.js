@@ -172,5 +172,17 @@ app.DrawLib = {
 		app.FriendlyFire.ctx.strokeRect(object.position.x - object.size.x/2, object.position.y - object.size.y/2, object.size.x, object.size.y);
 		app.FriendlyFire.ctx.restore();
 	},
+	
+	//draw text on the screen
+	drawText: function(ctx, string, font, fillColor, position)
+	{
+		ctx.save();
+		ctx.font = font;
+		ctx.fillStyle = fillColor;
+		
+		ctx.fillText(string, position.x, position.y);
+		
+		ctx.restore();
+	}
 
 };//end of drawlib

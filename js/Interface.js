@@ -37,15 +37,27 @@ app.Interface =
 		this.images = images;
 		this.color = "#665500";
 		
+		var buttonPadding = 100;
+		
 		//Create hash table of buttons
 		this.buttons =
 		{
-			"menuButton" : new app.Button(undefined,(this.WIDTH/2) +  20,675,50,50),
-			"easyButton" : new app.Button(undefined,(this.WIDTH/2) - 145,310,50,50),
-			"mediumButton" : new app.Button(undefined,(this.WIDTH/2) - 130,450,50,50),
-			"hardButton" : new app.Button(undefined,(this.WIDTH/2) - 140,585,50,50),
+			//Button(text, font, fontColor, image,x,y,width,height)
+			"menuButton" : new app.Button("MENU", "24pt Comic Sans MS", "white", undefined, this.WIDTH/9 + 10, this.HEIGHT/10, 175, 75),
+			"menuSinglePlayerButton" : new app.Button("SINGLE PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3,250,75),
+			"menuTwoPlayerButton" : new app.Button("TWO PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding,250,75),
+			"menuEndlessButton" : new app.Button("ENDLESS MODE", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding*2,250,75),
+			"menuControlsButton" : new app.Button("CONTROLS", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding*3,250,75),
+			"menuInstructionsButton" : new app.Button("INSTRUCTIONS", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding * 4,250,75),
+			"easyButton" : new app.Button("EASY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2,175,75),
+			"mediumButton" : new app.Button("MEDIUM", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100,175,75),
+			"hardButton" : new app.Button("HARD", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 200,175,75),
 			"endlessButton" : new app.Button(undefined,(3*this.WIDTH/4) + 25,330,50,50),
-			"twoPlayerButton" : new app.Button(undefined,(3*this.WIDTH/4) + 65,500,50,50)
+			"twoPlayerButton" : new app.Button(undefined,(3*this.WIDTH/4) + 65,500,50,50),
+			"controlsInstructionButton" : new app.Button("INSTRUCTIONS", "28px Comic Sans MS", "white", undefined, this.WIDTH/2, this.HEIGHT -(this.HEIGHT /9) + 5, 250, 75), 
+			"instructionsControlButton" : new app.Button("CONTROLS", "28px Comic Sans MS", "white", undefined, this.WIDTH/2, this.HEIGHT -(this.HEIGHT /9) + 5, 250, 75), 
+			"resumeButton" : new app.Button("RESUME", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 - 50, 250, 75),
+			"quitButton" : new app.Button("QUIT", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 50, 250, 75),
 		};
 	},
 	
@@ -77,8 +89,9 @@ app.Interface =
 		ctx.save();
 		
 		//menu splash screen
-		var image = new Image();
-		image.src = this.images['controlMenu'];
+		var image = undefined;
+		//var image = new Image();
+		//image.src = this.images['controlMenu'];
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
@@ -89,7 +102,11 @@ app.Interface =
 		}//if image
 		
 		//draw the menu button since we are in the menu
-		this.buttons["menuButton"].draw(ctx,mouse);
+		this.buttons["menuSinglePlayerButton"].draw(ctx,mouse);
+		this.buttons["menuTwoPlayerButton"].draw(ctx,mouse);
+		this.buttons["menuEndlessButton"].draw(ctx,mouse);
+		this.buttons["menuControlsButton"].draw(ctx,mouse);
+		this.buttons["menuInstructionsButton"].draw(ctx,mouse);
 		
 		ctx.restore();
 	},//draw main menu
@@ -100,8 +117,9 @@ app.Interface =
 		ctx.save();
 		
 		//menu splash screen
-		var image = new Image();
-		image.src = this.images['controlMenu'];
+		var image = undefined;
+		//var image = new Image();
+		//image.src = this.images['controlMenu'];
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
@@ -113,18 +131,21 @@ app.Interface =
 		
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
+		this.buttons["controlsInstructionButton"].draw(ctx,mouse);
 		
 		ctx.restore();
 	},//draw main menu
 	
 		//Draw instructions UI
 	drawInstructions : function(ctx, mouse) {
+		console.log("Instructions");
 		//this is still bare.  Needs to be replaced with various things
 		ctx.save();
 		
 		//menu splash screen
-		var image = new Image();
-		image.src = this.images['instructionMenu'];
+		var image = undefined;
+		//var image = new Image();
+		//image.src = this.images['instructionMenu'];
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
@@ -136,6 +157,7 @@ app.Interface =
 		
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
+		this.buttons["instructionsControlButton"].draw(ctx,mouse);
 		
 		ctx.restore();
 	},//draw instructions	
@@ -167,8 +189,11 @@ app.Interface =
 		ctx.save();
 		
 		//menu splash screen
-		var image = new Image();
-		image.src = this.images['difficultyMenu'];
+		
+		var image = undefined;
+		
+		/*var image = new Image();
+		image.src = this.images['difficultyMenu'];*/
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
@@ -182,18 +207,17 @@ app.Interface =
 		this.buttons["easyButton"].draw(ctx,mouse);
 		this.buttons["mediumButton"].draw(ctx,mouse);
 		this.buttons["hardButton"].draw(ctx,mouse);
-		this.buttons["endlessButton"].draw(ctx,mouse);
-		this.buttons["twoPlayerButton"].draw(ctx,mouse);
+		this.buttons["menuButton"].draw(ctx,mouse);
 		
 		ctx.restore();
 	},//draw instructions
 	
 	drawGame : function(ctx, mouse) {
-		//console.log("drawGame");
 	},
 	
 	drawPaused: function(ctx, mouse) {
-		console.log("paused");
+		this.buttons["resumeButton"].draw(ctx,mouse);
+		this.buttons["quitButton"].draw(ctx,mouse);
 	},
 	
 	//Test to see if a certain button is clicked or not
