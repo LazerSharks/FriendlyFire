@@ -126,21 +126,25 @@ app.Soldier = function () {
 	
     p.collisionHandling = function () {
 		//----------Soldiers colliding with weapons------------
-		var thrownWeapons = app.FriendlyFire.playField.player.getActiveWeapons();
-		
-		if (this.side == "left") {
-			for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
-				if (this.colliding(thrownWeapons[i])) { //colliding?
-					if (this.getWeaponType() == thrownWeapons[i].getWeaponType()){
-						this.setWeapon(thrownWeapons[i]);
-						thrownWeapons[i].wasCaught();
-					} else {
-						this.health = 0;
-						this.die();
-					}//if right weapon
-				}
-			}
-		}
+        var thrownWeapons = undefined;
+		if(this.side == "left") {
+		  thrownWeapons = app.FriendlyFire.playField.player.getActiveWeapons();
+        } else if (app.FriendlyFire.playField.players == 2) {
+		  thrownWeapons = app.FriendlyFire.playField.player2.getActiveWeapons();
+        }
+        if(this.side == "left" || app.FriendlyFire.playField.players == 2) {
+            for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
+                if (this.colliding(thrownWeapons[i])) { //colliding?
+                    if (this.getWeaponType() == thrownWeapons[i].getWeaponType()){
+                        this.setWeapon(thrownWeapons[i]);
+                        thrownWeapons[i].wasCaught();
+                    } else {
+                        this.health = 0;
+                        this.die();
+                    }//if right weapon
+                }
+            }
+        }
 		
 		//----------Soldiers colliding with Soldiers------------
 		

@@ -33,7 +33,15 @@ app.KEYBOARD =
 	"KEY_A": 65,
 	"KEY_S": 83,
 	"KEY_D": 68,
-	"KEY_P": 80
+    "KEY_Q": 81,
+    "KEY_E": 69,
+	"KEY_P": 80,
+    "KEY_I": 73,
+    "KEY_J": 74,
+    "KEY_K": 75,
+    "KEY_L": 76,
+    "KEY_U": 85,
+    "KEY_O": 79
 };
 
 //mouse object with coords and click state

@@ -18,14 +18,19 @@
 
 //Create the global app object if needed
 var app = app || {};
-
+ 
 // This is the "IIFE"/Class for the Player
 app.Player = function () {
     
 	//Player constructor
-	function Player(image, x, y) {
+	function Player(image, side) {
 		// Instance variables of Player
-		this.position = new app.Vector(x, y);
+        this.side = side;
+        if (side == "left") {
+		  this.position = new app.Vector(400, 800);
+        } else {
+		  this.position = new app.Vector(1200, 800);
+        }
 		this.size = new app.Vector(60, 80);
 		this.speed = 320;
 		this.activeWeapons = [];
@@ -116,7 +121,11 @@ app.Player = function () {
 		}
 		
 		//this.position.x = clamp(this.position.x, 10 + this.size.x ,800 - this.size.x);
-		this.position.x = clamp(this.position.x, 100 + (this.size.x/2) ,800 - this.size.x/2);
+        if(this.side == "left") {
+		  this.position.x = clamp(this.position.x, 100 + (this.size.x/2) ,800 - this.size.x/2);
+        } else {
+		  this.position.x = clamp(this.position.x, 800 + (this.size.x/2) ,1500 - this.size.x/2);
+        }
 	}
 	
 	//switch weapons - takes a string representing the key input
@@ -164,28 +173,51 @@ app.Player = function () {
 	};
 	
     p.controller = function(dt) {
-        
-        //handle movement left and right
-        if(app.keydown[app.KEYBOARD.KEY_LEFT] || app.keydown[app.KEYBOARD.KEY_A]) {
-			this.move("left", dt);
+        if(this.side == "left") {
+            //handle movement left and right
+            if(app.keydown[app.KEYBOARD.KEY_A]) {
+                this.move("left", dt);
+            }
+            if(app.keydown[app.KEYBOARD.KEY_D]) {
+                this.move("right", dt);
+            }
+
+
+            //switch weapon and prevent the player from holding down the switch buttons
+            if((app.keyPress[this.app.KEYBOARD.KEY_S])) {
+                this.switchWeapons("down");
+            }
+            if((this.app.keyPress[this.app.KEYBOARD.KEY_W])) {
+                this.switchWeapons("up");
+            }
+
+            //throw a weapon
+            if(this.app.keyPress[this.app.KEYBOARD.KEY_Q] || this.app.keyPress[this.app.KEYBOARD.KEY_E]) {
+                this.throwWeapon();
+            }
+        } else {
+            //handle movement left and right
+            if(app.keydown[app.KEYBOARD.KEY_J]) {
+                this.move("left", dt);
+            }
+            if(app.keydown[app.KEYBOARD.KEY_L]) {
+                this.move("right", dt);
+            }
+
+
+            //switch weapon and prevent the player from holding down the switch buttons
+            if((app.keyPress[this.app.KEYBOARD.KEY_K])) {
+                this.switchWeapons("down");
+            }
+            if((this.app.keyPress[this.app.KEYBOARD.KEY_I])) {
+                this.switchWeapons("up");
+            }
+
+            //throw a weapon
+            if(this.app.keyPress[this.app.KEYBOARD.KEY_U] || this.app.keyPress[this.app.KEYBOARD.KEY_O]) {
+                this.throwWeapon();
+            }
         }
-		if(app.keydown[app.KEYBOARD.KEY_RIGHT] || app.keydown[app.KEYBOARD.KEY_D]) {
-			this.move("right", dt);
-		}
-        
-        
-		//switch weapon and prevent the player from holding down the switch buttons
-		if((app.keyPress[app.KEYBOARD.KEY_DOWN] || app.keyPress[this.app.KEYBOARD.KEY_S])) {
-			this.switchWeapons("down");
-		}
-		if((this.app.keyPress[this.app.KEYBOARD.KEY_UP] || this.app.keyPress[this.app.KEYBOARD.KEY_W])) {
-			this.switchWeapons("up");
-		}
-        
-        //throw a weapon
-		if(this.app.keyPress[this.app.KEYBOARD.KEY_SPACE]) {
-			this.throwWeapon();
-		}
     }
     
 	//create a new weapon to the active weapons array

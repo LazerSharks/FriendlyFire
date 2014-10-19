@@ -42,7 +42,7 @@ app.FriendlyFire = {
 	userInterface: undefined,
 	
 	
-    playField: new app.PlayField(),
+    playField: undefined,
 	
 	
 	//This initializes all of the data needed for the game
@@ -125,13 +125,15 @@ app.FriendlyFire = {
 				}
 				if (this.userInterface.buttonClicked("menuTwoPlayerButton")) {
 					this.userInterface.buttons["menuTwoPlayerButton"].clickResolution();
-					//this.playField.setDifficulty("twoPlayer");
-					//this.currentState = this.gameState.play;
-					this.currentState = this.gameState.twoPlayerTrollScreen;
+                    this.playField = new app.PlayField(2);
+					this.playField.setDifficulty("twoPlayer");
+					this.currentState = this.gameState.play;
+					//this.currentState = this.gameState.twoPlayerTrollScreen;
 					this.buttonClickDelay = 0;
 				}
 				if (this.userInterface.buttonClicked("menuEndlessButton")) {
 					this.userInterface.buttons["menuEndlessButton"].clickResolution();
+                    this.playField = new app.PlayField(1);
 					this.playField.setDifficulty("endless");
 					this.currentState = this.gameState.play;
 					this.buttonClickDelay = 0;
@@ -220,6 +222,7 @@ app.FriendlyFire = {
 				if (this.userInterface.buttonClicked("easyButton")) {
 					this.buttonClickDelay = 0;
 					console.log("Easy button Clicked");
+                    this.playField = new app.PlayField(1);
 					this.playField.setDifficulty("easy");
 					this.userInterface.buttons["easyButton"].clickResolution();
 					this.currentState = this.gameState.play;
@@ -227,6 +230,7 @@ app.FriendlyFire = {
 				if (this.userInterface.buttonClicked("mediumButton")) {
 					this.buttonClickDelay = 0;
 					console.log("medium button Clicked");
+                    this.playField = new app.PlayField(1);
 					this.playField.setDifficulty("medium");
 					this.userInterface.buttons["mediumButton"].clickResolution();
 					this.currentState = this.gameState.play;
@@ -234,6 +238,7 @@ app.FriendlyFire = {
 				if (this.userInterface.buttonClicked("hardButton")) {
 					this.buttonClickDelay = 0;
 					console.log("hard button Clicked");
+                    this.playField = new app.PlayField(1);
 					this.playField.setDifficulty("hard");
 					this.userInterface.buttons["hardButton"].clickResolution();
 					this.currentState = this.gameState.play;
