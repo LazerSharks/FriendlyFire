@@ -253,9 +253,16 @@ app.FriendlyFire = {
 		}
 		else if (this.currentState == this.gameState.play) {
             this.playField.update(this.dt);
-            
-			//this.soldierTimer += this.dt;
-			//this.enemyTimer += this.dt;
+			
+			this.buttonClickDelay += this.dt;
+			if(this.buttonClickDelay >= 0.5)
+			{
+				if (this.userInterface.buttonClicked("pauseButton")) {
+					this.buttonClickDelay = 0;
+					console.log("pause button Clicked");
+					this.currentState = this.gameState.paused; //pause the game
+				}
+			}
 		
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
@@ -270,14 +277,20 @@ app.FriendlyFire = {
 		}
 		else if (this.currentState == this.gameState.paused) {
 			this.handleKeyboard();
-			if (this.userInterface.buttonClicked("resumeButton")) {
-				this.userInterface.buttons["resumeButton"].clickResolution();
+			if (this.userInterface.buttonClicked("pauseResumeButton")) {
+				this.userInterface.buttons["pauseResumeButton"].clickResolution();
 				this.currentState = this.gameState.play;
 			}
-			if (this.userInterface.buttonClicked("quitButton")) {
-				this.userInterface.buttons["quitButton"].clickResolution();
+			if (this.userInterface.buttonClicked("pauseQuitButton")) {
+				this.userInterface.buttons["pauseQuitButton"].clickResolution();
 				this.playField.restoreField(this.playField); //restore the state of the field
 				this.currentState = this.gameState.mainMenu;
+			}
+			if (this.userInterface.buttonClicked("pauseRestartButton")) {
+				console.log("Restart button clicked.");
+				this.userInterface.buttons["pauseRestartButton"].clickResolution();
+				this.playField.restoreField(this.playField); //restore the state of the field
+				this.currentState = this.gameState.play;
 			}
 		}//game state if
 		this.draw();

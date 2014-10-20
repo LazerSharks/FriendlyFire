@@ -35,7 +35,7 @@ app.Interface =
 		this.WIDTH = canvasWidth;
 		this.HEIGHT = canvasHeight;
 		this.images = images;
-		this.color = "#665500";
+		this.color = "#462F02";
 		
 		var buttonPadding = 100;
 		
@@ -49,15 +49,17 @@ app.Interface =
 			"menuEndlessButton" : new app.Button("ENDLESS MODE", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding*2,250,75),
 			"menuControlsButton" : new app.Button("CONTROLS", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding*3,250,75),
 			"menuInstructionsButton" : new app.Button("INSTRUCTIONS", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding * 4,250,75),
-			"easyButton" : new app.Button("EASY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2,175,75),
-			"mediumButton" : new app.Button("MEDIUM", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100,175,75),
-			"hardButton" : new app.Button("HARD", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 200,175,75),
+			"easyButton" : new app.Button("EASY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 - 100,175,75),
+			"mediumButton" : new app.Button("MEDIUM", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2,175,75),
+			"hardButton" : new app.Button("HARD", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100,175,75),
 			"endlessButton" : new app.Button(undefined,(3*this.WIDTH/4) + 25,330,50,50),
 			"twoPlayerButton" : new app.Button(undefined,(3*this.WIDTH/4) + 65,500,50,50),
 			"controlsInstructionButton" : new app.Button("INSTRUCTIONS", "28px Comic Sans MS", "white", undefined, this.WIDTH/2, this.HEIGHT -(this.HEIGHT /9) + 5, 250, 75), 
 			"instructionsControlButton" : new app.Button("CONTROLS", "28px Comic Sans MS", "white", undefined, this.WIDTH/2, this.HEIGHT -(this.HEIGHT /9) + 5, 250, 75), 
-			"resumeButton" : new app.Button("RESUME", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 - 50, 250, 75),
-			"quitButton" : new app.Button("QUIT", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 50, 250, 75),
+			"pauseResumeButton" : new app.Button("RESUME", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 - 100, 250, 75),
+			"pauseRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2, 250, 75),
+			"pauseButton" : new app.Button("||", "bold 22px Comic Sans MS", "white", undefined,(this.WIDTH/2),50, 50, 50),
+			"pauseQuitButton" : new app.Button("QUIT", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
 		};
 	},
 	
@@ -213,9 +215,21 @@ app.Interface =
 	},//draw instructions
 	
 	drawGame : function(ctx, mouse) {
+		this.buttons["pauseButton"].draw(ctx,mouse);
 	},
 	
 	drawPaused: function(ctx, mouse) {
+		//drawRect: function(color, position, size, r)
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT/3 + 100), 0);
+
+		
+	
+		this.buttons["pauseResumeButton"].draw(ctx,mouse);
+		this.buttons["pauseRestartButton"].draw(ctx,mouse);
+		this.buttons["pauseQuitButton"].draw(ctx,mouse);
+	},
+	
+	drawGameOver: function(ctx, mouse) {
 		this.buttons["resumeButton"].draw(ctx,mouse);
 		this.buttons["quitButton"].draw(ctx,mouse);
 	},

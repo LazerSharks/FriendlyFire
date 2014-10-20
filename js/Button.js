@@ -38,7 +38,7 @@ app.Button = function()
 		
 		//set the image and default "backup" color
 		this.image = image;
-		this.color = "#454545";
+		this.color = "#845B0E";
 		this.clicked = false;
 		
 	};//constructor
