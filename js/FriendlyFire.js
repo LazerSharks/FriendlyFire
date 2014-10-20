@@ -280,17 +280,20 @@ app.FriendlyFire = {
 			if (this.userInterface.buttonClicked("pauseResumeButton")) {
 				this.userInterface.buttons["pauseResumeButton"].clickResolution();
 				this.currentState = this.gameState.play;
+				this.buttonClickDelay = 0;
 			}
 			if (this.userInterface.buttonClicked("pauseQuitButton")) {
 				this.userInterface.buttons["pauseQuitButton"].clickResolution();
 				this.playField.restoreField(this.playField); //restore the state of the field
 				this.currentState = this.gameState.mainMenu;
+				this.buttonClickDelay = 0;
 			}
 			if (this.userInterface.buttonClicked("pauseRestartButton")) {
 				console.log("Restart button clicked.");
 				this.userInterface.buttons["pauseRestartButton"].clickResolution();
 				this.playField.restoreField(this.playField); //restore the state of the field
 				this.currentState = this.gameState.play;
+				this.buttonClickDelay = 0;
 			}
 		}//game state if
 		this.draw();

@@ -97,11 +97,14 @@ app.Interface =
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
-			ctx.fillStyle = this.color;
+			ctx.fillStyle = "red";
 			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
 		}else{
 			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
 		}//if image
+		
+		
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
 		
 		//draw the menu button since we are in the menu
 		this.buttons["menuSinglePlayerButton"].draw(ctx,mouse);
@@ -125,11 +128,13 @@ app.Interface =
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
-			ctx.fillStyle = this.color;
+			ctx.fillStyle = "red";
 			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
 		}else{
 			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
 		}//if image
+		
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/2, this.HEIGHT/2), 0);
 		
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
@@ -151,11 +156,13 @@ app.Interface =
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
-			ctx.fillStyle = this.color;
+			ctx.fillStyle = "red";
 			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
 		}else{
 			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
 		}//if image
+		
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/2, this.HEIGHT/2), 0);
 		
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
@@ -199,11 +206,13 @@ app.Interface =
 		
 		//test to see if there is an image and draw accordingly
 		if(!image){
-			ctx.fillStyle = this.color;
+			ctx.fillStyle = "red";
 			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
 		}else{
 			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
 		}//if image
+		
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
 		
 		//draw the menu button since we are in the menu
 		this.buttons["easyButton"].draw(ctx,mouse);
@@ -220,7 +229,7 @@ app.Interface =
 	
 	drawPaused: function(ctx, mouse) {
 		//drawRect: function(color, position, size, r)
-		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT/3 + 100), 0);
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
 
 		
 	
