@@ -96,12 +96,13 @@ app.Interface =
 		//image.src = this.images['controlMenu'];
 		
 		//test to see if there is an image and draw accordingly
+		/*
 		if(!image){
 			ctx.fillStyle = "red";
 			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
 		}else{
 			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
-		}//if image
+		}*///if image
 		
 		
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
@@ -170,27 +171,7 @@ app.Interface =
 		
 		ctx.restore();
 	},//draw instructions	
-	drawTwoPlayer : function(ctx, mouse) {
-		//this is still bare.  Needs to be replaced with various things
-		ctx.save();
-		
-		//menu splash screen
-		var image = new Image();
-		image.src = this.images['twoPlayer'];
-		
-		//test to see if there is an image and draw accordingly
-		if(!image){
-			ctx.fillStyle = this.color;
-			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
-		}else{
-			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
-		}//if image
-		
-		//draw the menu button since we are in the menu
-		this.buttons["menuButton"].draw(ctx,mouse);
-		
-		ctx.restore();
-	},//draw instructions	
+	
 	
 	//Draw difficulty select UI
 	drawDifficulty : function(ctx, mouse) {
@@ -205,12 +186,13 @@ app.Interface =
 		image.src = this.images['difficultyMenu'];*/
 		
 		//test to see if there is an image and draw accordingly
+		/*
 		if(!image){
 			ctx.fillStyle = "red";
 			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
 		}else{
 			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
-		}//if image
+		}//if image*/
 		
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
 		

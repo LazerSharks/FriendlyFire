@@ -53,8 +53,8 @@ app.Lane = function () {
     
 
     p.update = function (dt) {
-        if(this.endlessMode) {
-            this.ENEMY_SOLDIER_PROBABILITY += (dt * .001)
+        if (this.endlessMode) {
+            this.ENEMY_SOLDIER_PROBABILITY += (dt * 0.001);
         }
         this.spawnLeftGuys(dt);
         if (this.playField.players == 1) {

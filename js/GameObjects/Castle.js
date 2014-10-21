@@ -39,6 +39,7 @@ app.Castle = function () {
 		
 		this.strength = 20;
 		this.color = "grey";
+		this.invincible = false;
         
 	}//constructor
 		
@@ -65,8 +66,10 @@ app.Castle = function () {
 	};
 	
 	p.takeDamage = function (damage) {
-		this.health -= damage;
-		if (this.health <= 0) { this.die(); }
+		if(!this.invincible) {
+			this.health -= damage;
+			if (this.health <= 0) { this.die(); }
+		}
 	};
 	
 	//Soldier Draw Method
@@ -84,7 +87,7 @@ app.Castle = function () {
 		} else {
 			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}
-		if (this.health > 0) {
+		if (this.health > 0 && !this.invincible) {
 			this.drawHealthBar();
 		}
 	};//draw

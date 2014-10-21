@@ -119,20 +119,20 @@ app.Soldier = function () {
 	};//draw
 	
 	p.drawHealthBar = function () {
-		var barPos = new app.Vector(this.position.x, this.position.y - this.size.y*3/4);
+		var barPos = new app.Vector(this.position.x, this.position.y - this.size.y * 3 / 4);
 		app.DrawLib.drawRect("red", barPos, new app.Vector(this.size.x * this.health / 1000, 5), 0);
 
-	}
+	};
 	
-    p.collisionHandling = function () {
+	p.weaponCollisions = function () {
 		//----------Soldiers colliding with weapons------------
-        var thrownWeapons = undefined;
-		if(this.side == "left") {
-		  thrownWeapons = app.FriendlyFire.playField.player.getActiveWeapons();
+        var thrownWeapons;
+		if (this.side == "left") {
+			thrownWeapons = app.FriendlyFire.playField.player.getActiveWeapons();
         } else if (app.FriendlyFire.playField.players == 2) {
-		  thrownWeapons = app.FriendlyFire.playField.player2.getActiveWeapons();
+			thrownWeapons = app.FriendlyFire.playField.player2.getActiveWeapons();
         }
-        if(this.side == "left" || app.FriendlyFire.playField.players == 2) {
+        if (this.side == "left" || app.FriendlyFire.playField.players == 2) {
             for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
                 if (this.colliding(thrownWeapons[i])) { //colliding?
                     if (this.getWeaponType() == thrownWeapons[i].getWeaponType()){
@@ -145,7 +145,9 @@ app.Soldier = function () {
                 }
             }
         }
-		
+	}
+	
+	p.soldierCollisions = function () {
 		//----------Soldiers colliding with Soldiers------------
 		
 		//start without fighting anyone
@@ -169,9 +171,9 @@ app.Soldier = function () {
 				break;
 			}
 		}
-		
-		
-		
+	}
+	
+	p.castleCollisions = function () {
 		//---------------------Soldiers colliding with Castle----------------------//
 		
 		/* Endless Mode not active*/
@@ -204,6 +206,16 @@ app.Soldier = function () {
 				}
 			}
 		}
+	}
+	
+	
+	
+    p.collisionHandling = function () {
+		if(this.lane.playField.players > 0) {
+			this.weaponCollisions();
+		}
+		this.soldierCollisions();
+		this.castleCollisions();
 	};
 	
 	

@@ -34,8 +34,8 @@ app.FriendlyFire = {
 	lastFrame: 0,
 	fps: 0,
     totalTime: 0,
-	introTime:0,
-	buttonClickDelay:0,
+	introTime: 0,
+	buttonClickDelay: 0,
     
 	gameState: undefined,
 	currentState: undefined,
@@ -70,6 +70,8 @@ app.FriendlyFire = {
 		};
 		//set the current game state
 		this.currentState = this.gameState.mainMenu;
+        this.playField = new app.PlayField(0);
+		this.playField.setDifficulty("easy");
         
         
 		//initialize our interface
@@ -107,8 +109,8 @@ app.FriendlyFire = {
 				this.introTime = 0;
 			}
             
-		}
-		else if (this.currentState == this.gameState.mainMenu) {
+		} else if (this.currentState == this.gameState.mainMenu) {
+            this.playField.update(this.dt);
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
@@ -117,7 +119,7 @@ app.FriendlyFire = {
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
-			if(this.buttonClickDelay >= 0.5){
+			if (this.buttonClickDelay >= 0.5) {
 				if (this.userInterface.buttonClicked("menuSinglePlayerButton")) {
 					this.userInterface.buttons["menuSinglePlayerButton"].clickResolution();
 					this.currentState = this.gameState.difficulty;
@@ -149,8 +151,7 @@ app.FriendlyFire = {
 					this.buttonClickDelay = 0;
 				}
 			}
-		}
-		else if (this.currentState == this.gameState.controls) {
+		} else if (this.currentState == this.gameState.controls) {
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
@@ -172,8 +173,7 @@ app.FriendlyFire = {
 					this.currentState = this.gameState.instruction;
 				}
 			}
-		}
-		else if (this.currentState == this.gameState.instructions) {
+		} else if (this.currentState == this.gameState.instructions) {
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
@@ -194,21 +194,8 @@ app.FriendlyFire = {
 				this.userInterface.buttons["menuButton"].clickResolution();
 				this.currentState = this.gameState.mainMenu;
 			}
-		}
-		else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
-			// Throw all keyboard events to the objects
-			this.handleKeyboard();
-			
-			// Check to see if the menuButton was clicked and advance accordingly
-			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
-			// around.  Cons, the programmer must know what they are named in the interface
-			if (this.userInterface.buttonClicked("menuButton")) {
-				console.log("Clicked");
-				this.userInterface.buttons["menuButton"].clickResolution();
-				this.currentState = this.gameState.mainMenu;
-			}
-		}
-		else if (this.currentState == this.gameState.difficulty) {
+		} else if (this.currentState == this.gameState.difficulty) {
+            this.playField.update(this.dt);
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
@@ -217,8 +204,7 @@ app.FriendlyFire = {
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
-			if(this.buttonClickDelay >= 0.5)
-			{
+			if (this.buttonClickDelay >= 0.5) {
 				if (this.userInterface.buttonClicked("easyButton")) {
 					this.buttonClickDelay = 0;
 					console.log("Easy button Clicked");
@@ -250,13 +236,11 @@ app.FriendlyFire = {
 					this.currentState = this.gameState.mainMenu;
 				}
 			}
-		}
-		else if (this.currentState == this.gameState.play) {
+		} else if (this.currentState == this.gameState.play) {
             this.playField.update(this.dt);
 			
 			this.buttonClickDelay += this.dt;
-			if(this.buttonClickDelay >= 0.5)
-			{
+			if (this.buttonClickDelay >= 0.5) {
 				if (this.userInterface.buttonClicked("pauseButton")) {
 					this.buttonClickDelay = 0;
 					console.log("pause button Clicked");
@@ -268,14 +252,14 @@ app.FriendlyFire = {
 			this.handleKeyboard();
 
 			//this.checkCollisions();
-			if(this.playField.gameOver() == true)
-			{
+			if (this.playField.gameOver() == true) {
 				this.playField.restoreField(this.playField); //restore the state of the field
 				this.currentState = this.gameState.mainMenu; //go to the mainMenu screen
+				this.playField = new app.PlayField(0);
+				this.playField.setDifficulty("easy");
 			}
             
-		}
-		else if (this.currentState == this.gameState.paused) {
+		} else if (this.currentState == this.gameState.paused) {
 			this.handleKeyboard();
 			if (this.userInterface.buttonClicked("pauseResumeButton")) {
 				this.userInterface.buttons["pauseResumeButton"].clickResolution();
@@ -286,6 +270,8 @@ app.FriendlyFire = {
 				this.userInterface.buttons["pauseQuitButton"].clickResolution();
 				this.playField.restoreField(this.playField); //restore the state of the field
 				this.currentState = this.gameState.mainMenu;
+				this.playField = new app.PlayField(0);
+				this.playField.setDifficulty("easy");
 				this.buttonClickDelay = 0;
 			}
 			if (this.userInterface.buttonClicked("pauseRestartButton")) {
@@ -321,39 +307,33 @@ app.FriendlyFire = {
 		if (this.currentState == this.gameState.intro) {
 			this.userInterface.drawIntro(this.ctx);
             
-		}
-		else if (this.currentState == this.gameState.mainMenu) {
+		} else if (this.currentState == this.gameState.mainMenu) {
 			// Throw all keyboard events to the objects
+            this.playField.draw();
 			this.userInterface.drawMainMenu(this.ctx, mouse);
-            
-		}
-		else if (this.currentState == this.gameState.controls) {
+		} else if (this.currentState == this.gameState.controls) {
 			// Throw all keyboard events to the objects
 			this.userInterface.drawControls(this.ctx, mouse);
             
-		}
-		else if (this.currentState == this.gameState.instructions) {
+		} else if (this.currentState == this.gameState.instructions) {
 			// Throw all keyboard events to the objects
 			this.userInterface.drawInstructions(this.ctx, mouse);
             
-		}
-		else if (this.currentState == this.gameState.difficulty) {
+		} else if (this.currentState == this.gameState.difficulty) {
+            this.playField.draw();
 			// Throw all keyboard events to the objects
 			this.userInterface.drawDifficulty(this.ctx, mouse);
             
-		}
-		else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
+		} else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
 			// Throw all keyboard events to the objects
 			this.userInterface.drawTwoPlayer(this.ctx, mouse);
             
-		}
-		else if (this.currentState == this.gameState.play) {
+		} else if (this.currentState == this.gameState.play) {
             this.playField.draw();
 			this.userInterface.drawGame(this.ctx, mouse);
             
             
-		}
-		else if (this.currentState == this.gameState.paused) {
+		} else if (this.currentState == this.gameState.paused) {
             this.playField.draw();
 			this.userInterface.drawPaused(this.ctx, mouse);
 		}//game state if
@@ -382,18 +362,16 @@ app.FriendlyFire = {
 			}//if left
             
             
-		}
-		else if (this.currentState == this.gameState.play) {
+		} else if (this.currentState == this.gameState.play) {
             //pause the game
-            if(this.app.keyPress[this.app.KEYBOARD.KEY_ESC] || this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
+            if (this.app.keyPress[this.app.KEYBOARD.KEY_ESC] || this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
                 this.currentState = this.gameState.paused; //pause the game
-    		}
+			}
 			
-		}
-		else if (this.currentState == this.gameState.paused) {
-			if(this.app.keyPress[this.app.KEYBOARD.KEY_ESC] || this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
+		} else if (this.currentState == this.gameState.paused) {
+			if (this.app.keyPress[this.app.KEYBOARD.KEY_ESC] || this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
                 this.currentState = this.gameState.play; //unpause the game
-    		}
+			}
 		}
 	},//input
     

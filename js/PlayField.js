@@ -27,7 +27,10 @@ app.PlayField = function () {
         //create the castles
         this.leftCastle = new app.Castle(undefined, new app.Vector(50, 450), new app.Vector(100, 900), "left");
         this.rightCastle = new app.Castle(undefined, new app.Vector(1550, 450), new app.Vector(100, 900), "right");
-        
+		if (players == 0) {
+			this.leftCastle.invincible = true;
+			this.rightCastle.invincible = true;
+		}
         //create the lanes
         this.lanes = {
             1: new app.Lane(undefined, new app.Vector(800, 300), this),
@@ -35,7 +38,9 @@ app.PlayField = function () {
             3: new app.Lane(undefined, new app.Vector(800, 600), this)
         };
         
-        this.player = new app.Player(undefined, "left");
+		if (players > 0) {
+			this.player = new app.Player(undefined, "left");
+		}
         if (players == 2) {
             this.player2 = new app.Player(undefined, "right");
         }
@@ -57,8 +62,11 @@ app.PlayField = function () {
 		if (!this.endlessMode) {
 			this.rightCastle.update(dt);
 		}
-        this.player.update(dt);
-        if(this.players == 2) {
+        
+		if (this.players > 0) {
+			this.player.update(dt);
+		}
+        if (this.players == 2) {
             this.player2.update(dt);
         }
     };
@@ -75,8 +83,10 @@ app.PlayField = function () {
 		if (!this.endlessMode) {
 			this.rightCastle.draw();
 		}
-        this.player.draw();
-        if(this.players == 2) {
+		if (this.players > 0) {
+			this.player.draw();
+		}
+        if (this.players == 2) {
             this.player2.draw();
         }
     };
@@ -84,40 +94,40 @@ app.PlayField = function () {
 	//set the difficulty based off player choice
 	p.setDifficulty = function (choice) {
 		switch (choice) {
-			case "easy":
-			case "twoPlayer":
-				this.endlessMode = false;
-				for(var i = 1; i < 4; i++) {
-					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
-					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
-					this.lanes[i].endlessMode = this.endlessMode;
-				}
-				break;
-			case "medium":
-				this.endlessMode = false;
-				for(var i = 1; i < 4; i++) {
-					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.3;
-					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
-					this.lanes[i].endlessMode = this.endlessMode;
-				}
-				break;
-			case "hard":
-				this.endlessMode = false;
-				for(var i = 1; i < 4; i++) {
-					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.4;
-					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
-					this.lanes[i].endlessMode = this.endlessMode;
-				}
+		case "easy":
+		case "twoPlayer":
+			this.endlessMode = false;
+			for (var i = 1; i < 4; i++) {
+				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].endlessMode = this.endlessMode;
+			}
+			break;
+		case "medium":
+			this.endlessMode = false;
+			for (var i = 1; i < 4; i++) {
+				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.275;
+				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].endlessMode = this.endlessMode;
+			}
+			break;
+		case "hard":
+			this.endlessMode = false;
+			for (var i = 1; i < 4; i++) {
+				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.35;
+				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].endlessMode = this.endlessMode;
+			}
 
-				break;
-			case "endless":
-				this.endlessMode = true;
-				for(var i = 1; i < 4; i++) {
-					this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
-					this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
-					this.lanes[i].endlessMode = this.endlessMode;
-				}
-				break;
+			break;
+		case "endless":
+			this.endlessMode = true;
+			for (var i = 1; i < 4; i++) {
+				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].endlessMode = this.endlessMode;
+			}
+			break;
 		}
 	}
 	
