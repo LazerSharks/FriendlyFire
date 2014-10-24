@@ -196,10 +196,6 @@ app.DrawLib = {
 //----------------------------animation-------------------------------
 
 
-
-
-
-
 //Animation takes a spritesheet (horizontal), the 0 position of the first frame, the size of the frames, the number of frames, and the duration of the animation.
 app.Animation = function () {
 	function Animation(image, zero, size, frames, time) {
@@ -212,6 +208,7 @@ app.Animation = function () {
 		this.currentTime = 0;
 		this.currentFrame = 0;
 		this.currentPosition = zero.copy();
+
 	}
 	
 	var p = Animation.prototype;
