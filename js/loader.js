@@ -59,7 +59,9 @@ app.IMAGES =
 	BlueWalk: "images/Blue Walk Cycle.png",
 	GreenWalk: "images/Green Walk Cycle.png",
 	YellowWalk: "images/Yellow Walk Cycle.png",
-	EnemyWalk: "images/Enemy Walk Cycle.png"
+	EnemyWalk: "images/Enemy Walk Cycle.png",
+	Castle: "images/Castle.png",
+	controls: "images/controls.png"
 };
 
 //array of booleans representing pressed keys
@@ -102,7 +104,9 @@ window.onload = function() {
 		{id: "BlueWalk", src:"images/Blue Walk Cycle.png"},
 		{id: "GreenWalk", src:"images/Green Walk Cycle.png"},
 		{id: "YellowWalk", src:"images/Yellow Walk Cycle.png"},
-		{id: "EnemyWalk", src:"images/Enemy Walk Cycle.png"}
+		{id: "EnemyWalk", src:"images/Enemy Walk Cycle.png"},
+		{id: "Castle", src:"images/Castle.png"},
+		{id: "controls", src:"images/controls.png"}
     ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because

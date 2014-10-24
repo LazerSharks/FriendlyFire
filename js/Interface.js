@@ -123,20 +123,15 @@ app.Interface =
 		ctx.save();
 		
 		//menu splash screen
-		var image = undefined;
-		//var image = new Image();
+		var image = new Image();
+		image.src = this.images['controls'];
 		//image.src = this.images['controlMenu'];
-		
-		//test to see if there is an image and draw accordingly
-		if(!image){
-			ctx.fillStyle = "red";
-			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
-		}else{
-			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
-		}//if image
+
+		//if image
 		
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/2, this.HEIGHT/2), 0);
 		
+        ctx.drawImage(image,0,-40, this.WIDTH, this.HEIGHT);
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
 		this.buttons["controlsInstructionButton"].draw(ctx,mouse);

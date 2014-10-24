@@ -25,7 +25,7 @@ app.Castle = function () {
 	//Soldier constructor
 	function Castle(image, position, size, side) {
 		// Instance variables of Soldier
-        this.image = image;
+        this.image = app.IMAGES.Castle;
 		this.position = position;
         this.size = size;
 		this.side = side;
@@ -66,7 +66,7 @@ app.Castle = function () {
 	};
 	
 	p.takeDamage = function (damage) {
-		if(!this.invincible) {
+		if (!this.invincible) {
 			this.health -= damage;
 			if (this.health <= 0) { this.die(); }
 		}
@@ -75,18 +75,25 @@ app.Castle = function () {
 	//Soldier Draw Method
 	p.draw = function () {
 		
-		//drawing origin is top left corner
-		//use this to center image on (x,y)
-		var center = new app.Vector(this.size.x / 2, this.size.y / 2);
-		
-		//test to see if there is an image and draw accordingly
-		if (!this.image) {
-			app.DrawLib.drawRect(this.color, this.position, this.size, 0);
-			app.DrawLib.debugRect(this);
-			
-		} else {
-			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
-		}
+        var bottom;
+        var top;
+        var size = new app.Vector(225, 450);
+        
+        var image = new Image();
+        image.src = this.image;
+		if (this.side == "left") {
+            bottom = new app.Vector(0, this.position.y + this.size.y / 8);
+            top = new app.Vector(0, this.position.y - this.size.y / 4);
+            app.DrawLib.drawImage(image, 0, 0, 297, 646, top, size, 0, false);
+            app.DrawLib.drawImage(image, 0, 0, 297, 646, bottom, size, 0, false);
+        } else {
+            bottom = new app.Vector(1600, this.position.y + this.size.y / 8);
+            top = new app.Vector(1600, this.position.y - this.size.y / 4);
+            app.DrawLib.drawImage(image, 0, 0, 297, 646, top, size, 0, false);
+            app.DrawLib.drawImage(image, 0, 0, 297, 646, bottom, size, 0, false);
+        }
+        
+        
 		if (this.health > 0 && !this.invincible) {
 			this.drawHealthBar();
 		}
@@ -96,7 +103,7 @@ app.Castle = function () {
 		var barPos = new app.Vector(this.position.x, this.position.y);
 		app.DrawLib.drawRect("red", barPos, new app.Vector(5, this.size.x * this.health / 1200), 0);
 
-	}
+	};
 	
 	p.colliding = function (gameObject) {
 		return (gameObject.position.x < this.position.x + this.size.x &&
@@ -106,12 +113,11 @@ app.Castle = function () {
 	};
 	
 	//set the castle's health to max
-	p.respawn = function()
-	{
+	p.respawn = function () {
 		this.health = this.maxHealth;
 		this.dead = false;
 		this.color = "grey";
-	}
+	};
     
     
 	p.update = function (dt) {
