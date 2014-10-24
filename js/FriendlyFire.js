@@ -34,14 +34,15 @@ app.FriendlyFire = {
 	lastFrame: 0,
 	fps: 0,
     totalTime: 0,
-	introTime:0,
+	introTime: 0,
+	buttonClickDelay: 0,
     
 	gameState: undefined,
 	currentState: undefined,
 	userInterface: undefined,
 	
 	
-    playField: new app.PlayField(),
+    playField: undefined,
 	
 	
 	//This initializes all of the data needed for the game
@@ -64,18 +65,18 @@ app.FriendlyFire = {
 			paused: 4,
 			over: 5,
 			difficulty: 6,
-			twoPlayerTrollScreen: 7
+			twoPlayerTrollScreen: 7,
+			mainMenu: 8
 		};
 		//set the current game state
-		this.currentState = this.gameState.intro;
+		this.currentState = this.gameState.mainMenu;
+        this.playField = new app.PlayField(0);
+		this.playField.setDifficulty("easy");
         
         
 		//initialize our interface
 		this.userInterface.init(app.IMAGES, this.WIDTH, this.HEIGHT);
 		
-        
-        
-        
 		this.thisFrame = this.lastFrame = Date.now();
 		
 		//begin the game loop
@@ -104,84 +105,182 @@ app.FriendlyFire = {
 			
 			//change game state after intro
 			if (this.introTime >= 2) {
-				this.currentState = this.gameState.controls;
+				this.currentState = this.gameState.mainMenu;
 				this.introTime = 0;
 			}
             
+		} else if (this.currentState == this.gameState.mainMenu) {
+            this.playField.update(this.dt);
+			// Throw all keyboard events to the objects
+			this.handleKeyboard();
+			
+			this.buttonClickDelay += this.dt;
+			
+			// Check to see if the menuButton was clicked and advance accordingly
+			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
+			// around.  Cons, the programmer must know what they are named in the interface
+			if (this.buttonClickDelay >= 0.5) {
+				if (this.userInterface.buttonClicked("menuSinglePlayerButton")) {
+					this.userInterface.buttons["menuSinglePlayerButton"].clickResolution();
+					this.currentState = this.gameState.difficulty;
+					this.buttonClickDelay = 0;
+				}
+				if (this.userInterface.buttonClicked("menuTwoPlayerButton")) {
+					this.userInterface.buttons["menuTwoPlayerButton"].clickResolution();
+                    this.playField = new app.PlayField(2);
+					this.playField.setDifficulty("twoPlayer");
+					this.currentState = this.gameState.play;
+					//this.currentState = this.gameState.twoPlayerTrollScreen;
+					this.buttonClickDelay = 0;
+				}
+				if (this.userInterface.buttonClicked("menuEndlessButton")) {
+					this.userInterface.buttons["menuEndlessButton"].clickResolution();
+                    this.playField = new app.PlayField(1);
+					this.playField.setDifficulty("endless");
+					this.currentState = this.gameState.play;
+					this.buttonClickDelay = 0;
+				}
+				if (this.userInterface.buttonClicked("menuControlsButton")) {
+					this.userInterface.buttons["menuControlsButton"].clickResolution();
+					this.currentState = this.gameState.controls;
+					this.buttonClickDelay = 0;
+				}
+				if (this.userInterface.buttonClicked("menuInstructionsButton")) {
+					this.userInterface.buttons["menuInstructionsButton"].clickResolution();
+					this.currentState = this.gameState.instructions;
+					this.buttonClickDelay = 0;
+				}
+			}
 		} else if (this.currentState == this.gameState.controls) {
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
-			// Check to see if the menuButton was clicked and advance accordingly
-			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
-			// around.  Cons, the programmer must know what they are named in the interface
-			if (this.userInterface.buttonClicked("menuButton")) {
-				console.log("Clicked");
-				this.currentState = this.gameState.instructions;
-			}
-		}else if (this.currentState == this.gameState.instructions) {
-			// Throw all keyboard events to the objects
-			this.handleKeyboard();
+			this.buttonClickDelay += this.dt;
 			
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
 			if (this.userInterface.buttonClicked("menuButton")) {
 				console.log("Clicked");
-				this.currentState = this.gameState.difficulty;
+				this.userInterface.buttons["menuButton"].clickResolution();
+				this.currentState = this.gameState.mainMenu;
 			}
-		}else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
+			if (this.buttonClickDelay >= 0.5) {
+				if (this.userInterface.buttonClicked("controlsInstructionButton")) {
+					console.log("Clicked");
+					this.buttonClickDelay = 0;
+					this.userInterface.buttons["controlsInstructionButton"].clickResolution();
+					this.currentState = this.gameState.instruction;
+				}
+			}
+		} else if (this.currentState == this.gameState.instructions) {
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
+			
+			this.buttonClickDelay += this.dt;
 			
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
+			if (this.buttonClickDelay >= 0.5) {
+				if (this.userInterface.buttonClicked("instructionsControlButton")) {
+					this.buttonClickDelay = 0;
+					this.userInterface.buttons["instructionsControlButton"].clickResolution();
+					this.currentState = this.gameState.controls;
+				}
+			}
 			if (this.userInterface.buttonClicked("menuButton")) {
 				console.log("Clicked");
-				this.currentState = this.gameState.difficulty;
+				this.userInterface.buttons["menuButton"].clickResolution();
+				this.currentState = this.gameState.mainMenu;
 			}
 		} else if (this.currentState == this.gameState.difficulty) {
+            this.playField.update(this.dt);
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
+			
+			this.buttonClickDelay += this.dt;
 			
 			// Check to see if the menuButton was clicked and advance accordingly
 			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
 			// around.  Cons, the programmer must know what they are named in the interface
-			if (this.userInterface.buttonClicked("easyButton")) {
-				console.log("Easy button Clicked");
-				this.playField.setDifficulty("easy");
-				this.currentState = this.gameState.play;
-			}if (this.userInterface.buttonClicked("mediumButton")) {
-				console.log("medium button Clicked");
-				this.playField.setDifficulty("medium");
-				this.currentState = this.gameState.play;
-			}if (this.userInterface.buttonClicked("hardButton")) {
-				console.log("hard button Clicked");
-				//this.playField.setDifficulty("hard");
-				//this.currentState = this.gameState.play;
-			}if (this.userInterface.buttonClicked("endlessButton")) {
-				console.log("endless button Clicked");
-				this.playField.setDifficulty("endless");
-				this.currentState = this.gameState.play;
-			}if (this.userInterface.buttonClicked("twoPlayerButton")) {
-				console.log("twoPlayer button Clicked");
-				this.playField.setDifficulty("twoPlayer");
-				this.currentState = this.gameState.twoPlayerTrollScreen;
+			if (this.buttonClickDelay >= 0.5) {
+				if (this.userInterface.buttonClicked("easyButton")) {
+					this.buttonClickDelay = 0;
+					console.log("Easy button Clicked");
+                    this.playField = new app.PlayField(1);
+					this.playField.setDifficulty("easy");
+					this.userInterface.buttons["easyButton"].clickResolution();
+					this.currentState = this.gameState.play;
+				}
+				if (this.userInterface.buttonClicked("mediumButton")) {
+					this.buttonClickDelay = 0;
+					console.log("medium button Clicked");
+                    this.playField = new app.PlayField(1);
+					this.playField.setDifficulty("medium");
+					this.userInterface.buttons["mediumButton"].clickResolution();
+					this.currentState = this.gameState.play;
+				}
+				if (this.userInterface.buttonClicked("hardButton")) {
+					this.buttonClickDelay = 0;
+					console.log("hard button Clicked");
+                    this.playField = new app.PlayField(1);
+					this.playField.setDifficulty("hard");
+					this.userInterface.buttons["hardButton"].clickResolution();
+					this.currentState = this.gameState.play;
+				}
+				if (this.userInterface.buttonClicked("menuButton")) {
+					this.buttonClickDelay = 0;
+					console.log("menu button Clicked");
+					this.userInterface.buttons["menuButton"].clickResolution();
+					this.currentState = this.gameState.mainMenu;
+				}
 			}
 		} else if (this.currentState == this.gameState.play) {
             this.playField.update(this.dt);
-            
-			//this.soldierTimer += this.dt;
-			//this.enemyTimer += this.dt;
+			
+			this.buttonClickDelay += this.dt;
+			if (this.buttonClickDelay >= 0.5) {
+				if (this.userInterface.buttonClicked("pauseButton")) {
+					this.buttonClickDelay = 0;
+					console.log("pause button Clicked");
+					this.currentState = this.gameState.paused; //pause the game
+				}
+			}
 		
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 
 			//this.checkCollisions();
+			if (this.playField.gameOver() == true) {
+				this.playField.restoreField(this.playField); //restore the state of the field
+				this.currentState = this.gameState.mainMenu; //go to the mainMenu screen
+				this.playField = new app.PlayField(0);
+				this.playField.setDifficulty("easy");
+			}
             
 		} else if (this.currentState == this.gameState.paused) {
 			this.handleKeyboard();
+			if (this.userInterface.buttonClicked("pauseResumeButton")) {
+				this.userInterface.buttons["pauseResumeButton"].clickResolution();
+				this.currentState = this.gameState.play;
+				this.buttonClickDelay = 0;
+			}
+			if (this.userInterface.buttonClicked("pauseQuitButton")) {
+				this.userInterface.buttons["pauseQuitButton"].clickResolution();
+				this.playField.restoreField(this.playField); //restore the state of the field
+				this.currentState = this.gameState.mainMenu;
+				this.playField = new app.PlayField(0);
+				this.playField.setDifficulty("easy");
+				this.buttonClickDelay = 0;
+			}
+			if (this.userInterface.buttonClicked("pauseRestartButton")) {
+				console.log("Restart button clicked.");
+				this.userInterface.buttons["pauseRestartButton"].clickResolution();
+				this.playField.restoreField(this.playField); //restore the state of the field
+				this.currentState = this.gameState.play;
+				this.buttonClickDelay = 0;
+			}
 		}//game state if
 		this.draw();
         
@@ -208,19 +307,24 @@ app.FriendlyFire = {
 		if (this.currentState == this.gameState.intro) {
 			this.userInterface.drawIntro(this.ctx);
             
+		} else if (this.currentState == this.gameState.mainMenu) {
+			// Throw all keyboard events to the objects
+            this.playField.draw();
+			this.userInterface.drawMainMenu(this.ctx, mouse);
 		} else if (this.currentState == this.gameState.controls) {
 			// Throw all keyboard events to the objects
 			this.userInterface.drawControls(this.ctx, mouse);
             
-		}else if (this.currentState == this.gameState.instructions) {
+		} else if (this.currentState == this.gameState.instructions) {
 			// Throw all keyboard events to the objects
 			this.userInterface.drawInstructions(this.ctx, mouse);
             
-		}else if (this.currentState == this.gameState.difficulty) {
+		} else if (this.currentState == this.gameState.difficulty) {
+            this.playField.draw();
 			// Throw all keyboard events to the objects
 			this.userInterface.drawDifficulty(this.ctx, mouse);
             
-		}else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
+		} else if (this.currentState == this.gameState.twoPlayerTrollScreen) {
 			// Throw all keyboard events to the objects
 			this.userInterface.drawTwoPlayer(this.ctx, mouse);
             
@@ -260,14 +364,14 @@ app.FriendlyFire = {
             
 		} else if (this.currentState == this.gameState.play) {
             //pause the game
-            if(this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
+            if (this.app.keyPress[this.app.KEYBOARD.KEY_ESC] || this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
                 this.currentState = this.gameState.paused; //pause the game
-    		}
+			}
 			
 		} else if (this.currentState == this.gameState.paused) {
-			if(this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
+			if (this.app.keyPress[this.app.KEYBOARD.KEY_ESC] || this.app.keyPress[this.app.KEYBOARD.KEY_P]) {
                 this.currentState = this.gameState.play; //unpause the game
-    		}
+			}
 		}
 	},//input
     

@@ -153,13 +153,16 @@ app.DrawLib = {
 	},
 	
 	//draw a given image using the context
-	drawImage: function(img, sourceX, sourceY, sourceW, sourceH, position, size, r){
+	drawImage: function(img, sourceX, sourceY, sourceW, sourceH, position, size, r, flipped){
 		//setup the context
 		app.FriendlyFire.ctx.save();
 		app.FriendlyFire.ctx.translate(position.x,position.y);
 		app.FriendlyFire.ctx.rotate(r);
+		if(flipped) {
+			app.FriendlyFire.ctx.scale(-1,1);
+		}
 		//display image
-		app.FriendlyFire.ctx.drawImage(img, sourceX, sourceY, sourceW, sourceH, 0, 0, size.x, size.y);
+		app.FriendlyFire.ctx.drawImage(img, sourceX, sourceY, sourceW, sourceH, -size.x/2, -size.y/2, size.x, size.y);
 		app.FriendlyFire.ctx.restore();
 	},
 
@@ -172,5 +175,64 @@ app.DrawLib = {
 		app.FriendlyFire.ctx.strokeRect(object.position.x - object.size.x/2, object.position.y - object.size.y/2, object.size.x, object.size.y);
 		app.FriendlyFire.ctx.restore();
 	},
+	
+	//draw text on the screen
+	drawText: function(ctx, string, font, fillColor, position)
+	{
+		ctx.save();
+		ctx.font = font;
+		ctx.fillStyle = fillColor;
+		
+		ctx.fillText(string, position.x, position.y);
+		
+		ctx.restore();
+	}
 
 };//end of drawlib
+
+
+
+
+//----------------------------animation-------------------------------
+
+
+
+
+
+
+//Animation takes a spritesheet (horizontal), the 0 position of the first frame, the size of the frames, the number of frames, and the duration of the animation.
+app.Animation = function () {
+	function Animation(image, zero, size, frames, time) {
+		this.image = new Image();
+		this.image.src = image;
+		this.zero = zero.copy();
+		this.size = size;
+		this.frames = frames;
+		this.time = time;
+		this.currentTime = 0;
+		this.currentFrame = 0;
+		this.currentPosition = zero.copy();
+	}
+	
+	var p = Animation.prototype;
+	
+	//update does all of the math needed to see how far along the animation it currently is. It loops around.
+	p.update = function (dt) {
+		//count time
+		this.currentTime += dt;
+		if (this.currentTime > this.time) {
+			this.currentTime = this.currentTime % this.time;
+		}
+		this.currentFrame = Math.floor(this.frames * this.currentTime / this.time);
+		this.currentPosition.x = this.zero.x + (this.currentFrame * this.size.x);
+	};
+	
+	p.draw = function (position, size, rotation, flipped) {
+		//this just uses the math already doen in this class to  draw the image of the correct part of the spritesheet
+		app.DrawLib.drawImage(this.image, this.currentPosition.x, this.currentPosition.y, this.size.x, this.size.y, position, size, rotation, flipped);
+		
+	};
+	
+	return Animation;
+	
+}(); //end of Animation.js

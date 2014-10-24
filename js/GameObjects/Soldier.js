@@ -45,18 +45,23 @@ app.Soldier = function () {
 		switch (weaponType) {
         case "spear":
             this.color = "yellow";
+			this.walk = new app.Animation(app.IMAGES.YellowWalk, new app.Vector(0, 0), new app.Vector(128, 166), 8, 1.2);
             break;
         case "mace":
             this.color = "green";
+			this.walk = new app.Animation(app.IMAGES.GreenWalk, new app.Vector(0, 0), new app.Vector(128, 166), 8, 1.2);
             break;
         case "axe":
             this.color = "blue";
+			this.walk = new app.Animation(app.IMAGES.BlueWalk, new app.Vector(0, 0), new app.Vector(128, 166), 8, 1.2);
             break;
         case "sword":
             this.color = "red";
+			this.walk = new app.Animation(app.IMAGES.RedWalk, new app.Vector(0, 0), new app.Vector(128, 166), 8, 1.2);
             break;
 		case "enemy":
 			this.color = "grey";
+			this.walk = new app.Animation(app.IMAGES.EnemyWalk, new app.Vector(0, 0), new app.Vector(102, 175), 8, 1.2);
 			break;
 		}
 		
@@ -107,11 +112,15 @@ app.Soldier = function () {
 		var center = new app.Vector(this.size.x / 2, this.size.y / 2);
 		
 		//test to see if there is an image and draw accordingly
-		if (!this.image) {
+		if (!this.walk) {
 			app.DrawLib.drawRect(this.color, this.position, this.size, 0);
 			app.DrawLib.debugRect(this);
 		} else {
-			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
+			if (this.side == "left") {
+				this.walk.draw(this.position, this.size, this.rotation, false);
+			} else {
+				this.walk.draw(this.position, this.size, this.rotation, true);
+			}
 		}
 		
 		//this.drawHealthBar();
@@ -119,29 +128,35 @@ app.Soldier = function () {
 	};//draw
 	
 	p.drawHealthBar = function () {
-		var barPos = new app.Vector(this.position.x, this.position.y - this.size.y*3/4);
+		var barPos = new app.Vector(this.position.x, this.position.y - this.size.y * 3 / 4);
 		app.DrawLib.drawRect("red", barPos, new app.Vector(this.size.x * this.health / 1000, 5), 0);
 
+	};
+	
+	p.weaponCollisions = function () {
+		//----------Soldiers colliding with weapons------------
+        var thrownWeapons;
+		if (this.side == "left") {
+			thrownWeapons = app.FriendlyFire.playField.player.getActiveWeapons();
+        } else if (app.FriendlyFire.playField.players == 2) {
+			thrownWeapons = app.FriendlyFire.playField.player2.getActiveWeapons();
+        }
+        if (this.side == "left" || app.FriendlyFire.playField.players == 2) {
+            for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
+                if (this.colliding(thrownWeapons[i])) { //colliding?
+                    if (this.getWeaponType() == thrownWeapons[i].getWeaponType()){
+                        this.setWeapon(thrownWeapons[i]);
+                        thrownWeapons[i].wasCaught();
+                    } else {
+                        this.health = 0;
+                        this.die();
+                    }//if right weapon
+                }
+            }
+        }
 	}
 	
-    p.collisionHandling = function () {
-		//----------Soldiers colliding with weapons------------
-		var thrownWeapons = app.FriendlyFire.playField.player.getActiveWeapons();
-		
-		if (this.side == "left") {
-			for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
-				if (this.colliding(thrownWeapons[i])) { //colliding?
-					if (this.getWeaponType() == thrownWeapons[i].getWeaponType()){
-						this.setWeapon(thrownWeapons[i]);
-						thrownWeapons[i].wasCaught();
-					} else {
-						this.health = 0;
-						this.die();
-					}//if right weapon
-				}
-			}
-		}
-		
+	p.soldierCollisions = function () {
 		//----------Soldiers colliding with Soldiers------------
 		
 		//start without fighting anyone
@@ -165,9 +180,9 @@ app.Soldier = function () {
 				break;
 			}
 		}
-		
-		
-		
+	}
+	
+	p.castleCollisions = function () {
 		//---------------------Soldiers colliding with Castle----------------------//
 		
 		/* Endless Mode not active*/
@@ -200,6 +215,16 @@ app.Soldier = function () {
 				}
 			}
 		}
+	}
+	
+	
+	
+    p.collisionHandling = function () {
+		if(this.lane.playField.players > 0) {
+			this.weaponCollisions();
+		}
+		this.soldierCollisions();
+		this.castleCollisions();
 	};
 	
 	
@@ -219,7 +244,9 @@ app.Soldier = function () {
 	p.update = function (dt) {
 	
 		if (!this.dead && !this.fighting) {
-            
+		if(this.walk) { 
+            this.walk.update(dt);
+		}
             //move
 			if (this.side == "left") {
 				this.position.x += this.speed * dt;

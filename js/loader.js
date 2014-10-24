@@ -22,6 +22,7 @@ var app = app || {};
 //"hashtable" of keycodes to their actual values
 app.KEYBOARD = 
 {
+	"KEY_ESC": 27,
 	"KEY_ENTER": 13,
 	"KEY_LEFT": 37,
 	"KEY_UP": 38,
@@ -32,7 +33,15 @@ app.KEYBOARD =
 	"KEY_A": 65,
 	"KEY_S": 83,
 	"KEY_D": 68,
-	"KEY_P": 80
+    "KEY_Q": 81,
+    "KEY_E": 69,
+	"KEY_P": 80,
+    "KEY_I": 73,
+    "KEY_J": 74,
+    "KEY_K": 75,
+    "KEY_L": 76,
+    "KEY_U": 85,
+    "KEY_O": 79
 };
 
 //mouse object with coords and click state
@@ -46,17 +55,11 @@ app.mouse =
 //"hashtable" of our images
 app.IMAGES = 
 {
-	teamLogo: "images/logo.png",
-	controlMenu: "images/controlMenu.png",
-	instructionMenu: "images/instructionMenu.png",
-	twoPlayer: "images/twoPlayer.png",
-	difficultyMenu: "images/difficultyMenu.png"
-	/*
-		sword: "images/sword.png"
-		axe: "images/axe.png"
-		spear: "images/spear.png"
-		mace: "images/mace.png"
-	*/
+	RedWalk: "images/Red Walk Cycle.png",
+	BlueWalk: "images/Blue Walk Cycle.png",
+	GreenWalk: "images/Green Walk Cycle.png",
+	YellowWalk: "images/Yellow Walk Cycle.png",
+	EnemyWalk: "images/Enemy Walk Cycle.png"
 };
 
 //array of booleans representing pressed keys
@@ -95,11 +98,11 @@ window.onload = function() {
 		app.FriendlyFire.init();
 	});
 	app.queue.loadManifest([
-		{id: "teamLogo", src:"images/logo.png"},
-		{id: "controlMenu", src:"images/controlMenu.png"},
-		{id: "instructionMenu", src:"images/instructionMenu.png"},
-		{id: "twoPlayer", src:"images/twoPlayer.png"},
-		{id: "difficultyMenu", src:"images/instructionMenu.png"}
+		{id: "RedWalk", src:"images/Red Walk Cycle.png"},
+		{id: "BlueWalk", src:"images/Blue Walk Cycle.png"},
+		{id: "GreenWalk", src:"images/Green Walk Cycle.png"},
+		{id: "YellowWalk", src:"images/Yellow Walk Cycle.png"},
+		{id: "EnemyWalk", src:"images/Enemy Walk Cycle.png"}
     ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because

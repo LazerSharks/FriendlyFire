@@ -35,8 +35,11 @@ app.Castle = function () {
 		this.dead = false;
         
 		this.health = 10000;
+		this.maxHealth = this.health;
+		
 		this.strength = 20;
 		this.color = "grey";
+		this.invincible = false;
         
 	}//constructor
 		
@@ -63,8 +66,10 @@ app.Castle = function () {
 	};
 	
 	p.takeDamage = function (damage) {
-		this.health -= damage;
-		if (this.health <= 0) { this.die(); }
+		if(!this.invincible) {
+			this.health -= damage;
+			if (this.health <= 0) { this.die(); }
+		}
 	};
 	
 	//Soldier Draw Method
@@ -82,7 +87,7 @@ app.Castle = function () {
 		} else {
 			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
 		}
-		if (this.health > 0) {
+		if (this.health > 0 && !this.invincible) {
 			this.drawHealthBar();
 		}
 	};//draw
@@ -100,6 +105,13 @@ app.Castle = function () {
                 gameObject.position.y + gameObject.size.y > this.position.y);
 	};
 	
+	//set the castle's health to max
+	p.respawn = function()
+	{
+		this.health = this.maxHealth;
+		this.dead = false;
+		this.color = "grey";
+	}
     
     
 	p.update = function (dt) {

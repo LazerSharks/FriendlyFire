@@ -24,19 +24,21 @@ app.Button = function()
 {
 
 	//Button constructor
-	function Button(image,x,y,width,height) 
+	function Button(text, font, fontColor, image,x,y,width,height) 
 	{
 		// Instance variables of Button
-		/*this.x = x;
-		this.y = y;*/
-		this.vector = new app.Vector(x, y);
-		this.width = width;
-		this.height = width;
+		this.position = new app.Vector(x, y);
+		this.size = new app.Vector(width, height);
 		this.scale = 1;
+		
+		//store the text to be drawn on the button
+		this.text = text;
+		this.font = font;
+		this.fontColor = fontColor;
 		
 		//set the image and default "backup" color
 		this.image = image;
-		this.color = "red";
+		this.color = "#845B0E";
 		this.clicked = false;
 		
 	};//constructor
@@ -49,20 +51,32 @@ app.Button = function()
 	{
 		ctx.save();
 		
+		if(this.clicked)
+		{
+			this.scale = 1.0;
+		}
+		
 		//drawing origin is top left corner
 		//use this to center image on (x,y)
-		var halfW = (this.width * this.scale)/2;
-		var halfH = (this.height * this.scale)/2;
+		var halfW = (this.size.x * this.scale)/2;
+		var halfH = (this.size.y * this.scale)/2;
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.image){
 			ctx.fillStyle = this.color;
-			ctx.fillRect(this.vector.x - halfW, this.vector.y - halfH, this.width * this.scale, this.height * this.scale);
+			ctx.fillRect(this.position.x - halfW, this.position.y - halfH, this.size.x * this.scale, this.size.y * this.scale);
 			
 		} else{
-			ctx.drawImage(this.image,this.vector.x - halfW, this.vector.y - halfH, this.width * this.scale, this.height * this.scale);
+			ctx.drawImage(this.image,this.position.x - halfW, this.position.y - halfH, this.size.x * this.scale, this.size.y * this.scale);
 		}//if image
 		
+		ctx.restore();
+		
+		ctx.save();
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		//drawText(ctx, string, font, fillColor, position)
+		app.DrawLib.drawText(ctx, this.text, this.font, this.fontColor, this.position);
 		ctx.restore();
 		
 		//handle any input
@@ -71,6 +85,14 @@ app.Button = function()
 	
 	//accessor/get for clicked state
 	p.isClicked = function() {return this.clicked;};
+	
+	//reset the button's click state
+	p.clickResolution = function()
+	{
+		//createjs.Sound.play("buttonClick");
+		this.scale = 1.0;
+		this.clicked = false;
+	}
 	
 	// private functions/methods
 	
@@ -83,8 +105,8 @@ app.Button = function()
 		var my = mouse.y;
 		
 		//if the mouse coords are within the button return true
-		if(mx > that.vector.x - that.width/2 && mx < that.vector.x + that.width/2
-			&& my > that.vector.y - that.height/2 && my < that.vector.y + that.height/2)
+		if(mx > that.position.x - that.size.x/2 && mx < that.position.x + that.size.x/2
+			&& my > that.position.y - that.size.y/2 && my < that.position.y + that.size.y/2)
 			return true;
 		else
 			return false;
@@ -105,7 +127,7 @@ app.Button = function()
 		//if hovering enlarge button and set click state to the mouse's click state
 		if(hovering)
 		{
-			that.scale = 2;
+			that.scale = 1.2;
 			that.clicked = mouse.clicked;
 		}
 		else
@@ -117,5 +139,6 @@ app.Button = function()
 	};//hover
 	
 	return Button;
+	
 	
 }();//end of Button.js

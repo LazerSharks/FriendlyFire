@@ -53,8 +53,15 @@ app.Lane = function () {
     
 
     p.update = function (dt) {
-        this.spawnEnemies(dt);
-        this.spawnGoodGuys(dt);
+        if (this.endlessMode) {
+            this.ENEMY_SOLDIER_PROBABILITY += (dt * 0.001);
+        }
+        this.spawnLeftGuys(dt);
+        if (this.playField.players == 1) {
+            this.spawnEnemies(dt);
+        } else {
+            this.spawnRightGuys(dt);
+        }
         
         for (var i = 0; i < this.leftSoldiers.length; i++) {
             this.leftSoldiers[i].update(dt);
@@ -87,7 +94,7 @@ app.Lane = function () {
     
     
     //handles the spawning of friendlies
-    p.spawnGoodGuys = function (dt) {
+    p.spawnLeftGuys = function (dt) {
         this.friendlyTimer += dt;
         
         if (Math.random() < this.FRIENDLY_SOLDIER_PROBABILITY && this.friendlyTimer > this.FRIENDLY_SOLDIER_FREQUENCY) {
@@ -101,7 +108,20 @@ app.Lane = function () {
         }
     };
     
-    
+    //handles the spawning of friendlies
+    p.spawnRightGuys = function (dt) {
+        this.enemyTimer += dt;
+        
+        if (Math.random() < this.ENEMY_SOLDIER_PROBABILITY && this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY) {
+            //reset timer
+            this.enemyTimer = 0;
+            //create soldier
+            var weapon = getRandomWeapon();
+            this.rightSoldiers.push(new app.Soldier(undefined, this.rightSpawn.copy(), "right", this, weapon, this.endlessMode));
+        } else if (this.enemyTimer > this.ENEMY_SOLDIER_FREQUENCY) {
+            this.enemyTimer = 0;
+        }
+    };
     
     p.draw = function () {
         
@@ -134,8 +154,15 @@ app.Lane = function () {
         if(this.deadSoldiers.length > 10) {
             this.deadSoldiers.splice(0,1);
         }
-    }
+    };
     
+	//empty the lanes of all soldiers
+	p.clearLane = function()
+	{
+		this.leftSoldiers = [];
+        this.rightSoldiers = [];
+        this.deadSoldiers = [];
+	};
     
     
     //private
@@ -158,7 +185,7 @@ app.Lane = function () {
             break;
         }
         return weapon;
-	}
+	};
     
     
     
