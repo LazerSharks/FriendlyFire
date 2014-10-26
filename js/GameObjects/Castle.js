@@ -26,6 +26,7 @@ app.Castle = function () {
 	function Castle(image, position, size, side) {
 		// Instance variables of Soldier
         this.image = app.IMAGES.Castle;
+		this.flag;
 		this.position = position;
         this.size = size;
 		this.collider = size;
@@ -98,14 +99,31 @@ app.Castle = function () {
 		if (this.health > 0 && !this.invincible) {
 			this.drawHealthBar();
 		}
+		if(app.FriendlyFire.playField.players > 0) {
+			this.drawFlag();
+		}
 	};//draw
 	
+	p.drawFlag = function() {
+		var flagPos;
+		var flagSize = new app.Vector(125,75);
+		if(this.side == "left") {
+			flagPos = new app.Vector(200,50);
+		}else {
+			flagPos = new app.Vector(1400,50);
+		}
+        var image = new Image();
+        image.src = this.flag;
+		app.DrawLib.drawImage(image, 0, 0, 500, 300, flagPos, flagSize, 0, false);
+	};
+	
 	p.drawHealthBar = function () {
-			var barPos
+	
+		var barPos;
 		if (this.side == "left") {
-			barPos = new app.Vector(400, 50);
+			barPos = new app.Vector(500, 50);
 		} else {
-			barPos = new app.Vector(1200, 50);
+			barPos = new app.Vector(1100, 50);
 		}
 		app.DrawLib.drawRect("red", barPos, new app.Vector(this.health / 24, 10), 0);
 

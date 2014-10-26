@@ -95,12 +95,17 @@ app.PlayField = function () {
 	p.setDifficulty = function (choice) {
 		switch (choice) {
 		case "easy":
+				this.leftCastle.flag = app.IMAGES.flagBritain;
+				this.rightCastle.flag = app.IMAGES.flagFrance;
 		case "twoPlayer":
 			this.endlessMode = false;
 			for (var i = 1; i < 4; i++) {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].endlessMode = this.endlessMode;
+				this.leftCastle.flag = app.IMAGES.flagUS;
+				this.rightCastle.flag = app.IMAGES.flagCanada;
+				
 			}
 			break;
 		case "medium":
@@ -109,6 +114,8 @@ app.PlayField = function () {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.275;
 				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].endlessMode = this.endlessMode;
+				this.leftCastle.flag = app.IMAGES.flagBritain;
+				this.rightCastle.flag = app.IMAGES.flagItaly;
 			}
 			break;
 		case "hard":
@@ -117,6 +124,8 @@ app.PlayField = function () {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.35;
 				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].endlessMode = this.endlessMode;
+				this.leftCastle.flag = app.IMAGES.flagBritain;
+				this.rightCastle.flag = app.IMAGES.flagGermany;
 			}
 
 			break;
@@ -126,6 +135,7 @@ app.PlayField = function () {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].endlessMode = this.endlessMode;
+				this.leftCastle.flag = app.IMAGES.flagBritain;
 			}
 			break;
 		}

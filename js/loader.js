@@ -86,7 +86,14 @@ app.IMAGES =
 	
 	Castle: "images/Castle.png",
 	Tombstone: "images/Tombstone.png",
-	controls: "images/controls.png"
+	controls: "images/controls.png",
+	
+	flagBritain: "images/gb.png",
+	flagFrance: "images/fr.png",
+	flagItaly: "images/it.png",
+	flagGermany: "images/de.png",
+	flagUS: "images/us.png",
+	flagCanada: "images/ca.png"
 };
 
 //array of booleans representing pressed keys
@@ -154,7 +161,14 @@ window.onload = function() {
 		{id: "EnemyAttack", src:"images/EnemyAttack.png"},
 		{id: "Castle", src:"images/Castle.png"},
 		{id: "Tombstone", src:"images/Tombstone.png"},
-		{id: "controls", src:"images/controls.png"}
+		{id: "controls", src:"images/controls.png"},
+		
+		{id: "flagBritain", src:"images/gb.png"},
+		{id: "flagFrance", src:"images/fr.png"},
+		{id: "flagItaly", src:"images/it.png"},
+		{id: "flagGermany", src:"images/de.png"},
+		{id: "flagUS", src:"images/us.png"},
+		{id: "flagCanada", src:"images/ca.png"},
     ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because
