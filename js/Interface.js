@@ -43,7 +43,7 @@ app.Interface =
 		this.buttons =
 		{
 			//Button(text, font, fontColor, image,x,y,width,height)
-			"menuButton" : new app.Button("MENU", "24pt Comic Sans MS", "white", undefined, this.WIDTH/9 + 10, this.HEIGHT/10, 175, 75),
+			"menuButton" : new app.Button("MENU", "24pt Comic Sans MS", "white", undefined, this.WIDTH/2, this.HEIGHT/10, 175, 75),
 			"menuSinglePlayerButton" : new app.Button("SINGLE PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3,250,75),
 			"menuTwoPlayerButton" : new app.Button("TWO PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding,250,75),
 			"menuEndlessButton" : new app.Button("ENDLESS MODE", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding*2,250,75),
@@ -60,6 +60,9 @@ app.Interface =
 			"pauseRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2, 250, 75),
 			"pauseButton" : new app.Button("||", "bold 22px Comic Sans MS", "white", undefined,(this.WIDTH/2),50, 50, 50),
 			"pauseQuitButton" : new app.Button("QUIT", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
+			"gameOverMenuButton" : new app.Button("MENU", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 300, 250, 75),
+			"gameOverDifficultyButton" : new app.Button("DIFFICULTY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2+200, 250, 75),
+			"gameOverRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
 		};
 	},
 	
@@ -92,17 +95,6 @@ app.Interface =
 		
 		//menu splash screen
 		var image = undefined;
-		//var image = new Image();
-		//image.src = this.images['controlMenu'];
-		
-		//test to see if there is an image and draw accordingly
-		/*
-		if(!image){
-			ctx.fillStyle = "red";
-			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
-		}else{
-			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
-		}*///if image
 		
 		
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
@@ -125,11 +117,8 @@ app.Interface =
 		//menu splash screen
 		var image = new Image();
 		image.src = this.images['controls'];
-		//image.src = this.images['controlMenu'];
-
-		//if image
 		
-		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/2, this.HEIGHT/2), 0);
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(2*this.WIDTH/3-125, this.HEIGHT/2), 0);
 		
         ctx.drawImage(image,0,-40, this.WIDTH, this.HEIGHT);
 		//draw the menu button since we are in the menu
@@ -141,25 +130,16 @@ app.Interface =
 	
 		//Draw instructions UI
 	drawInstructions : function(ctx, mouse) {
-		console.log("Instructions");
-		//this is still bare.  Needs to be replaced with various things
+				//this is still bare.  Needs to be replaced with various things
 		ctx.save();
 		
 		//menu splash screen
-		var image = undefined;
-		//var image = new Image();
-		//image.src = this.images['instructionMenu'];
+		var image = new Image();
+		//image.src = this.images['instructions'];
 		
-		//test to see if there is an image and draw accordingly
-		if(!image){
-			ctx.fillStyle = "red";
-			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
-		}else{
-			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
-		}//if image
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(2*this.WIDTH/3-125, this.HEIGHT/2), 0);
 		
-		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/2, this.HEIGHT/2), 0);
-		
+        //ctx.drawImage(image,0,-40, this.WIDTH, this.HEIGHT);
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
 		this.buttons["instructionsControlButton"].draw(ctx,mouse);
@@ -173,21 +153,6 @@ app.Interface =
 		//this is still bare.  Needs to be replaced with various things
 		ctx.save();
 		
-		//menu splash screen
-		
-		var image = undefined;
-		
-		/*var image = new Image();
-		image.src = this.images['difficultyMenu'];*/
-		
-		//test to see if there is an image and draw accordingly
-		/*
-		if(!image){
-			ctx.fillStyle = "red";
-			ctx.fillRect(0,0, this.WIDTH, this.HEIGHT);
-		}else{
-			ctx.drawImage(image,0,0, this.WIDTH, this.HEIGHT);
-		}//if image*/
 		
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
 		
@@ -216,8 +181,44 @@ app.Interface =
 	},
 	
 	drawGameOver: function(ctx, mouse) {
-		this.buttons["resumeButton"].draw(ctx,mouse);
-		this.buttons["quitButton"].draw(ctx,mouse);
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);// background
+		
+		var playField =  app.FriendlyFire.playField;
+		var textPad = 50;
+		
+		ctx.save();
+		ctx.textAlign = "center";
+		app.DrawLib.drawText(ctx, "GAME OVER", "32pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6));
+		
+		switch(playField.mode)
+		{
+			case "singlePlayer":
+				if(playField.leftCastle.health <=0)
+				{
+					app.DrawLib.drawText(ctx, "YOU LOSE", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+				}
+				else if(playField.rightCastle.health <=0)
+				{
+					app.DrawLib.drawText(ctx, "YOU WIN", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+				}
+				break;
+			case "twoPlayer":
+				if(playField.leftCastle.health <=0)
+				{
+					app.DrawLib.drawText(ctx, "PLAYER 2 WINS", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+				}
+				else if(playField.rightCastle.health <=0)
+				{
+					app.DrawLib.drawText(ctx, "PLAYER 1 WINS", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+				}
+				break;
+		}
+		
+		ctx.restore();
+		
+		this.buttons["gameOverMenuButton"].draw(ctx,mouse);
+		this.buttons["gameOverDifficultyButton"].draw(ctx,mouse);
+		this.buttons["gameOverRestartButton"].draw(ctx,mouse);
 	},
 	
 	//Test to see if a certain button is clicked or not

@@ -41,34 +41,39 @@ app.Soldier = function () {
 		this.grave = new Image();
 		this.grave.src = app.IMAGES.Tombstone;
 		
+		this.weaponWalkFrame = 7;
+		this.weaponlessWalkFrame = 7;
+		this.weaponFightFrame = 5;
+		this.weaponlessFightFrame = 7;
+		
 		//set the image and default "backup" color
 		this.image = image;
 		
 		switch (weaponType) {
         case "spear":
             this.color = "yellow";
-			this.walk = new app.Animation(app.IMAGES.YellowWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-            this.fight = new app.Animation(app.IMAGES.YellowAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.YellowWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessWalkFrame, 1.2);
+            this.fight = new app.Animation(app.IMAGES.YellowAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessFightFrame, 1.2);
 			break;
         case "mace":
             this.color = "green";
-			this.walk = new app.Animation(app.IMAGES.GreenWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-            this.fight = new app.Animation(app.IMAGES.GreenAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.GreenWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessWalkFrame, 1.2);
+            this.fight = new app.Animation(app.IMAGES.GreenAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessFightFrame, 1.2);
 			break;
         case "axe":
             this.color = "blue";
-			this.walk = new app.Animation(app.IMAGES.BlueWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-			this.fight = new app.Animation(app.IMAGES.BlueAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.BlueWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessWalkFrame, 1.2);
+			this.fight = new app.Animation(app.IMAGES.BlueAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessFightFrame, 1.2);
             break;
         case "sword":
             this.color = "red";
-			this.walk = new app.Animation(app.IMAGES.RedWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-            this.fight = new app.Animation(app.IMAGES.RedAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.RedWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessWalkFrame, 1.2);
+            this.fight = new app.Animation(app.IMAGES.RedAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessFightFrame, 1.2);
 			break;
 		case "enemy":
 			this.color = "grey";
-			this.walk = new app.Animation(app.IMAGES.EnemyWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-			this.fight = new app.Animation(app.IMAGES.EnemyAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.EnemyWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessWalkFrame, 1.2);
+			this.fight = new app.Animation(app.IMAGES.EnemyAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponlessFightFrame, 1.2);
 			break;
 		}
 		
@@ -167,6 +172,7 @@ app.Soldier = function () {
                         this.setWeapon(thrownWeapons[i]);
                         thrownWeapons[i].wasCaught();
 						this.switchAnimations();
+						break;
                     } else {
                         this.health = 0;
                         this.die();
@@ -180,20 +186,20 @@ app.Soldier = function () {
 	{
 		switch (this.color){
 			case "yellow":
-				this.walk = new app.Animation(app.IMAGES.YellowWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-				this.fight = new app.Animation(app.IMAGES.YellowWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), 5, .75);
+				this.walk = new app.Animation(app.IMAGES.YellowWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponWalkFrame, 1.2);
+				this.fight = new app.Animation(app.IMAGES.YellowWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponFightFrame, .75);
 				break;
 			case "green":
-				this.walk = new app.Animation(app.IMAGES.GreenWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-				this.fight = new app.Animation(app.IMAGES.GreenWeaponAttack, new app.Vector(0, 0),  new app.Vector(200, 165), 5, .75); 
+				this.walk = new app.Animation(app.IMAGES.GreenWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponWalkFrame, 1.2);
+				this.fight = new app.Animation(app.IMAGES.GreenWeaponAttack, new app.Vector(0, 0),  new app.Vector(200, 165), this.weaponFightFrame, .75); 
 				break;
 			case "blue":
-				this.walk = new app.Animation(app.IMAGES.BlueWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-				this.fight = new app.Animation(app.IMAGES.BlueWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), 5, .75);
+				this.walk = new app.Animation(app.IMAGES.BlueWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponWalkFrame, 1.2);
+				this.fight = new app.Animation(app.IMAGES.BlueWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponFightFrame, .75);
 				break;
 			case "red":
-				this.walk = new app.Animation(app.IMAGES.RedWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-				this.fight = new app.Animation(app.IMAGES.RedWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), 5, .75); 
+				this.walk = new app.Animation(app.IMAGES.RedWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponWalkFrame, 1.2);
+				this.fight = new app.Animation(app.IMAGES.RedWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), this.weaponFightFrame, .75); 
 				break;
 		}
 	}
@@ -239,10 +245,13 @@ app.Soldier = function () {
 				castle = this.lane.playField.leftCastle;
 			}
 			
-			if (this.colliding(castle)) {
-				this.fighting = true;
-				castle.takeDamage(this.attack());
-				this.takeDamage(castle.attack());
+			if(castle.health> 0)
+			{
+				if (this.colliding(castle)) {
+					this.fighting = true;
+					castle.takeDamage(this.attack());
+					this.takeDamage(castle.attack());
+				}
 			}
 		}
 		else
@@ -250,14 +259,17 @@ app.Soldier = function () {
 			var castle;
 			if(this.side == "right") {
 				castle = this.lane.playField.leftCastle;
+			}
 			
-			
+			if(castle.health> 0)
+			{
 				if (this.colliding(castle)) {
 					this.fighting = true;
 					castle.takeDamage(this.attack());
 					this.takeDamage(castle.attack());
 				}
 			}
+			
 		}
 	}
 	

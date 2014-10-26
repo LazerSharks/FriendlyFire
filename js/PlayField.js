@@ -23,6 +23,9 @@ app.PlayField = function () {
     
     function PlayField(players) {
         this.players = players;
+		
+		//track the difficulty
+		this.mode = undefined;
         
         //create the castles
         this.leftCastle = new app.Castle(undefined, new app.Vector(50, 450), new app.Vector(100, 900), "left");
@@ -95,7 +98,16 @@ app.PlayField = function () {
 	p.setDifficulty = function (choice) {
 		switch (choice) {
 		case "easy":
+			this.mode = "singlePlayer";
+			this.endlessMode = false;
+			for (var i = 1; i < 4; i++) {
+				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
+				this.lanes[i].endlessMode = this.endlessMode;
+			}
+			break;
 		case "twoPlayer":
+			this.mode = "twoPlayer";
 			this.endlessMode = false;
 			for (var i = 1; i < 4; i++) {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
@@ -104,6 +116,7 @@ app.PlayField = function () {
 			}
 			break;
 		case "medium":
+			this.mode = "singlePlayer";
 			this.endlessMode = false;
 			for (var i = 1; i < 4; i++) {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.275;
@@ -112,6 +125,7 @@ app.PlayField = function () {
 			}
 			break;
 		case "hard":
+			this.mode = "singlePlayer";
 			this.endlessMode = false;
 			for (var i = 1; i < 4; i++) {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.35;
@@ -121,6 +135,7 @@ app.PlayField = function () {
 
 			break;
 		case "endless":
+			this.mode = "endless";
 			this.endlessMode = true;
 			for (var i = 1; i < 4; i++) {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
@@ -133,6 +148,20 @@ app.PlayField = function () {
 	
 	p.restoreField = function(obj)
 	{
+		if(this.players >0)
+		{
+			this.player.position = this.player.startPosition.copy();
+			this.player.currentWeaponIndex = 0;
+			this.player.weaponType = "spear";
+			this.player.color = "yellow";
+		}
+		if(this.players == 2)
+		{
+			this.player2.position = this.player2.startPosition.copy();
+			this.player2.currentWeaponIndex = 0;
+			this.player2.weaponType = "spear";
+			this.player2.color = "yellow";
+		}
 		obj.lanes[1].clearLane();
         obj.lanes[2].clearLane();
         obj.lanes[3].clearLane();
