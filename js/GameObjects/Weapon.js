@@ -27,6 +27,7 @@ app.Weapon = function () {
 		// Instance variables of Weapon
 		this.position = position;
 		this.size = size;
+		this.collider = new app.Vector(20, 80);
 		this.soldier = undefined;
 		this.speed = 480;
 		this.weaponType = weaponType;

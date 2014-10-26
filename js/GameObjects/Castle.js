@@ -28,6 +28,7 @@ app.Castle = function () {
         this.image = app.IMAGES.Castle;
 		this.position = position;
         this.size = size;
+		this.collider = size;
 		this.side = side;
         
 		this.fighting = false;
@@ -100,8 +101,13 @@ app.Castle = function () {
 	};//draw
 	
 	p.drawHealthBar = function () {
-		var barPos = new app.Vector(this.position.x, this.position.y);
-		app.DrawLib.drawRect("red", barPos, new app.Vector(5, this.size.x * this.health / 1200), 0);
+			var barPos
+		if (this.side == "left") {
+			barPos = new app.Vector(400, 50);
+		} else {
+			barPos = new app.Vector(1200, 50);
+		}
+		app.DrawLib.drawRect("red", barPos, new app.Vector(this.health / 24, 10), 0);
 
 	};
 	
