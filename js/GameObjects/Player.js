@@ -33,12 +33,13 @@ app.Player = function () {
 		  this.position = new app.Vector(1200, 800);
 		  this.startPosition = new app.Vector(1200, 800);
         }
-		this.size = new app.Vector(60, 80);
+		this.size = new app.Vector(100, 105);
 		this.speed = 320;
 		this.activeWeapons = [];
 		
 		//set the image and default "backup" color
-		this.image = image;
+		this.image = app.IMAGES.Blacksmith;
+		this.weaponImage = app.IMAGES.Spear;
         
 		this.currentWeaponIndex = 0;
 		this.weaponType = "spear";
@@ -80,18 +81,16 @@ app.Player = function () {
 	//Player Draw Method
 	p.draw = function () {
         
-		//drawing origin is top left corner
-		//use this to center image on (x,y)
-		var center = new app.Vector(this.size.x / 2, this.size.y / 2);
 		
+		var image = new Image();
+		image.src = this.image;
 		//test to see if there is an image and draw accordingly
-		if (!this.image) {
-			app.DrawLib.drawRect(this.color, this.position, this.size, 0);
-			app.DrawLib.debugRect(this);
-			
-		} else {
-			app.DrawLib.drawImage(this.img, 0, 0, 10, 10, this.position.difference(center), center, 0);
-		}//if image
+        app.DrawLib.drawImage(image, 0, 0, 120, 125, this.position, this.size, 0, false);//if image
+		var weaponSize = new app.Vector(40,120);
+		var weaponPos = new app.Vector(this.position.x,this.position.y + 20);
+		var weaponImage = new Image();
+		weaponImage.src = this.weaponImage;
+        app.DrawLib.drawImage(weaponImage, 0, 0, 140, 320, weaponPos, weaponSize, -Math.PI/2, false);//if image
 		
 		for (var i = 0; i < this.activeWeapons.length; i++)
 		{
@@ -154,21 +153,25 @@ app.Player = function () {
 			case 0:
 				this.color = "yellow";
 				this.weaponType = "spear";
+				this.weaponImage = app.IMAGES.Spear;
 				this.currentWeaponUpgrade = this.spearUpgrade;
 				break;
 			case 1:
 				this.color = "green";
 				this.weaponType = "mace";
+				this.weaponImage = app.IMAGES.Mace;
 				this.currentWeaponUpgrade = this.maceUpgrade;
 				break;
 			case 2:
 				this.color = "blue";
 				this.weaponType = "axe";
+				this.weaponImage = app.IMAGES.Axe;
 				this.currentWeaponUpgrade = this.axeUpgrade;
 				break;
 			case 3:
 				this.color = "red";
 				this.weaponType = "sword";
+				this.weaponImage = app.IMAGES.Sword;
 				this.currentWeaponUpgrade = this.swordUpgrade;
 				break;
 		}

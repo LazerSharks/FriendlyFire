@@ -261,7 +261,7 @@ app.Soldier = function () {
 				castle = this.lane.playField.leftCastle;
 			}
 			
-			if(castle.health> 0)
+			if(castle != undefined && castle.health> 0)
 			{
 				if (this.colliding(castle)) {
 					this.fighting = true;

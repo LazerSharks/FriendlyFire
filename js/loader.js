@@ -84,7 +84,10 @@ app.IMAGES =
 	EnemyWalk: "images/EnemyWalk.png",
 	EnemyAttack: "images/EnemyAttack.png",
 	
+	Blacksmith: "images/Blacksmith.png",
 	Castle: "images/Castle.png",
+	CastleDamaged: "images/castledamaged.png",
+	CastleDestroyed: "images/castledestroyed.png",
 	Tombstone: "images/Tombstone.png",
 	controls: "images/controls.png",
 	
@@ -160,7 +163,12 @@ window.onload = function() {
 		
 		{id: "EnemyWalk", src:"images/EnemyWalk.png"},
 		{id: "EnemyAttack", src:"images/EnemyAttack.png"},
+		
+		
+		{id: "Blacksmith", src:"images/Blacksmith.png"},
 		{id: "Castle", src:"images/Castle.png"},
+		{id: "CastleDamaged", src:"images/castledamaged.png"},
+		{id: "CastleDestroyed", src:"images/castledestroyed.png"},
 		{id: "Tombstone", src:"images/Tombstone.png"},
 		{id: "controls", src:"images/controls.png"},
 		

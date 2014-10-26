@@ -70,7 +70,8 @@ app.Castle = function () {
 	p.takeDamage = function (damage) {
 		if (!this.invincible) {
 			this.health -= damage;
-			if (this.health <= 0) { this.die(); }
+			if (this.health <= 5000) { this.image = app.IMAGES.CastleDamaged; }
+			if (this.health <= 0) { this.die(); this.image = app.IMAGES.CastleDestroyed; }
 		}
 	};
 	
@@ -91,8 +92,8 @@ app.Castle = function () {
         } else {
             bottom = new app.Vector(1600, this.position.y + this.size.y / 8);
             top = new app.Vector(1600, this.position.y - this.size.y / 4);
-            app.DrawLib.drawImage(image, 0, 0, 297, 646, top, size, 0, false);
-            app.DrawLib.drawImage(image, 0, 0, 297, 646, bottom, size, 0, false);
+            app.DrawLib.drawImage(image, 0, 0, 297, 646, top, size, 0, true);
+            app.DrawLib.drawImage(image, 0, 0, 297, 646, bottom, size, 0, true);
         }
         
         
