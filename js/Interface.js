@@ -60,9 +60,9 @@ app.Interface =
 			"pauseRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2, 250, 75),
 			"pauseButton" : new app.Button("||", "bold 22px Comic Sans MS", "white", undefined,(this.WIDTH/2),50, 50, 50),
 			"pauseQuitButton" : new app.Button("QUIT", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
-			"gameOverMenuButton" : new app.Button("MENU", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 300, 250, 75),
-			"gameOverDifficultyButton" : new app.Button("DIFFICULTY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2+200, 250, 75),
-			"gameOverRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
+			"gameOverMenuButton" : new app.Button("MENU", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
+			"gameOverDifficultyButton" : new app.Button("DIFFICULTY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2, 250, 75),
+			"gameOverRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 - 100, 250, 75),
 		};
 	},
 	
@@ -196,20 +196,24 @@ app.Interface =
 				if(playField.leftCastle.health <=0)
 				{
 					app.DrawLib.drawText(ctx, "YOU LOSE", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+					playField.rightCastle.invincible = true;
 				}
 				else if(playField.rightCastle.health <=0)
 				{
 					app.DrawLib.drawText(ctx, "YOU WIN", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+					playField.leftCastle.invincible = true;
 				}
 				break;
 			case "twoPlayer":
 				if(playField.leftCastle.health <=0)
 				{
 					app.DrawLib.drawText(ctx, "PLAYER 2 WINS", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+					playField.rightCastle.invincible = true;
 				}
 				else if(playField.rightCastle.health <=0)
 				{
 					app.DrawLib.drawText(ctx, "PLAYER 1 WINS", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
+					playField.leftCastle.invincible = true;
 				}
 				break;
 		}
