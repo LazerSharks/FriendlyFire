@@ -56,12 +56,22 @@ app.Lane = function () {
         if (this.endlessMode) {
             this.ENEMY_SOLDIER_PROBABILITY += (dt * 0.001);
         }
-        this.spawnLeftGuys(dt);
-        if (this.playField.players == 1) {
-            this.spawnEnemies(dt);
-        } else {
-            this.spawnRightGuys(dt);
-        }
+		
+		var leftCastle = this.playField.leftCastle;
+		var rightCastle = this.playField.rightCastle;
+		
+		if(leftCastle.health > 0)
+		{
+			this.spawnLeftGuys(dt);
+		}
+		if(rightCastle.health > 0)
+		{
+			if (this.playField.players == 1) {
+				this.spawnEnemies(dt);
+			} else {
+				this.spawnRightGuys(dt);
+			}
+		}
         
         for (var i = 0; i < this.leftSoldiers.length; i++) {
             this.leftSoldiers[i].update(dt);

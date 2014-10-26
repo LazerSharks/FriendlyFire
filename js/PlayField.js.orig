@@ -98,16 +98,19 @@ app.PlayField = function () {
 	p.setDifficulty = function (choice) {
 		switch (choice) {
 		case "easy":
+<<<<<<< HEAD
+				this.leftCastle.flag = app.IMAGES.flagBritain;
+				this.rightCastle.flag = app.IMAGES.flagFrance;
+=======
 			this.mode = "singlePlayer";
 			this.endlessMode = false;
 			for (var i = 1; i < 4; i++) {
 				this.lanes[i].ENEMY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].FRIENDLY_SOLDIER_PROBABILITY = 0.2;
 				this.lanes[i].endlessMode = this.endlessMode;
-				this.leftCastle.flag = app.IMAGES.flagBritain;
-				this.rightCastle.flag = app.IMAGES.flagFrance;
 			}
 			break;
+>>>>>>> d6d731262b1e28131b73126cedac273482945cdb
 		case "twoPlayer":
 			this.mode = "twoPlayer";
 			this.endlessMode = false;

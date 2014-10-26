@@ -55,7 +55,7 @@ app.mouse =
 //"hashtable" of our images
 app.IMAGES = 
 {
-
+	teamLogo: "images/Laser Shark.png",
 	Spear: "images/Spear.png",
 	Sword: "images/Sword.png",
 	Mace: "images/Mace.png",
@@ -132,6 +132,7 @@ window.onload = function() {
 		app.FriendlyFire.init();
 	});
 	app.queue.loadManifest([
+		{id: "teamLogo", src:"images/Laser Shark.png"},
 		{id: "Spear", src:"images/Spear.png"},
 		{id: "Sword", src:"images/Sword.png"},
 		{id: "Mace", src:"images/Mace.png"},

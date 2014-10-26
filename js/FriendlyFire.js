@@ -60,16 +60,18 @@ app.FriendlyFire = {
 		this.gameState = {
 			intro: 0,
 			controls: 1,
-			intstructions: 2,
+			instructions: 2,
 			play: 3,
 			paused: 4,
 			over: 5,
 			difficulty: 6,
 			twoPlayerTrollScreen: 7,
-			mainMenu: 8
+			mainMenu: 8,
+			gameOver: 9
+			
 		};
 		//set the current game state
-		this.currentState = this.gameState.mainMenu;
+		this.currentState = this.gameState.intro;
         this.playField = new app.PlayField(0);
 		this.playField.setDifficulty("easy");
         
@@ -130,7 +132,6 @@ app.FriendlyFire = {
                     this.playField = new app.PlayField(2);
 					this.playField.setDifficulty("twoPlayer");
 					this.currentState = this.gameState.play;
-					//this.currentState = this.gameState.twoPlayerTrollScreen;
 					this.buttonClickDelay = 0;
 				}
 				if (this.userInterface.buttonClicked("menuEndlessButton")) {
@@ -151,7 +152,9 @@ app.FriendlyFire = {
 					this.buttonClickDelay = 0;
 				}
 			}
-		} else if (this.currentState == this.gameState.controls) {
+		} 
+		else if (this.currentState == this.gameState.controls) {
+			this.playField.update(this.dt);
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
@@ -170,10 +173,12 @@ app.FriendlyFire = {
 					console.log("Clicked");
 					this.buttonClickDelay = 0;
 					this.userInterface.buttons["controlsInstructionButton"].clickResolution();
-					this.currentState = this.gameState.instruction;
+					this.currentState = this.gameState.instructions;
 				}
 			}
-		} else if (this.currentState == this.gameState.instructions) {
+		} 
+		else if (this.currentState == this.gameState.instructions) {
+			this.playField.update(this.dt);
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
 			
@@ -194,7 +199,8 @@ app.FriendlyFire = {
 				this.userInterface.buttons["menuButton"].clickResolution();
 				this.currentState = this.gameState.mainMenu;
 			}
-		} else if (this.currentState == this.gameState.difficulty) {
+		} 
+		else if (this.currentState == this.gameState.difficulty) {
             this.playField.update(this.dt);
 			// Throw all keyboard events to the objects
 			this.handleKeyboard();
@@ -223,7 +229,6 @@ app.FriendlyFire = {
 				}
 				if (this.userInterface.buttonClicked("hardButton")) {
 					this.buttonClickDelay = 0;
-					console.log("hard button Clicked");
                     this.playField = new app.PlayField(1);
 					this.playField.setDifficulty("hard");
 					this.userInterface.buttons["hardButton"].clickResolution();
@@ -231,19 +236,18 @@ app.FriendlyFire = {
 				}
 				if (this.userInterface.buttonClicked("menuButton")) {
 					this.buttonClickDelay = 0;
-					console.log("menu button Clicked");
 					this.userInterface.buttons["menuButton"].clickResolution();
 					this.currentState = this.gameState.mainMenu;
 				}
 			}
-		} else if (this.currentState == this.gameState.play) {
+		} 
+		else if (this.currentState == this.gameState.play) {
             this.playField.update(this.dt);
 			
 			this.buttonClickDelay += this.dt;
 			if (this.buttonClickDelay >= 0.5) {
 				if (this.userInterface.buttonClicked("pauseButton")) {
 					this.buttonClickDelay = 0;
-					console.log("pause button Clicked");
 					this.currentState = this.gameState.paused; //pause the game
 				}
 			}
@@ -253,13 +257,47 @@ app.FriendlyFire = {
 
 			//this.checkCollisions();
 			if (this.playField.gameOver() == true) {
-				this.playField.restoreField(this.playField); //restore the state of the field
-				this.currentState = this.gameState.mainMenu; //go to the mainMenu screen
-				this.playField = new app.PlayField(0);
-				this.playField.setDifficulty("easy");
+				this.currentState = this.gameState.gameOver; //go to the game over screen
+				/*this.playField = new app.PlayField(0);
+				this.playField.setDifficulty("easy");*/
 			}
             
-		} else if (this.currentState == this.gameState.paused) {
+		} 
+		else if (this.currentState == this.gameState.gameOver) {
+            this.playField.update(this.dt);
+			// Throw all keyboard events to the objects
+			this.handleKeyboard();
+			
+			this.buttonClickDelay += this.dt;
+			
+			// Check to see if the menuButton was clicked and advance accordingly
+			// Pros of this, Friendly Fire doesn't have to monitor and keep button data
+			// around.  Cons, the programmer must know what they are named in the interface
+			if (this.buttonClickDelay >= 0.5) {
+				if (this.userInterface.buttonClicked("gameOverMenuButton")) {
+					this.buttonClickDelay = 0;
+                    this.playField = new app.PlayField(0);
+					this.playField.setDifficulty("easy");
+					this.userInterface.buttons["gameOverMenuButton"].clickResolution();
+					this.currentState = this.gameState.mainMenu;
+				}
+				if (this.userInterface.buttonClicked("gameOverDifficultyButton")) {
+					this.buttonClickDelay = 0;
+                    this.playField = new app.PlayField(0);
+					this.playField.setDifficulty("easy");
+					this.userInterface.buttons["gameOverDifficultyButton"].clickResolution();
+					this.currentState = this.gameState.difficulty;
+				}
+				if (this.userInterface.buttonClicked("gameOverRestartButton")) {
+					console.log("Restart button clicked.");
+					this.userInterface.buttons["gameOverRestartButton"].clickResolution();
+					this.playField.restoreField(this.playField); //restore the state of the field
+					this.currentState = this.gameState.play;
+					this.buttonClickDelay = 0;
+				}
+			}
+		}
+		else if (this.currentState == this.gameState.paused) {
 			this.handleKeyboard();
 			if (this.userInterface.buttonClicked("pauseResumeButton")) {
 				this.userInterface.buttons["pauseResumeButton"].clickResolution();
@@ -312,12 +350,19 @@ app.FriendlyFire = {
             this.playField.draw();
 			this.userInterface.drawMainMenu(this.ctx, mouse);
 		} else if (this.currentState == this.gameState.controls) {
+			this.playField.draw();
 			// Throw all keyboard events to the objects
 			this.userInterface.drawControls(this.ctx, mouse);
             
 		} else if (this.currentState == this.gameState.instructions) {
+			this.playField.draw();
 			// Throw all keyboard events to the objects
 			this.userInterface.drawInstructions(this.ctx, mouse);
+            
+		} else if (this.currentState == this.gameState.gameOver) {
+			this.playField.draw();
+			// Throw all keyboard events to the objects
+			this.userInterface.drawGameOver(this.ctx, mouse);
             
 		} else if (this.currentState == this.gameState.difficulty) {
             this.playField.draw();

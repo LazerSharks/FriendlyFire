@@ -28,8 +28,10 @@ app.Player = function () {
         this.side = side;
         if (side == "left") {
 		  this.position = new app.Vector(400, 800);
+		  this.startPosition = new app.Vector(400, 800);
         } else {
 		  this.position = new app.Vector(1200, 800);
+		  this.startPosition = new app.Vector(1200, 800);
         }
 		this.size = new app.Vector(60, 80);
 		this.speed = 320;
