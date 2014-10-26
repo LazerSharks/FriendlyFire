@@ -222,7 +222,7 @@ app.Player = function () {
     
 	//create a new weapon to the active weapons array
 	p.throwWeapon = function() {
-		this.activeWeapons.push(new app.Weapon(new app.Vector(this.position.x,this.position.y), this.weaponType, new app.Vector(20,60), this.currentWeaponUpgrade));
+		this.activeWeapons.push(new app.Weapon(new app.Vector(this.position.x,this.position.y), this.weaponType, new app.Vector(40,120), this.currentWeaponUpgrade));
 	};
 	
 	// private

@@ -34,20 +34,25 @@ app.Weapon = function () {
 		this.held = false;
 		this.strength = 5;
 		this.upgrade = upgrade || 0;
+		this.image = new Image();
 		
 		//set the image and default "backup" color
 		switch (weaponType) {
         case "sword":
             this.color = "red";
+			this.image.src = app.IMAGES.Sword;
             break;
         case "axe":
             this.color = "blue";
+			this.image.src = app.IMAGES.Axe;
             break;
         case "mace":
             this.color = "green";
+			this.image.src = app.IMAGES.Mace;
             break;
         case "spear":
             this.color = "yellow";
+			this.image.src = app.IMAGES.Spear;
             break;
 		}
 		
@@ -78,7 +83,7 @@ app.Weapon = function () {
 			app.DrawLib.drawRect(this.color, this.position, this.size, 0);
 			app.DrawLib.debugRect(this);
 		} else {
-			app.DrawLib.drawImage(this.img, this.position.x - center.x, this.position.y - center.y, this.width, this.height, 0);
+			app.DrawLib.drawImage(this.image,0,0,140,320, this.position, this.size, 0,false);
 		}//if image 
 	};//draw
 	

@@ -55,17 +55,38 @@ app.mouse =
 //"hashtable" of our images
 app.IMAGES = 
 {
-	teamLogo: "images/logo.png",
-	controlMenu: "images/controlMenu.png",
-	instructionMenu: "images/instructionMenu.png",
-	twoPlayer: "images/twoPlayer.png",
-	difficultyMenu: "images/difficultyMenu.png"
-	/*
-		sword: "images/sword.png"
-		axe: "images/axe.png"
-		spear: "images/spear.png"
-		mace: "images/mace.png"
-	*/
+
+	Spear: "images/Spear.png",
+	Sword: "images/Sword.png",
+	Mace: "images/Mace.png",
+	Axe: "images/Axe.png",
+
+	RedWalk: "images/RedWalk.png",
+	RedAttack: "images/RedAttack.png",
+	RedWeaponWalk: "images/RedWeaponWalk.png",
+	RedWeaponAttack: "images/RedWeaponAttack.png",
+	
+	BlueWalk: "images/BlueWalk.png",
+	BlueAttack: "images/BlueAttack.png",
+	BlueWeaponWalk: "images/BlueWeaponWalk.png",
+	BlueWeaponAttack: "images/BlueWeaponAttack.png",
+	
+	GreenWalk: "images/GreenWalk.png",
+	GreenAttack: "images/GreenAttack.png",
+	GreenWeaponWalk: "images/GreenWeaponWalk.png",
+	GreenWeaponAttack: "images/GreenWeaponAttack.png",
+	
+	YellowWalk: "images/YellowWalk.png",
+	YellowAttack: "images/YellowAttack.png",
+	YellowWeaponWalk: "images/YellowWeaponWalk.png",
+	YellowWeaponAttack: "images/YellowWeaponAttack.png",
+
+	EnemyWalk: "images/EnemyWalk.png",
+	EnemyAttack: "images/EnemyAttack.png",
+	
+	Castle: "images/Castle.png",
+	Tombstone: "images/Tombstone.png",
+	controls: "images/controls.png"
 };
 
 //array of booleans representing pressed keys
@@ -104,11 +125,36 @@ window.onload = function() {
 		app.FriendlyFire.init();
 	});
 	app.queue.loadManifest([
-		{id: "teamLogo", src:"images/logo.png"},
-		{id: "controlMenu", src:"images/controlMenu.png"},
-		{id: "instructionMenu", src:"images/instructionMenu.png"},
-		{id: "twoPlayer", src:"images/twoPlayer.png"},
-		{id: "difficultyMenu", src:"images/instructionMenu.png"}
+		{id: "Spear", src:"images/Spear.png"},
+		{id: "Sword", src:"images/Sword.png"},
+		{id: "Mace", src:"images/Mace.png"},
+		{id: "Axe", src:"images/Axe.png"},
+	
+		{id: "RedWalk", src:"images/RedWalk.png"},
+		{id: "RedAttack", src:"images/RedAttack.png"},
+		{id: "RedWeaponWalk", src:"images/RedWeaponWalk.png"},
+		{id: "RedWeaponAttack", src:"images/RedWeaponAttack.png"},
+		
+		{id: "BlueWalk", src:"images/BlueWalk.png"},
+		{id: "BlueAttack", src:"images/BlueAttack.png"},
+		{id: "BlueWeaponWalk", src:"images/BlueWeaponWalk.png"},
+		{id: "BlueWeaponAttack", src:"images/BlueWeaponAttack.png"},
+		
+		{id: "GreenWalk", src:"images/Green Walk Cycle.png"},
+		{id: "GreenAttack", src:"images/GreenAttack.png"},
+		{id: "GreenWeaponWalk", src:"images/GreenWeaponWalk.png"},
+		{id: "GreenWeaponAttack", src:"images/GreenWeaponAttack.png"},
+		
+		{id: "YellowWalk", src:"images/Yellow Walk Cycle.png"},
+		{id: "YellowAttack", src:"images/YellowAttack.png"},
+		{id: "YellowWeaponWalk", src:"images/YellowWeaponWalk.png"},
+		{id: "YellowWeaponAttack", src:"images/YellowWeaponAttack.png"},
+		
+		{id: "EnemyWalk", src:"images/EnemyWalk.png"},
+		{id: "EnemyAttack", src:"images/EnemyAttack.png"},
+		{id: "Castle", src:"images/Castle.png"},
+		{id: "Tombstone", src:"images/Tombstone.png"},
+		{id: "controls", src:"images/controls.png"}
     ]);
 		
 	//Handle the mouses position.  It calls a method in FriendlyFire because
