@@ -27,6 +27,7 @@ app.Soldier = function () {
 		// Instance variables of Soldier
 		this.position = position;
 		this.size = new app.Vector(97, 80);
+		this.collider = new app.Vector(60, 80);
 		this.speed = 120;
 		this.side = side;
 		this.lane = lane;
@@ -47,28 +48,28 @@ app.Soldier = function () {
 		switch (weaponType) {
         case "spear":
             this.color = "yellow";
-			this.walk = new app.Animation(app.IMAGES.YellowWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-            this.fight = new app.Animation(app.IMAGES.YellowAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.YellowWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
+            this.fight = new app.Animation(app.IMAGES.YellowAttack, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 			break;
         case "mace":
             this.color = "green";
-			this.walk = new app.Animation(app.IMAGES.GreenWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-            this.fight = new app.Animation(app.IMAGES.GreenAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.GreenWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
+            this.fight = new app.Animation(app.IMAGES.GreenAttack, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 			break;
         case "axe":
             this.color = "blue";
-			this.walk = new app.Animation(app.IMAGES.BlueWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-			this.fight = new app.Animation(app.IMAGES.BlueAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.BlueWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
+			this.fight = new app.Animation(app.IMAGES.BlueAttack, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
             break;
         case "sword":
             this.color = "red";
-			this.walk = new app.Animation(app.IMAGES.RedWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-            this.fight = new app.Animation(app.IMAGES.RedAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.RedWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
+            this.fight = new app.Animation(app.IMAGES.RedAttack, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 			break;
 		case "enemy":
 			this.color = "grey";
-			this.walk = new app.Animation(app.IMAGES.EnemyWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
-			this.fight = new app.Animation(app.IMAGES.EnemyAttack, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+			this.walk = new app.Animation(app.IMAGES.EnemyWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
+			this.fight = new app.Animation(app.IMAGES.EnemyAttack, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 			break;
 		}
 		
@@ -115,26 +116,30 @@ app.Soldier = function () {
 	//Soldier Draw Method
 	p.draw = function () {
 		//drawing origin is top left corner
-		//use this to center image on (x,y)
-		var center = new app.Vector(this.size.x / 2, this.size.y / 2);
+		var center = this.position.copy();
+		if(this.side == "left") {
+			center.x += 10;
+		} else {
+			center.x -= 10;
+		}
 		
 		//test to see if there is an image and draw accordingly
 		if(!this.dead)
 		{
 			if (!this.walk) {
-				app.DrawLib.drawRect(this.color, this.position, this.size, 0);
+				app.DrawLib.drawRect(this.color, center, this.size, 0);
 				app.DrawLib.debugRect(this);
 			} else if(this.walk && !this.fighting){
 				if (this.side == "left") {
-					this.walk.draw(this.position, this.size, this.rotation, false);
+					this.walk.draw(center, this.size, this.rotation, false);
 				} else {
-					this.walk.draw(this.position, this.size, this.rotation, true);
+					this.walk.draw(center, this.size, this.rotation, true);
 				}
 			} else if(this.fight && this.fighting){
 				if (this.side == "left") {
-					this.fight.draw(this.position, this.size, this.rotation, false);
+					this.fight.draw(center, this.size, this.rotation, false);
 				} else {
-					this.fight.draw(this.position, this.size, this.rotation, true);
+					this.fight.draw(center, this.size, this.rotation, true);
 					}
 			}
 		}
@@ -180,19 +185,19 @@ app.Soldier = function () {
 	{
 		switch (this.color){
 			case "yellow":
-				this.walk = new app.Animation(app.IMAGES.YellowWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+				this.walk = new app.Animation(app.IMAGES.YellowWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 				this.fight = new app.Animation(app.IMAGES.YellowWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), 5, .75);
 				break;
 			case "green":
-				this.walk = new app.Animation(app.IMAGES.GreenWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+				this.walk = new app.Animation(app.IMAGES.GreenWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 				this.fight = new app.Animation(app.IMAGES.GreenWeaponAttack, new app.Vector(0, 0),  new app.Vector(200, 165), 5, .75); 
 				break;
 			case "blue":
-				this.walk = new app.Animation(app.IMAGES.BlueWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+				this.walk = new app.Animation(app.IMAGES.BlueWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 				this.fight = new app.Animation(app.IMAGES.BlueWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), 5, .75);
 				break;
 			case "red":
-				this.walk = new app.Animation(app.IMAGES.RedWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 8, 1.2);
+				this.walk = new app.Animation(app.IMAGES.RedWeaponWalk, new app.Vector(0, 0), new app.Vector(200, 165), 7, 1.2);
 				this.fight = new app.Animation(app.IMAGES.RedWeaponAttack, new app.Vector(0, 0), new app.Vector(200, 165), 5, .75); 
 				break;
 		}
@@ -204,13 +209,11 @@ app.Soldier = function () {
 		//start without fighting anyone
 		
 		this.fighting = false;
-		var offset = 60;
 		
 		//check which side we are on
 		var opponents;
 		if(this.side == "left") {
 			opponents = this.lane.rightSoldiers;
-			offset = -offset;
 		} else {
 			opponents = this.lane.leftSoldiers;
 		}
@@ -218,7 +221,7 @@ app.Soldier = function () {
 		//attack the first enemy you collide with
 		for(var i = 0; i < opponents.length; i++) {
 			var enemy = opponents[i];
-			if (this.colliding(enemy,offset)) {
+			if (this.colliding(enemy)) {
 				this.fighting = true;
 				enemy.takeDamage(this.attack());
 				break;
@@ -272,17 +275,13 @@ app.Soldier = function () {
 	};
 	
 	
-	p.colliding = function (gameObject,offset) {
-	
-		if(!offset)
-			offset = 0;
+	p.colliding = function (gameObject) {
+		
 			
-		var tempPosition = new app.Vector(this.position.x + offset, this.position.y)
-			
-		if(gameObject.position.x - gameObject.size.x / 2 > tempPosition.x + this.size.x / 2 ||
-		   gameObject.position.x + gameObject.size.x / 2 < tempPosition.x - this.size.x / 2 ||
-           gameObject.position.y - gameObject.size.y / 2 > tempPosition.y + this.size.y / 2 ||
-           gameObject.position.y + gameObject.size.y / 2 < tempPosition.y - this.size.y / 2) {
+		if(gameObject.position.x - gameObject.collider.x / 2 > this.position.x + this.collider.x / 2 ||
+		   gameObject.position.x + gameObject.collider.x / 2 < this.position.x - this.collider.x / 2 ||
+           gameObject.position.y - gameObject.collider.y / 2 > this.position.y + this.collider.y / 2 ||
+           gameObject.position.y + gameObject.collider.y / 2 < this.position.y - this.collider.y / 2) {
 			return false;
 		} else {
 			return true;
