@@ -56,6 +56,9 @@ app.mouse =
 app.IMAGES = 
 {
 	teamLogo: "images/Laser Shark.png",
+	instructions:"images/instructions.png",
+	controls: "images/controls.png",
+	
 	Spear: "images/Spear.png",
 	Sword: "images/Sword.png",
 	Mace: "images/Mace.png",
@@ -89,7 +92,6 @@ app.IMAGES =
 	CastleDamaged: "images/castledamaged.png",
 	CastleDestroyed: "images/castledestroyed.png",
 	Tombstone: "images/Tombstone.png",
-	controls: "images/controls.png",
 	
 	flagBritain: "images/gb.png",
 	flagFrance: "images/fr.png",
@@ -136,6 +138,10 @@ window.onload = function() {
 	});
 	app.queue.loadManifest([
 		{id: "teamLogo", src:"images/Laser Shark.png"},
+		{id: "controls", src:"images/controls.png"},
+		{id: "instructions", src:"images/instructions.png"},
+		
+		
 		{id: "Spear", src:"images/Spear.png"},
 		{id: "Sword", src:"images/Sword.png"},
 		{id: "Mace", src:"images/Mace.png"},
@@ -170,7 +176,6 @@ window.onload = function() {
 		{id: "CastleDamaged", src:"images/castledamaged.png"},
 		{id: "CastleDestroyed", src:"images/castledestroyed.png"},
 		{id: "Tombstone", src:"images/Tombstone.png"},
-		{id: "controls", src:"images/controls.png"},
 		
 		{id: "flagBritain", src:"images/gb.png"},
 		{id: "flagFrance", src:"images/fr.png"},

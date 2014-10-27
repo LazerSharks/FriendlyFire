@@ -36,6 +36,7 @@ app.Interface =
 		this.HEIGHT = canvasHeight;
 		this.images = images;
 		this.color = "#462F02";
+		this.color2 = "#845B0E";
 		
 		var buttonPadding = 100;
 		
@@ -135,11 +136,11 @@ app.Interface =
 		
 		//menu splash screen
 		var image = new Image();
-		//image.src = this.images['instructions'];
+		image.src = this.images['instructions'];
 		
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(2*this.WIDTH/3-125, this.HEIGHT/2), 0);
 		
-        //ctx.drawImage(image,0,-40, this.WIDTH, this.HEIGHT);
+        ctx.drawImage(image,0,20, this.WIDTH, this.HEIGHT);
 		//draw the menu button since we are in the menu
 		this.buttons["menuButton"].draw(ctx,mouse);
 		this.buttons["instructionsControlButton"].draw(ctx,mouse);
