@@ -230,6 +230,14 @@ app.Player = function () {
 		this.activeWeapons.push(new app.Weapon(new app.Vector(this.position.x,this.position.y), this.weaponType, new app.Vector(40,120), this.currentWeaponUpgrade));
 	};
 	
+	p.reset = function()
+	{
+		this.position = this.startPosition.copy();
+		this.currentWeaponIndex = 0;
+		this.switchWeapons("null");
+	
+	}
+	
 	// private
 	function inBounds(obj) {
 		return obj.position.y <= obj.canvasHeight + obj.size.y * 0.5;

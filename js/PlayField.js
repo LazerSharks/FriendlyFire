@@ -160,17 +160,11 @@ app.PlayField = function () {
 	{
 		if(this.players >0)
 		{
-			this.player.position = this.player.startPosition.copy();
-			this.player.currentWeaponIndex = 0;
-			this.player.weaponType = "spear";
-			this.player.color = "yellow";
+			this.player.reset();
 		}
 		if(this.players == 2)
 		{
-			this.player2.position = this.player2.startPosition.copy();
-			this.player2.currentWeaponIndex = 0;
-			this.player2.weaponType = "spear";
-			this.player2.color = "yellow";
+			this.player2.reset();
 		}
 		obj.lanes[1].clearLane();
         obj.lanes[2].clearLane();

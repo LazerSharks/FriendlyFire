@@ -37,7 +37,7 @@ app.Castle = function () {
 		this.dead = false;
         
 		this.health = 10000;
-		this.maxHealth = this.health;
+		//this.maxHealth = this.health;
 		
 		this.strength = 20;
 		this.color = "grey";
@@ -139,9 +139,10 @@ app.Castle = function () {
 	
 	//set the castle's health to max
 	p.respawn = function () {
-		this.health = this.maxHealth;
+		this.health = 10000;
 		this.dead = false;
-		this.color = "grey";
+		this.invulnerable = false;
+		this.image = app.IMAGES.Castle;
 	};
     
     
