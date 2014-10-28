@@ -58,6 +58,7 @@ app.IMAGES =
 	teamLogo: "images/Laser Shark.png",
 	instructions:"images/instructions.png",
 	controls: "images/controls.png",
+	menu: "images/menu.png",
 	
 	Spear: "images/Spear.png",
 	Sword: "images/Sword.png",
@@ -138,6 +139,7 @@ window.onload = function() {
 	});
 	app.queue.loadManifest([
 		{id: "teamLogo", src:"images/Laser Shark.png"},
+		{id: "menu", src:"images/menu.png"},
 		{id: "controls", src:"images/controls.png"},
 		{id: "instructions", src:"images/instructions.png"},
 		

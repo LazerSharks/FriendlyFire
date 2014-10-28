@@ -193,35 +193,35 @@ app.Player = function () {
                 this.switchWeapons("down");
             }
             if((this.app.keyPress[this.app.KEYBOARD.KEY_W])) {
-                this.switchWeapons("up");
+                this.throwWeapon();
             }
 
             //throw a weapon
-            if(this.app.keyPress[this.app.KEYBOARD.KEY_Q] || this.app.keyPress[this.app.KEYBOARD.KEY_E]) {
+            /*if(this.app.keyPress[this.app.KEYBOARD.KEY_Q] || this.app.keyPress[this.app.KEYBOARD.KEY_E]) {
                 this.throwWeapon();
-            }
+            }*/
         } else {
             //handle movement left and right
-            if(app.keydown[app.KEYBOARD.KEY_J]) {
+            if(app.keydown[app.KEYBOARD.KEY_LEFT]) {
                 this.move("left", dt);
             }
-            if(app.keydown[app.KEYBOARD.KEY_L]) {
+            if(app.keydown[app.KEYBOARD.KEY_RIGHT]) {
                 this.move("right", dt);
             }
 
 
             //switch weapon and prevent the player from holding down the switch buttons
-            if((app.keyPress[this.app.KEYBOARD.KEY_K])) {
+            if((app.keyPress[this.app.KEYBOARD.KEY_DOWN])) {
                 this.switchWeapons("down");
             }
-            if((this.app.keyPress[this.app.KEYBOARD.KEY_I])) {
-                this.switchWeapons("up");
+            if((this.app.keyPress[this.app.KEYBOARD.KEY_UP])) {
+                this.throwWeapon();
             }
 
             //throw a weapon
-            if(this.app.keyPress[this.app.KEYBOARD.KEY_U] || this.app.keyPress[this.app.KEYBOARD.KEY_O]) {
+            /*if(this.app.keyPress[this.app.KEYBOARD.KEY_U] || this.app.keyPress[this.app.KEYBOARD.KEY_O]) {
                 this.throwWeapon();
-            }
+            }*/
         }
     }
     

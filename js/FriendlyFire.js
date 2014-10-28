@@ -141,16 +141,6 @@ app.FriendlyFire = {
 					this.currentState = this.gameState.play;
 					this.buttonClickDelay = 0;
 				}
-				if (this.userInterface.buttonClicked("menuControlsButton")) {
-					this.userInterface.buttons["menuControlsButton"].clickResolution();
-					this.currentState = this.gameState.controls;
-					this.buttonClickDelay = 0;
-				}
-				if (this.userInterface.buttonClicked("menuInstructionsButton")) {
-					this.userInterface.buttons["menuInstructionsButton"].clickResolution();
-					this.currentState = this.gameState.instructions;
-					this.buttonClickDelay = 0;
-				}
 			}
 		} 
 		else if (this.currentState == this.gameState.controls) {

@@ -45,11 +45,9 @@ app.Interface =
 		{
 			//Button(text, font, fontColor, image,x,y,width,height)
 			"menuButton" : new app.Button("MENU", "24pt Comic Sans MS", "white", undefined, this.WIDTH/2, this.HEIGHT/10, 175, 75),
-			"menuSinglePlayerButton" : new app.Button("SINGLE PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3,250,75),
-			"menuTwoPlayerButton" : new app.Button("TWO PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding,250,75),
-			"menuEndlessButton" : new app.Button("ENDLESS MODE", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding*2,250,75),
-			"menuControlsButton" : new app.Button("CONTROLS", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding*3,250,75),
-			"menuInstructionsButton" : new app.Button("INSTRUCTIONS", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/3 + buttonPadding * 4,250,75),
+			"menuSinglePlayerButton" : new app.Button("SINGLE PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2  + buttonPadding/3,250,75),
+			"menuTwoPlayerButton" : new app.Button("TWO PLAYER", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + buttonPadding + buttonPadding/3,250,75),
+			"menuEndlessButton" : new app.Button("ENDLESS MODE", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + buttonPadding * 2 + buttonPadding/3,250,75),
 			"easyButton" : new app.Button("EASY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 - 100,175,75),
 			"mediumButton" : new app.Button("MEDIUM", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2,175,75),
 			"hardButton" : new app.Button("HARD", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100,175,75),
@@ -95,17 +93,18 @@ app.Interface =
 		ctx.save();
 		
 		//menu splash screen
-		var image = undefined;
+		var image = new Image();
+		image.src = this.images['menu'];
 		
 		
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
+		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(2*this.WIDTH/3 + 15, 2*this.HEIGHT/3 + 15), 0);
+		ctx.drawImage(image,-10,0, this.WIDTH, this.HEIGHT);
 		
 		//draw the menu button since we are in the menu
 		this.buttons["menuSinglePlayerButton"].draw(ctx,mouse);
 		this.buttons["menuTwoPlayerButton"].draw(ctx,mouse);
 		this.buttons["menuEndlessButton"].draw(ctx,mouse);
-		this.buttons["menuControlsButton"].draw(ctx,mouse);
-		this.buttons["menuInstructionsButton"].draw(ctx,mouse);
 		
 		ctx.restore();
 	},//draw main menu
