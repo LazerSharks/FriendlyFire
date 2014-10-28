@@ -141,7 +141,7 @@ app.Castle = function () {
 	p.respawn = function () {
 		this.health = 10000;
 		this.dead = false;
-		this.invulnerable = false;
+		this.invincible = false;
 		this.image = app.IMAGES.Castle;
 	};
     
