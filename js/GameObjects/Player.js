@@ -40,6 +40,11 @@ app.Player = function () {
 		//set the image and default "backup" color
 		this.image = app.IMAGES.Blacksmith;
 		this.weaponImage = app.IMAGES.Spear;
+		this.redAnvilImage = app.IMAGES.RedAnvil;
+		this.blueAnvilImage = app.IMAGES.BlueAnvil;
+		this.yellowAnvilImage = app.IMAGES.YellowAnvil;
+		this.greenAnvilImage = app.IMAGES.GreenAnvil;
+		this.currentImage = this.yellowAnvilImage;
         
 		this.currentWeaponIndex = 0;
 		this.weaponType = "spear";
@@ -83,7 +88,7 @@ app.Player = function () {
         
 		
 		var image = new Image();
-		image.src = this.image;
+		image.src = this.currentImage;
 		//test to see if there is an image and draw accordingly
         app.DrawLib.drawImage(image, 0, 0, 120, 125, this.position, this.size, 0, false);//if image
 		var weaponSize = new app.Vector(40,120);
@@ -154,24 +159,28 @@ app.Player = function () {
 				this.color = "yellow";
 				this.weaponType = "spear";
 				this.weaponImage = app.IMAGES.Spear;
+				this.currentImage = this.yellowAnvilImage;
 				this.currentWeaponUpgrade = this.spearUpgrade;
 				break;
 			case 1:
 				this.color = "green";
 				this.weaponType = "mace";
 				this.weaponImage = app.IMAGES.Mace;
+				this.currentImage = this.greenAnvilImage;
 				this.currentWeaponUpgrade = this.maceUpgrade;
 				break;
 			case 2:
 				this.color = "blue";
 				this.weaponType = "axe";
 				this.weaponImage = app.IMAGES.Axe;
+				this.currentImage = this.blueAnvilImage;
 				this.currentWeaponUpgrade = this.axeUpgrade;
 				break;
 			case 3:
 				this.color = "red";
 				this.weaponType = "sword";
 				this.weaponImage = app.IMAGES.Sword;
+				this.currentImage = this.redAnvilImage;
 				this.currentWeaponUpgrade = this.swordUpgrade;
 				break;
 		}

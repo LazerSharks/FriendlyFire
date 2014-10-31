@@ -89,6 +89,11 @@ app.IMAGES =
 	EnemyAttack: "images/EnemyAttack.png",
 	
 	Blacksmith: "images/Blacksmith.png",
+	RedAnvil: "images/RedAnvil.png",
+	BlueAnvil: "images/BlueAnvil.png",
+	YellowAnvil: "images/YellowAnvil.png",
+	GreenAnvil: "images/GreenAnvil.png",
+	
 	Castle: "images/Castle.png",
 	CastleDamaged: "images/castledamaged.png",
 	CastleDestroyed: "images/castledestroyed.png",
@@ -174,6 +179,12 @@ window.onload = function() {
 		
 		
 		{id: "Blacksmith", src:"images/Blacksmith.png"},
+		{id: "RedAnvil", src:"images/RedAnvil.png"},
+		{id: "BlueAnvil", src:"images/BlueAnvil.png"},
+		{id: "YellowAnvil", src:"images/YellowAnvil.png"},
+		{id: "GreenAnvil", src:"images/GreenAnvil.png"},
+		
+		
 		{id: "Castle", src:"images/Castle.png"},
 		{id: "CastleDamaged", src:"images/castledamaged.png"},
 		{id: "CastleDestroyed", src:"images/castledestroyed.png"},
