@@ -118,6 +118,7 @@ app.Button = function()
 	{
 		//handle mouse input
 		handleMouse(containsMouse(mouse,that),that,mouse);
+		handleMouse(containsMouse(mouse,that),that,mouse);
 	};//update
 	  
 	//This handles all input to be gathered from the mouse
@@ -137,6 +138,12 @@ app.Button = function()
 		}
 			
 	};//hover
+	
+	/*function changeTextAndFont(text, font)
+	{
+		this.text = text;
+		this.font = font;
+	}*/
 	
 	return Button;
 	

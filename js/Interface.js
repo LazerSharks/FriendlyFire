@@ -172,14 +172,13 @@ app.Interface =
 	drawPaused: function(ctx, mouse) {
 		//drawRect: function(color, position, size, r)
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);
-
-		
 	
 		this.buttons["pauseResumeButton"].draw(ctx,mouse);
 		this.buttons["pauseRestartButton"].draw(ctx,mouse);
 		this.buttons["pauseQuitButton"].draw(ctx,mouse);
 	},
 	
+	//game over results screen
 	drawGameOver: function(ctx, mouse) {
 		app.DrawLib.drawRect(this.color, new app.Vector(this.WIDTH/2, this.HEIGHT/2),  new app.Vector(this.WIDTH/4, this.HEIGHT), 0);// background
 		
@@ -203,6 +202,9 @@ app.Interface =
 					app.DrawLib.drawText(ctx, "YOU WIN", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
 					playField.leftCastle.invincible = true;
 				}
+				this.buttons["gameOverDifficultyButton"].draw(ctx,mouse);
+				this.buttons["gameOverRestartButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2 - 100);
+				this.buttons["gameOverDifficultyButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2);
 				break;
 			case "twoPlayer":
 				if(playField.leftCastle.health <=0)
@@ -215,13 +217,14 @@ app.Interface =
 					app.DrawLib.drawText(ctx, "PLAYER 1 WINS", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
 					playField.leftCastle.invincible = true;
 				}
+				this.buttons["gameOverRestartButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2);
+				this.buttons["gameOverDifficultyButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT + 200);
 				break;
 		}
 		
 		ctx.restore();
 		
 		this.buttons["gameOverMenuButton"].draw(ctx,mouse);
-		this.buttons["gameOverDifficultyButton"].draw(ctx,mouse);
 		this.buttons["gameOverRestartButton"].draw(ctx,mouse);
 	},
 	
