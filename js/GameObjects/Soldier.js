@@ -167,13 +167,13 @@ app.Soldier = function () {
         }
         if (this.side == "left" || app.FriendlyFire.playField.players == 2) {
             for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
-                if (this.colliding(thrownWeapons[i])) { //colliding?
-                    if (this.getWeaponType() == thrownWeapons[i].getWeaponType()){
+                if (thrownWeapons[i].thrown && this.colliding(thrownWeapons[i])) { //colliding?
+                    if (this.weapon == undefined && this.getWeaponType() == thrownWeapons[i].getWeaponType()){
                         this.setWeapon(thrownWeapons[i]);
                         thrownWeapons[i].wasCaught();
 						this.switchAnimations();
 						break;
-                    } else {
+                    } else if (this.getWeaponType() != thrownWeapons[i].getWeaponType()) {
                         this.health = 0;
                         this.die();
                     }//if right weapon
