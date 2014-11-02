@@ -49,11 +49,15 @@ app.PlayField = function () {
         }
 		
 		this.endlessMode = false;
+		
+		
+		this.timeTaken = 0;
+		this.totalDeaths = 0;
+		
 	}
     
     
     var p = PlayField.prototype;
-    
     
 
     p.update = function (dt) {
@@ -72,6 +76,7 @@ app.PlayField = function () {
         if (this.players == 2) {
             this.player2.update(dt);
         }
+		this.timeTaken+=dt;
     };
 	
 	

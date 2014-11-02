@@ -56,6 +56,10 @@ app.Player = function () {
 		this.maceUpgrade = 0;
 		this.axeUpgrade = 0;
 		
+		this.friendlyFire = 0;
+		this.hitCount = 0;
+		this.thrownCount = 0;
+		
 	}//constructor
 		
 	// Prototype for making functions/methods available outside of the class
@@ -97,8 +101,7 @@ app.Player = function () {
 		weaponImage.src = this.weaponImage;
         app.DrawLib.drawImage(weaponImage, 0, 0, 140, 320, weaponPos, weaponSize, -Math.PI/2, false);//if image
 		
-		for (var i = 0; i < this.activeWeapons.length; i++)
-		{
+		for (var i = 0; i < this.activeWeapons.length; i++) {
 			this.activeWeapons[i].draw();
 		}
 	};//draw
@@ -228,6 +231,7 @@ app.Player = function () {
 	//create a new weapon to the active weapons array
 	p.throwWeapon = function() {
 		this.activeWeapons.push(new app.Weapon(new app.Vector(this.position.x,this.position.y), this.weaponType, new app.Vector(40,120), this.currentWeaponUpgrade));
+		this.thrownCount ++;
 	};
 	
 	p.reset = function()

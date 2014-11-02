@@ -92,6 +92,7 @@ app.Soldier = function () {
 		this.dead = true;
 		this.active = false;
 		this.color = "black";
+		this.lane.playField.totalDeaths++;
 	};
 	
 	p.isDead = function () { return this.dead; };
@@ -159,12 +160,14 @@ app.Soldier = function () {
 	
 	p.weaponCollisions = function () {
 		//----------Soldiers colliding with weapons------------
+		var player;
         var thrownWeapons;
 		if (this.side == "left") {
-			thrownWeapons = app.FriendlyFire.playField.player.getActiveWeapons();
+			player = app.FriendlyFire.playField.player;
         } else if (app.FriendlyFire.playField.players == 2) {
-			thrownWeapons = app.FriendlyFire.playField.player2.getActiveWeapons();
+			player = app.FriendlyFire.playField.player2;
         }
+		thrownWeapons = player.getActiveWeapons();
         if (this.side == "left" || app.FriendlyFire.playField.players == 2) {
             for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
                 if (thrownWeapons[i].thrown && this.colliding(thrownWeapons[i])) { //colliding?
@@ -172,10 +175,12 @@ app.Soldier = function () {
                         this.setWeapon(thrownWeapons[i]);
                         thrownWeapons[i].wasCaught();
 						this.switchAnimations();
+						player.hitCount ++;
 						break;
                     } else if (this.getWeaponType() != thrownWeapons[i].getWeaponType()) {
                         this.health = 0;
                         this.die();
+						player.friendlyFire ++;
                     }//if right weapon
                 }
             }
