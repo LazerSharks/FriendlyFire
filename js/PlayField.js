@@ -76,7 +76,11 @@ app.PlayField = function () {
         if (this.players == 2) {
             this.player2.update(dt);
         }
-		this.timeTaken+=dt;
+		
+		if(!this.gameOver())
+		{
+			this.timeTaken+=dt;
+		}
     };
 	
 	

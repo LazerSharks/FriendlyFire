@@ -231,7 +231,10 @@ app.Player = function () {
 	//create a new weapon to the active weapons array
 	p.throwWeapon = function() {
 		this.activeWeapons.push(new app.Weapon(new app.Vector(this.position.x,this.position.y), this.weaponType, new app.Vector(40,120), this.currentWeaponUpgrade));
-		this.thrownCount ++;
+		if(!app.FriendlyFire.playField.gameOver())
+		{
+			this.thrownCount ++;
+		}
 	};
 	
 	p.reset = function()

@@ -92,7 +92,10 @@ app.Soldier = function () {
 		this.dead = true;
 		this.active = false;
 		this.color = "black";
-		this.lane.playField.totalDeaths++;
+		if(!app.FriendlyFire.playField.gameOver())
+		{
+			this.lane.playField.totalDeaths++;
+		}
 	};
 	
 	p.isDead = function () { return this.dead; };
@@ -164,10 +167,12 @@ app.Soldier = function () {
         var thrownWeapons;
 		if (this.side == "left") {
 			player = app.FriendlyFire.playField.player;
+			thrownWeapons = player.getActiveWeapons();
         } else if (app.FriendlyFire.playField.players == 2) {
 			player = app.FriendlyFire.playField.player2;
+			thrownWeapons = player.getActiveWeapons();
         }
-		thrownWeapons = player.getActiveWeapons();
+		
         if (this.side == "left" || app.FriendlyFire.playField.players == 2) {
             for (var i = 0; i < thrownWeapons.length; i++) { //each weapon
                 if (thrownWeapons[i].thrown && this.colliding(thrownWeapons[i])) { //colliding?
@@ -175,12 +180,18 @@ app.Soldier = function () {
                         this.setWeapon(thrownWeapons[i]);
                         thrownWeapons[i].wasCaught();
 						this.switchAnimations();
-						player.hitCount ++;
+						if(!app.FriendlyFire.playField.gameOver())
+						{
+							player.hitCount ++;
+						}
 						break;
                     } else if (this.getWeaponType() != thrownWeapons[i].getWeaponType()) {
                         this.health = 0;
                         this.die();
-						player.friendlyFire ++;
+						if(!app.FriendlyFire.playField.gameOver())
+						{
+							player.friendlyFire ++;
+						}
                     }//if right weapon
                 }
             }

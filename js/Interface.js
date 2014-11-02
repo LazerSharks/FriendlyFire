@@ -59,9 +59,9 @@ app.Interface =
 			"pauseRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2, 250, 75),
 			"pauseButton" : new app.Button("||", "bold 22px Comic Sans MS", "white", undefined,(this.WIDTH/2),50, 50, 50),
 			"pauseQuitButton" : new app.Button("QUIT", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
-			"gameOverMenuButton" : new app.Button("MENU", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
-			"gameOverDifficultyButton" : new app.Button("DIFFICULTY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2, 250, 75),
-			"gameOverRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 - 100, 250, 75),
+			"gameOverMenuButton" : new app.Button("QUIT", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 200, 250, 75),
+			"gameOverDifficultyButton" : new app.Button("DIFFICULTY", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2 + 100, 250, 75),
+			"gameOverRestartButton" : new app.Button("RESTART", "28px Comic Sans MS", "white", undefined,(this.WIDTH/2),this.HEIGHT/2, 250, 75),
 		};
 	},
 	
@@ -184,6 +184,7 @@ app.Interface =
 		
 		var playField =  app.FriendlyFire.playField;
 		var textPad = 50;
+		var textPad2 = 25;
 		
 		ctx.save();
 		ctx.textAlign = "center";
@@ -202,9 +203,23 @@ app.Interface =
 					app.DrawLib.drawText(ctx, "YOU WIN", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
 					playField.leftCastle.invincible = true;
 				}
+				
+				app.DrawLib.drawRect(this.color2, new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad * 1.6)),  new app.Vector(this.WIDTH/4, 15), 0);//seperator bar
+				
+				app.DrawLib.drawText(ctx, "Time: " + Math.floor(playField.timeTaken / 60) + ":" + Math.floor(playField.timeTaken % 60), "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad)*2.5));
+				if(playField.player.thrownCount < 0){
+				app.DrawLib.drawText(ctx, "Accuracy: " + Math.round(( playField.player.hitCount / playField.player.thrownCount) * 100) + "%", "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*3)));
+				}
+				else
+				{
+					app.DrawLib.drawText(ctx, "Accuracy: 0" , "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*3)));
+				}
+				app.DrawLib.drawText(ctx, "Friendlies Killed: " + ( playField.player.friendlyFire ), "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*3.5)));
+				app.DrawLib.drawText(ctx, "Total deaths: " + ( playField.totalDeaths ), "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*4)));
 				this.buttons["gameOverDifficultyButton"].draw(ctx,mouse);
-				this.buttons["gameOverRestartButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2 - 100);
-				this.buttons["gameOverDifficultyButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2);
+				
+				this.buttons["gameOverMenuButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2 + 200);
+				this.buttons["gameOverDifficultyButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2 + 100);
 				break;
 			case "twoPlayer":
 				if(playField.leftCastle.health <=0)
@@ -217,7 +232,27 @@ app.Interface =
 					app.DrawLib.drawText(ctx, "PLAYER 1 WINS", "24pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad));
 					playField.leftCastle.invincible = true;
 				}
-				this.buttons["gameOverRestartButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2);
+				
+				app.DrawLib.drawRect(this.color2, new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad * 1.6)),  new app.Vector(this.WIDTH/4, 15), 0);//seperator bar
+				
+				this.buttons["gameOverMenuButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2 + 100);
+				this.buttons["gameOverDifficultyButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT + 200);
+				break;
+			case "endless":
+				app.DrawLib.drawRect(this.color2, new app.Vector(this.WIDTH/2, this.HEIGHT/6 + textPad ),  new app.Vector(this.WIDTH/4, 15), 0);//seperator bar
+				
+				app.DrawLib.drawText(ctx, "Time: " + Math.floor(playField.timeTaken / 60) + ":" + Math.floor(playField.timeTaken % 60), "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad)*2.5));
+				if(playField.player.thrownCount < 0){
+				app.DrawLib.drawText(ctx, "Accuracy: " + Math.round(( playField.player.hitCount / playField.player.thrownCount) * 100) + "%", "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*3)));
+				}
+				else
+				{
+					app.DrawLib.drawText(ctx, "Accuracy: 0" , "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*3)));
+				}
+				app.DrawLib.drawText(ctx, "Friendlies Killed: " + ( playField.player.friendlyFire ), "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*3.5)));
+				app.DrawLib.drawText(ctx, "Total deaths: " + ( playField.totalDeaths ), "16pt Comic Sans MS", "white",  new app.Vector(this.WIDTH/2, this.HEIGHT/6 + (textPad*4)));
+			
+				this.buttons["gameOverMenuButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT/2 + 100);
 				this.buttons["gameOverDifficultyButton"].position = new app.Vector((this.WIDTH/2),this.HEIGHT + 200);
 				break;
 		}

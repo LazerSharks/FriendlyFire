@@ -139,12 +139,6 @@ app.Button = function()
 			
 	};//hover
 	
-	/*function changeTextAndFont(text, font)
-	{
-		this.text = text;
-		this.font = font;
-	}*/
-	
 	return Button;
 	
 	
